@@ -1,0 +1,41 @@
+{{{header}}}
+
+<div class="row col-md-12 comparisonbuttonrow">
+    <div class="col-md-6 buttonleft">{{{buttonleft}}}</div>
+    <div class="col-md-6 buttonright">{{{buttonright}}}</div>
+</div>
+
+<div class="row col-md-12">
+    {{#submissions}}
+        <div class="col-md-6 submissioncontents pos_{{position}}">
+
+            {{#contents}}
+                {{#multiplepluginsused}}
+                    <div class="row col-md-12"><h4>{{{type}}}</h4></div>
+                {{/multiplepluginsused}}
+                <div class="row col-md-12">{{{content}}}</div>
+            {{/contents}}
+
+            {{#files}}
+                <div class="row col-md-12"><h4>{{{type}}}</h4></div>
+                {{#content}}
+                    <div class="row col-md-12">{{{embed}}}</div>
+                {{/content}}
+            {{/files}}
+
+            {{{button}}}
+        </div>
+    {{/submissions}}
+
+</div>
+
+<div class="row col-md-12 comparisonbuttonrow">
+    <div class="col-md-6 buttonleft">{{{buttonleftbottom}}}</div>
+    <div class="col-md-6 buttonright">{{{buttonrightbottom}}}</div>
+</div>
+
+<div class="row col-md-12 comparisonbuttonrow">
+    <div class="col-md-6 buttonfinish">{{{buttonfinish}}}</div>
+</div>
+
+{{{footer}}}

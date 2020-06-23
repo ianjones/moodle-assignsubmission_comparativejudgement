@@ -1,0 +1,16 @@
+div.submissioncontents.pos_1 {
+    border-right: 1px solid rgba(0, 0, 0, .125);
+}
+
+div.comparisonbuttonrow {
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+#fitem_id_comments_loser_1 {
+    display: none;
+}
+
+#fitem_id_comments_loser_2 {
+    display: none;
+}
