@@ -75,7 +75,7 @@ class comparisoncontroller extends basecontroller {
         $o = '';
         if ($plugin->is_enabled() && $plugin->is_visible() && $plugin->has_user_summary() &&
                 (!$plugin->is_empty($submission) || !$plugin->allow_submissions())) {
-            $displaymode = \assign_submission_plugin_submission::SUMMARY;
+            $displaymode = \assign_submission_plugin_submission::FULL;
             $pluginsubmission = new \assign_submission_plugin_submission($plugin,
                     $submission,
                     $displaymode,
