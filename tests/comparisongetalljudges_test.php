@@ -32,6 +32,9 @@ require_once($CFG->dirroot . '/mod/assign/submission/comparativejudgement/locall
 use assignsubmission_comparativejudgement\comparison;
 use assignsubmission_comparativejudgement\comparisonmanager;
 
+/**
+ * @group assignsubmission_comparativejudgement
+ */
 class assignsubmission_comparativejudgement_comparisongetalljudges_testcase extends advanced_testcase {
 
     // Use the generator helper.

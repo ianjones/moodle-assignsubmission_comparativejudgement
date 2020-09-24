@@ -27,6 +27,9 @@ use assignsubmission_comparativejudgement\judgerequestemail;
 global $CFG;
 require_once($CFG->dirroot . '/mod/assign/tests/generator.php');
 
+/**
+ * @group assignsubmission_comparativejudgement
+ */
 class assignsubmission_comparativejudgement_judgerequestemail_testcase extends advanced_testcase {
 
     // Use the generator helper.

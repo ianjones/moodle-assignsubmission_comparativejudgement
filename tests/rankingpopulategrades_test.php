@@ -29,6 +29,9 @@ require_once($CFG->dirroot . '/mod/assign/tests/generator.php');
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * @group assignsubmission_comparativejudgement
+ */
 class assignsubmission_comparativejudgement_rankingpopulategrades_testcase extends advanced_testcase {
     use mod_assign_test_generator;
 

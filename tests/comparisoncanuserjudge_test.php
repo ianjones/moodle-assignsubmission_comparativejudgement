@@ -33,6 +33,9 @@ use assignsubmission_comparativejudgement\comparisonmanager;
 use \core_calendar\local\api as calendar_local_api;
 use \core_calendar\local\event\container as calendar_event_container;
 
+/**
+ * @group assignsubmission_comparativejudgement
+ */
 class assignsubmission_comparativejudgement_comparisoncanuserjudge_testcase extends advanced_testcase {
 
     // Use the generator helper.
