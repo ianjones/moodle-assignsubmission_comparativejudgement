@@ -335,8 +335,6 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
     }
 
     public function test_emails_submitted_cutoffdate_extension() {
-        global $DB;
-
         $now = time();
 
         list($teacher, $editingteacher, $student, $secondassign, $plugin, $course) =
@@ -352,7 +350,7 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
         $plugin->set_config('judges', \assign_submission_comparativejudgement::FAKEROLE_GRADABLE_USERS);
         $sink = $this->redirectEmails();
 
-        for ($i = 0; $i < 4; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $students[$i] = $this->getDataGenerator()->create_and_enrol($course, 'student');
             $this->add_submission($students[$i], $secondassign);
             $this->submit_for_grading($students[$i], $secondassign);
