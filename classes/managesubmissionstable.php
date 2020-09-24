@@ -62,7 +62,8 @@ class managesubmissionstable extends \table_sql {
         }
 
         $columns =
-                [$firstcol, 'submission', 'submissionid', 'comparisons', 'timetaken', 'avgtimetaken', 'first', 'last', 'wins', 'losses', 'score'];
+                [$firstcol, 'submission', 'submissionid', 'comparisons', 'timetaken',
+                    'avgtimetaken', 'first', 'last', 'wins', 'losses', 'score'];
         $headers = [
                 $firstcollabel,
                 get_string('submission', 'assignsubmission_comparativejudgement'),
@@ -97,7 +98,7 @@ class managesubmissionstable extends \table_sql {
                     ['status' => ASSIGN_SUBMISSION_STATUS_SUBMITTED, 'assignment' => $assignment->get_instance()->id]
             );
 
-            $this->set_sql("asssub.id, asssub.id as submissionid, max(asssub.userid) as userid, asssub.id as entityid, g.name as groupname, exemp.title as exemplartitle, exemp.id as exemplarid, count(comp.id) as comparisons, sum(comp.timetaken) as timetaken, avg(comp.timetaken) as avgtimetaken, 
+            $this->set_sql("asssub.id, asssub.id as submissionid, max(asssub.userid) as userid, asssub.id as entityid, g.name as groupname, exemp.title as exemplartitle, exemp.id as exemplarid, count(comp.id) as comparisons, sum(comp.timetaken) as timetaken, avg(comp.timetaken) as avgtimetaken,
                                     MIN(comp.timecreated) as first, MAX(comp.timemodified) as last,
                                     SUM(CASE WHEN asssub.id = comp.winningsubmission THEN 1 ELSE 0 END) as wins,
                                     SUM(CASE WHEN asssub.id <> comp.winningsubmission THEN 1 ELSE 0 END) as losses,
@@ -120,7 +121,7 @@ class managesubmissionstable extends \table_sql {
             );
 
             $namefields = get_all_user_name_fields(true, 'u');
-            $this->set_sql("asssub.id, u.id as userid, asssub.id as entityid, $namefields, asssub.id as submissionid, exemp.title as exemplartitle, exemp.id as exemplarid, COUNT(comp.id) as comparisons, SUM(comp.timetaken) as timetaken, AVG(comp.timetaken) as avgtimetaken, 
+            $this->set_sql("asssub.id, u.id as userid, asssub.id as entityid, $namefields, asssub.id as submissionid, exemp.title as exemplartitle, exemp.id as exemplarid, COUNT(comp.id) as comparisons, SUM(comp.timetaken) as timetaken, AVG(comp.timetaken) as avgtimetaken,
                                     MIN(comp.timecreated) as first, MAX(comp.timemodified) as last,
                                     SUM(CASE WHEN asssub.id = comp.winningsubmission THEN 1 ELSE 0 END) as wins,
                                     SUM(CASE WHEN asssub.id <> comp.winningsubmission THEN 1 ELSE 0 END) as losses,

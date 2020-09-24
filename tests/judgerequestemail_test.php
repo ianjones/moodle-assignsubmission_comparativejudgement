@@ -129,7 +129,7 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
         ob_end_clean();
 
         $messages = $sink->get_messages();
-        $this->assertCount(0, $messages); // All done
+        $this->assertCount(0, $messages); // All done.
     }
 
     public function test_emails_submitted_cutoffdate() {
@@ -160,20 +160,20 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
         $this->add_submission($students[5], $secondassign); // Don't submit.
 
         ob_start();
-        $task->get_emails_to_send(0, $now); // Before cut off
+        $task->get_emails_to_send(0, $now); // Before cut off.
         $output = ob_get_contents();
         ob_end_clean();
 
         $messages = $sink->get_messages();
         $this->assertCount(0, $messages);
 
-        while (time() < $now + 4) { // Wait until cut off as some core methods use time()
+        while (time() < $now + 4) { // Wait until cut off as some core methods use time().
             sleep(1);
         }
 
         $sink->clear();
         ob_start();
-        $task->get_emails_to_send(0, $now + 4); // After cut off and delay
+        $task->get_emails_to_send(0, $now + 4); // After cut off and delay.
         $output = ob_get_contents();
         ob_end_clean();
 
@@ -223,7 +223,7 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
 
         $sink->clear();
         ob_start();
-        $task->get_emails_to_send(0, $now + 12); // After cut off and delay
+        $task->get_emails_to_send(0, $now + 12); // After cut off and delay.
         $output = ob_get_contents();
         ob_end_clean();
 
@@ -233,21 +233,21 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
         $sink->clear();
         ob_start();
         $this->submit_for_grading($students[5], $secondassign);
-        $task->get_emails_to_send($now + 12, $now + 112); // After cut off and extension
+        $task->get_emails_to_send($now + 12, $now + 112); // After cut off and extension.
         $output = ob_get_contents();
         ob_end_clean();
 
         $messages = $sink->get_messages();
-        $this->assertCount(1, $messages); // just the user with the extension.
+        $this->assertCount(1, $messages); // Just the user with the extension.
 
         $sink->clear();
         ob_start();
-        $task->get_emails_to_send($now + 113, $now + 150); // After cut off and extension
+        $task->get_emails_to_send($now + 113, $now + 150); // After cut off and extension.
         $output = ob_get_contents();
         ob_end_clean();
 
         $messages = $sink->get_messages();
-        $this->assertCount(0, $messages); // no one
+        $this->assertCount(0, $messages); // No one.
     }
 
     public function test_emails_submitted_cutoffdate_override_group() {
@@ -305,7 +305,7 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
 
         $sink->clear();
         ob_start();
-        $task->get_emails_to_send(0, $now + 12); // After cut off and delay
+        $task->get_emails_to_send(0, $now + 12); // After cut off and delay.
         $output = ob_get_contents();
         ob_end_clean();
 
@@ -314,21 +314,21 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
 
         $sink->clear();
         ob_start();
-        $task->get_emails_to_send($now + 12, $now + 112); // After cut off and extension
+        $task->get_emails_to_send($now + 12, $now + 112); // After cut off and extension.
         $output = ob_get_contents();
         ob_end_clean();
 
         $messages = $sink->get_messages();
-        $this->assertCount(3, $messages); // just the user with the extension.
+        $this->assertCount(3, $messages); // Just the user with the extension.
 
         $sink->clear();
         ob_start();
-        $task->get_emails_to_send($now + 113, $now + 150); // After cut off and extension
+        $task->get_emails_to_send($now + 113, $now + 150); // After cut off and extension.
         $output = ob_get_contents();
         ob_end_clean();
 
         $messages = $sink->get_messages();
-        $this->assertCount(0, $messages); // no one
+        $this->assertCount(0, $messages); // No one.
     }
 
     public function test_emails_submitted_cutoffdate_extension() {
@@ -364,36 +364,37 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
 
         $sink->clear();
         ob_start();
-        $task->get_emails_to_send(0, $now + 3); // After cut off and delay
+        $task->get_emails_to_send(0, $now + 3); // After cut off and delay.
         $output = ob_get_contents();
         ob_end_clean();
 
         $messages = $sink->get_messages();
-        $this->assertCount(5, $messages); // Everyone (students in the array and the one created at the end without submitting) except the user with the extension.
+        // Students in the array and the one created at the end without submitting.
+        $this->assertCount(5, $messages); // Everyone except the user with the extension.
 
         $sink->clear();
         ob_start();
         $this->submit_for_grading($students[5], $secondassign);
 
-        while (time() < $now + 6) { // Wait until after the extension as some for methods use time()
+        while (time() < $now + 6) { // Wait until after the extension as some for methods use time().
             sleep(1);
         }
 
-        $task->get_emails_to_send($now + 3, $now + 6); // After cut off and extension
+        $task->get_emails_to_send($now + 3, $now + 6); // After cut off and extension.
         $output = ob_get_contents();
         ob_end_clean();
 
         $messages = $sink->get_messages();
-        $this->assertCount(1, $messages); // just the user with the extension.
+        $this->assertCount(1, $messages); // Just the user with the extension.
 
         $sink->clear();
         ob_start();
-        $task->get_emails_to_send($now + 7, $now + 10); // After cut off and extension
+        $task->get_emails_to_send($now + 7, $now + 10); // After cut off and extension.
         $output = ob_get_contents();
         ob_end_clean();
 
         $messages = $sink->get_messages();
-        $this->assertCount(0, $messages); // no one
+        $this->assertCount(0, $messages); // No one.
     }
 
     public function test_email_body() {

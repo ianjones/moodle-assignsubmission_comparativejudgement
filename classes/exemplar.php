@@ -112,7 +112,7 @@ class exemplar extends persistent {
 
         $records =
                 $DB->get_records_sql('select asex.*
-                                            from {assignsubmission_exemplars} asex 
+                                            from {assignsubmission_exemplars} asex
                                             inner join {assign_submission} subs on asex.submissionid = subs.id
                                             where subs.assignment = :assignmentid', ['assignmentid' => $assignmentid]);
         $instances = array();
