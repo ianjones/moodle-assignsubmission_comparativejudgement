@@ -61,7 +61,7 @@ class exemplarform extends moodleform {
             $mform->setType($key, PARAM_ALPHA);
         }
 
-        $buttonarray=array();
+        $buttonarray = array();
         $buttonarray[] = &$mform->createElement('submit', 'submitbutton', get_string('savechanges', 'assign'));
         $buttonarray[] = &$mform->createElement('cancel');
         $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);

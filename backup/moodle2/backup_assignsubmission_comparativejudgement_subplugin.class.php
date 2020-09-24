@@ -55,22 +55,20 @@ class backup_assignsubmission_comparativejudgement_subplugin extends backup_subp
             $parent = new backup_nested_element('assignsubmission_activity_settings');
             $activityrootelement->add_child($parent);
 
-            //assignsubmission_ranking
-            $assignsubmission_ranking_element = new backup_nested_element('assignsubmission_ranking',
+            $asrankingelement = new backup_nested_element('assignsubmission_ranking',
                     ['id'],
                     array('reliability', 'usermodified', 'timecreated', 'timemodified'));
-            $assignsubmission_ranking_element->annotate_ids('user', 'usermodified');
+            $asrankingelement->annotate_ids('user', 'usermodified');
 
             // Connect XML elements into the tree.
             $subs = new backup_nested_element('rankingsubs');
-            $assignsubmission_ranking_element->add_child($subs);
-            $parent->add_child($assignsubmission_ranking_element);
+            $asrankingelement->add_child($subs);
+            $parent->add_child($asrankingelement);
 
-            // Set source to populate the data.f
-            $assignsubmission_ranking_element->set_source_table('assignsubmission_ranking',
+            // Set source to populate the data.
+            $asrankingelement->set_source_table('assignsubmission_ranking',
                     array('assignmentid' => backup::VAR_ACTIVITYID));
 
-            //assignsubmission_rankingsub
             $subpluginelement = new backup_nested_element('assignsubmission_rankingsub',
                     null,
                     array('submissionid', 'score'));
@@ -82,23 +80,21 @@ class backup_assignsubmission_comparativejudgement_subplugin extends backup_subp
             $subpluginelement->set_source_table('assignsubmission_rankingsub',
                     array('rankingid' => backup::VAR_PARENTID));
 
-            //assignsubmission_comp
-            $assignsubmission_comp_element = new backup_nested_element('assignsubmission_comp',
+            $ascompelement = new backup_nested_element('assignsubmission_comp',
                     ['id'],
                     array('winningsubmission', 'winningsubmissionposition', 'timetaken', 'usermodified', 'timecreated',
                             'timemodified'));
-            $assignsubmission_comp_element->annotate_ids('user', 'usermodified');
+            $ascompelement->annotate_ids('user', 'usermodified');
 
             // Connect XML elements into the tree.
             $subs = new backup_nested_element('compsubs');
-            $assignsubmission_comp_element->add_child($subs);
-            $parent->add_child($assignsubmission_comp_element);
+            $ascompelement->add_child($subs);
+            $parent->add_child($ascompelement);
 
             // Set source to populate the data.
-            $assignsubmission_comp_element->set_source_table('assignsubmission_comp',
+            $ascompelement->set_source_table('assignsubmission_comp',
                     array('assignmentid' => backup::VAR_ACTIVITYID));
 
-            //assignsubmission_compsubs
             $subpluginelement = new backup_nested_element('assignsubmission_compsubs',
                     ['id'],
                     array('submissionid', 'comments', 'commentsformat', 'commentpublished'));
@@ -110,7 +106,6 @@ class backup_assignsubmission_comparativejudgement_subplugin extends backup_subp
             $subpluginelement->set_source_table('assignsubmission_compsubs',
                     array('judgementid' => backup::VAR_PARENTID));
 
-            //assignsubmission_email
             $subpluginelement = new backup_nested_element('assignsubmission_email',
                     null,
                     array('assignmentid', 'delay', 'subject', 'body', 'usermodified', 'timecreated',
@@ -124,7 +119,6 @@ class backup_assignsubmission_comparativejudgement_subplugin extends backup_subp
             $subpluginelement->set_source_table('assignsubmission_email',
                     array('assignmentid' => backup::VAR_ACTIVITYID));
 
-            //assignsubmission_exclusion ACTIVITY LEVEL
             $subpluginelement = new backup_nested_element('assignsubmission_exclusion_submission',
                     null,
                     array('type', 'entityid'));
@@ -134,7 +128,7 @@ class backup_assignsubmission_comparativejudgement_subplugin extends backup_subp
 
             // Set source to populate the data.
             $subpluginelement->set_source_sql('
-            SELECT type, entityid FROM {assignsubmission_exclusion} 
+            SELECT type, entityid FROM {assignsubmission_exclusion}
             WHERE type = :submissiontype AND entityid IN (
                 SELECT id FROM {assign_submission} WHERE assignment = :assignmentid
             )
@@ -160,7 +154,6 @@ class backup_assignsubmission_comparativejudgement_subplugin extends backup_subp
                             'judgetype'      => ['sqlparam' => exclusion::EXCLUSION_TYPE_JUDGE]
                     ]);
 
-            //assignsubmission_exclusion ACTIVITY LEVEL
             $subpluginelement = new backup_nested_element('assignsubmission_exclusion_comment',
                     null,
                     array('type', 'entityid'));
@@ -172,7 +165,7 @@ class backup_assignsubmission_comparativejudgement_subplugin extends backup_subp
             $subpluginelement->set_source_sql('
             select type, entityid from {assignsubmission_exclusion} WHERE
             type = :comparisoncommenttype AND entityid in (
-                SELECT compsub.id 
+                SELECT compsub.id
                 FROM {assignsubmission_compsubs} compsub
                 INNER JOIN {assign_submission} ass on ass.id = compsub.submissionid
                 WHERE ass.assignment = :assignmentid
@@ -183,7 +176,6 @@ class backup_assignsubmission_comparativejudgement_subplugin extends backup_subp
                             'assignmentid'          => backup::VAR_ACTIVITYID
                     ]);
 
-            //assignsubmission_exemplars
             $subpluginelement = new backup_nested_element('assignsubmission_exemplars',
                     null,
                     array('submissionid', 'title'));

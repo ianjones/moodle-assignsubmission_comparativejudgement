@@ -49,13 +49,13 @@ class comparisonmanager {
         return assign_submission_comparativejudgement::getpluginsettings($this->assignment);
     }
 
-    // User has not judged this combination ever
-    // Not both exemplars
-    // Not their own submission
-    // Submission is fully submitted
-    // User has not judged either assignment
-    // Number of judgements on this assignment
-    // $urgent means below min or never judged
+    // User has not judged this combination ever.
+    // Not both exemplars.
+    // Not their own submission.
+    // Submission is fully submitted.
+    // User has not judged either assignment.
+    // Number of judgements on this assignment.
+    // Variable $urgent means below min or never judged.
     public function getpairtojudge(bool $urgent = false) {
         global $DB;
 
@@ -75,16 +75,16 @@ class comparisonmanager {
         $assignmentid = $this->assignmentinstance->id;
 
         if ($this->assignmentinstance->teamsubmission) {
-            $teamfrag = ' sub.userid <= 0 '; // Don't return individual submissions that make up the group
+            $teamfrag = ' sub.userid <= 0 '; // Don't return individual submissions that make up the group.
         } else {
-            $teamfrag = ' sub.userid <> 0 '; // Don't return rogue group submissions
+            $teamfrag = ' sub.userid <> 0 '; // Don't return rogue group submissions.
         }
 
         $settings = $this->getsettings();
 
         // Get all submissions that have not been judged against every other submission by this user.
         for ($i = 0; $i < 2; $i++) {
-            if ($urgent){
+            if ($urgent) {
                 if (!empty($settings->minjudgementspersubmission)) {
                     $threshold = "HAVING totaluserjudgements_$i < $settings->minjudgementspersubmission";
                 } else {
@@ -112,12 +112,12 @@ class comparisonmanager {
         }
 
         $sql = "
-            SELECT subone.*, subzero.* 
-            FROM ($sql[0]) as subzero 
+            SELECT subone.*, subzero.*
+            FROM ($sql[0]) as subzero
             INNER JOIN ($sql[1]) as subone on subzero.id_0 <> subone.id_1
             LEFT JOIN (
                 SELECT comp.winningsubmission as winning, compsub.submissionid as loosing
-                FROM {assignsubmission_comp} comp 
+                FROM {assignsubmission_comp} comp
                 INNER JOIN {assignsubmission_compsubs} compsub ON compsub.judgementid = comp.id and compsub.submissionid <> comp.winningsubmission
                 WHERE comp.usermodified = $this->userid
                 )  as subs ON (subzero.id_0 = subs.winning and subone.id_1 = subs.loosing) OR (subone.id_1 = subs.winning and subzero.id_0 = subs.loosing
@@ -160,7 +160,8 @@ class comparisonmanager {
         }
 
         if (in_array(assign_submission_comparativejudgement::FAKEROLE_ASSIGNMENT_SUBMITTED, $judges)) {
-            // It doesn't look like it but this does cover group submissions as well as each member of a group submission should have a personal submission record with no content as well.
+            // It doesn't look like it but this does cover group submissions as wel.
+            // Each member of a group submission should have a personal submission record with no content as well.
             $users = array_merge($users, array_keys($DB->get_records_sql(
                     'SELECT userid FROM {assign_submission} WHERE assignment = :assignment AND status = :status AND groupid = 0 AND latest = 1 GROUP BY userid',
                     ['status' => ASSIGN_SUBMISSION_STATUS_SUBMITTED, 'assignment' => $this->assignmentinstance->id]

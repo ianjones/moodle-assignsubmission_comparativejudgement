@@ -147,8 +147,6 @@ class assignsubmission_comparativejudgement_comparisongetalljudges_testcase exte
         $this->add_submission($student1, $assign);
         $this->submit_for_grading($student1, $assign);
 
-
-
         $this->submit_for_grading($student2, $assign);
 
         $comparisonmanager = new comparisonmanager($teacher->id, $assign);

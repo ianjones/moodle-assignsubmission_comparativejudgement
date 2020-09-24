@@ -47,7 +47,8 @@ class comparison extends persistent {
         ];
     }
 
-    public static function recordcomparison($assigmentid, $timetaken, $winner, $winnerposition, $loser, $winnercomments = '', $winnerformat = FORMAT_HTML, $losercomments = '', $loserformat = FORMAT_HTML) {
+    public static function recordcomparison($assigmentid, $timetaken, $winner, $winnerposition, $loser, $winnercomments = '',
+            $winnerformat = FORMAT_HTML, $losercomments = '', $loserformat = FORMAT_HTML) {
         global $DB;
         $comparison = new comparison();
         $comparison->set('assignmentid', $assigmentid);
@@ -64,9 +65,9 @@ class comparison extends persistent {
     }
 
     public static $skipconversion = [
-            'application/pdf', 'text/html', 'image/gif', 'image/jpeg', 'image/png', 'image/svg+xml',         // images
-            'application/x-shockwave-flash', 'video/x-flv', 'video/x-ms-wm', // video formats
+            'application/pdf', 'text/html', 'image/gif', 'image/jpeg', 'image/png', 'image/svg+xml',
+            'application/x-shockwave-flash', 'video/x-flv', 'video/x-ms-wm',
             'video/quicktime', 'video/mpeg', 'video/mp4',
-            'audio/mp3'   // audio formats,
+            'audio/mp3',
     ];
 }

@@ -142,11 +142,11 @@ class provider implements metadataprovider,
     public static function delete_submission_for_userid(assign_plugin_request_data $deletedata) {
         global $DB;
 
-        // Delete comparisons received
+        // Delete comparisons received.
         $DB->delete_records('assignsubmission_compsubs', ['submissionid' => $deletedata->get_pluginobject()->id]);
         $DB->delete_records('assignsubmission_comp', ['winningsubmission' => $deletedata->get_pluginobject()->id]);
 
-        // Delete rankings
+        // Delete rankings.
         $DB->delete_records('assignsubmission_rankingsub', ['submissionid' => $deletedata->get_pluginobject()->id]);
     }
 
@@ -167,11 +167,11 @@ class provider implements metadataprovider,
             return;
         }
 
-        // Delete comparisons received
+        // Delete comparisons received.
         $DB->delete_records_list('assignsubmission_compsubs', 'submissionid', $deletedata->get_submissionids());
         $DB->delete_records_list('assignsubmission_comp', 'winningsubmission', $deletedata->get_submissionids());
 
-        // Delete rankings
+        // Delete rankings.
         $DB->delete_records_list('assignsubmission_rankingsub', 'submissionid', $deletedata->get_submissionids());
     }
 
@@ -293,8 +293,6 @@ class provider implements metadataprovider,
         }
     }
 
-    // UTILITY METHODS:
-
     /**
      * @param assign_plugin_request_data $exportdata
      * @return array
@@ -307,11 +305,11 @@ class provider implements metadataprovider,
         $submission = $exportdata->get_pluginobject();
 
         $judgements = $DB->get_records_sql("select timemodified, comments, commentsformat, winningsubmission
-                                                from {assignsubmission_comp} comp
-                                                         inner join {assignsubmission_compsubs} compsubs on
-                                                    comp.winningsubmission <> compsubs.submissionid and comp.id = compsubs.judgementid
-                                                where comp.winningsubmission = :submissionid or compsubs.submissionid = :submissionid2
-                                                group by timemodified, comments, commentsformat, winningsubmission",
+                                from {assignsubmission_comp} comp
+                                         inner join {assignsubmission_compsubs} compsubs on
+                                    comp.winningsubmission <> compsubs.submissionid and comp.id = compsubs.judgementid
+                                where comp.winningsubmission = :submissionid or compsubs.submissionid = :submissionid2
+                                group by timemodified, comments, commentsformat, winningsubmission",
                 ['submissionid' => $submission->id, 'submissionid2' => $submission->id]);
 
         $currentpath = array_merge(
@@ -346,6 +344,7 @@ class provider implements metadataprovider,
                 $exportdata->get_subcontext(),
                 [get_string('privacy:ranking', 'assignsubmission_comparativejudgement')]
         );
+
         $ranking = $DB->get_record('assignsubmission_rankingsub', ['submissionid' => $submission->id]);
         if ($ranking) {
             $data = (object)
@@ -367,13 +366,13 @@ class provider implements metadataprovider,
         global $DB;
 
         return $DB->get_records_sql("SELECT compsubs.id, timemodified, comments, commentsformat, winningsubmission, compsubs.submissionid as submissionid
-                                                FROM {assignsubmission_comp} comp
-                                                INNER JOIN {assignsubmission_compsubs} compsubs ON comp.id = compsubs.judgementid
-                                                INNER JOIN {course_modules} cm ON comp.assignmentid = cm.instance
-                                                INNER JOIN {modules} m ON m.name = 'assign' AND m.id = cm.module
-                                                INNER JOIN {context} ctx ON ctx.instanceid = cm.id AND ctx.contextlevel = :cmcontextlevel
-                                                WHERE comp.usermodified = :userid AND ctx.id = :contextid
-                                                GROUP BY compsubs.id, timemodified, comments, commentsformat, winningsubmission, compsubs.submissionid",
+                        FROM {assignsubmission_comp} comp
+                        INNER JOIN {assignsubmission_compsubs} compsubs ON comp.id = compsubs.judgementid
+                        INNER JOIN {course_modules} cm ON comp.assignmentid = cm.instance
+                        INNER JOIN {modules} m ON m.name = 'assign' AND m.id = cm.module
+                        INNER JOIN {context} ctx ON ctx.instanceid = cm.id AND ctx.contextlevel = :cmcontextlevel
+                        WHERE comp.usermodified = :userid AND ctx.id = :contextid
+                        GROUP BY compsubs.id, timemodified, comments, commentsformat, winningsubmission, compsubs.submissionid",
                 ['userid' => $userid, 'cmcontextlevel' => CONTEXT_MODULE, 'contextid' => $contextid]);
     }
 
@@ -381,7 +380,7 @@ class provider implements metadataprovider,
         global $DB;
 
         $DB->delete_records_list('assignsubmission_compsubs', 'id', array_keys($DB->get_records_sql('
-            SELECT subs.id 
+            SELECT subs.id
             FROM {assignsubmission_comp} comp
             INNER JOIN {assignsubmission_compsubs} subs on subs.judgementid = comp.id
             WHERE comp.assignmentid = :assignmentid',
@@ -389,7 +388,7 @@ class provider implements metadataprovider,
         $DB->delete_records('assignsubmission_comp', ['assignmentid' => $assignid]);
 
         $DB->delete_records_list('assignsubmission_rankingsub', 'id', array_keys($DB->get_records_sql('
-            SELECT subs.id 
+            SELECT subs.id
             FROM {assignsubmission_ranking} ranking
             INNER JOIN {assignsubmission_rankingsub} subs on subs.rankingid = ranking.id
             WHERE ranking.assignmentid = :assignmentid',

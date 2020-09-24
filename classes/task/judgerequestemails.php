@@ -71,7 +71,7 @@ class judgerequestemails extends scheduled_task {
             $judges = $comparisonmanager->getalljudges();
             $judgesassoc = array_combine($judges, $judges);
 
-            // for any with judgementstartdateset = 0 find users with extensions to exclude - they will get picked up at the end of their cutoff/due date.
+            // For any with judgementstartdateset = 0 find users with extensions to exclude - they will get picked up at the end of their cutoff/due date.
             if (empty($email->judgementstartdateset)) {
                 $overrides = $DB->get_records('assign_overrides', ['assignid' => $assign->get_instance()->id]);
 
@@ -196,7 +196,7 @@ class judgerequestemails extends scheduled_task {
 
         $controller = new comparisoncontroller($assign);
 
-        // Replace placeholders with values
+        // Replace placeholders with values.
         $msg = str_replace('[firstname]', $user->firstname, $msg);
         $msg = str_replace('[lastname]', $user->lastname, $msg);
         $msg = str_replace('[fullname]', fullname($user), $msg);

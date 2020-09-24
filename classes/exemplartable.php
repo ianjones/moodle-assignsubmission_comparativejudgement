@@ -53,7 +53,7 @@ class exemplartable extends \table_sql {
         $this->sort_default_column = $sortcolumn;
 
         $this->set_sql("asex.id, asex.title",
-                '{assignsubmission_exemplars} asex 
+                '{assignsubmission_exemplars} asex
                                             inner join {assign_submission} subs on asex.submissionid = subs.id',
                 "subs.assignment = :assignmentid",
                 ['assignmentid' => $assignment->get_instance()->id]);

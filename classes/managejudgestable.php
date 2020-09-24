@@ -70,7 +70,6 @@ class managejudgestable extends \table_sql {
         $this->is_downloadable(true);
         $this->sort_default_column = $sortcolumn;
 
-
         $comparisonmanager = new comparisonmanager($USER->id, $assignment);
         $userids = $comparisonmanager->getalljudges();
 
@@ -88,20 +87,20 @@ class managejudgestable extends \table_sql {
         $right = comparison::POSITION_RIGHT;
 
         $this->set_count_sql("select count(id) from {user} u where u.id $insql", $inparams);
-        $this->set_sql("u.id, 
+        $this->set_sql("u.id,
                             u.id as judgeid,
-                            $namefields, 
-                            COUNT(comp.id) as comparisons, 
-                            SUM(comp.timetaken) as timetaken, 
-                            MIN(comp.timecreated) as first, 
-                            MAX(comp.timemodified) as last, 
+                            $namefields,
+                            COUNT(comp.id) as comparisons,
+                            SUM(comp.timetaken) as timetaken,
+                            MIN(comp.timecreated) as first,
+                            MAX(comp.timemodified) as last,
                             AVG(comp.timetaken) as avgtimetaken,
                             MIN(comp.timetaken) as mintimetaken,
                             MAX(comp.timetaken) as maxtimetaken,
                             CASE WHEN exclusion.id IS NULL THEN 0 ELSE 1 END as excluded,
                             SUM(CASE WHEN winningsubmissionposition = $left THEN 1 ELSE 0 END) as leftchoices,
                             SUM(CASE WHEN winningsubmissionposition = $right THEN 1 ELSE 0 END) as rightchoices",
-                '{user} u 
+                '{user} u
                         LEFT JOIN {assignsubmission_comp} comp ON comp.usermodified = u.id
                         LEFT JOIN {assignsubmission_exclusion} exclusion ON exclusion.entityid = u.id AND exclusion.type = :entitytype',
                 "u.id $insql GROUP BY u.id, $namefields",

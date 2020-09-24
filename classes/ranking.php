@@ -65,9 +65,9 @@ where comp.assignmentid = :assignmentid
                 ['assignmentid' => $assignmentid,
                  'status' => ASSIGN_SUBMISSION_STATUS_SUBMITTED,
                  'status2'      => ASSIGN_SUBMISSION_STATUS_SUBMITTED,
-                 'entitytypejudge'      =>  exclusion::EXCLUSION_TYPE_JUDGE,
-                 'entitytypesubwin'      =>  exclusion::EXCLUSION_TYPE_SUBMISSION,
-                 'entitytypesublose'      =>  exclusion::EXCLUSION_TYPE_SUBMISSION]);
+                 'entitytypejudge'      => exclusion::EXCLUSION_TYPE_JUDGE,
+                 'entitytypesubwin'      => exclusion::EXCLUSION_TYPE_SUBMISSION,
+                 'entitytypesublose'      => exclusion::EXCLUSION_TYPE_SUBMISSION]);
 
         if (empty($inputraw)) {
             return '';
@@ -98,8 +98,8 @@ where comp.assignmentid = :assignmentid
             print_error('errorexecutingscript', 'assignsubmission_comparativejudgement', null, null, $rhandler->get('errors'));
         }
 
-        $output = array_map('str_getcsv', explode("\n",$rawoutput));
-        array_shift($output); //Ditch header
+        $output = array_map('str_getcsv', explode("\n", $rawoutput));
+        array_shift($output); // Ditch header.
 
         $ranking = self::get_record(['assignmentid' => $assignmentid]);
         if (!$ranking) {
@@ -145,13 +145,12 @@ where comp.assignmentid = :assignmentid
         require_once($CFG->dirroot . '/mod/assign/gradeform.php');
 
         $submissiongrades = $DB->get_records_sql('SELECT asssub.id, asssub.groupid, asssub.userid, rank.score
-                                                            FROM {assign_submission} asssub 
+                                                            FROM {assign_submission} asssub
                                                             INNER JOIN {assignsubmission_rankingsub} rank ON rank.submissionid = asssub.id
                                                             LEFT JOIN {assignsubmission_exemplars} exemp ON exemp.submissionid = asssub.id
                                                             WHERE exemp.id IS NULL AND rank.rankingid = :rankingid',
                 ['rankingid' => $this->get('id')]
         );
-
 
         foreach ($submissiongrades as $grade) {
             // We need to save the grade for one member of the group, the assignment class takes care of the rest.

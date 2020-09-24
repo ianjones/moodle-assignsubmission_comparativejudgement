@@ -68,7 +68,7 @@ class comparisoncontroller extends basecontroller {
     /**
      * @param $plugin
      * @param $submission
-     * @param \assign_renderer $assign_renderer
+     * @param \assign_renderer $assignrenderer
      * @return string
      */
     private function getsubmissionplugincontents(assign_submission_plugin $plugin, stdClass $submission): string {
@@ -81,10 +81,10 @@ class comparisoncontroller extends basecontroller {
                     $displaymode,
                     $this->assignment->get_course_module()->id,
                     '', []);
-            $assign_renderer = $this->assignment->get_renderer();
+            $assignrenderer = $this->assignment->get_renderer();
 
             if (!$plugin->is_empty($submission)) {
-                $o = $assign_renderer->render($pluginsubmission);
+                $o = $assignrenderer->render($pluginsubmission);
             }
         }
         return $o;
@@ -98,7 +98,7 @@ class comparisoncontroller extends basecontroller {
             $user = (object) ['id' => $submission->userid];
         }
 
-        $all_assignsubmission_file_pluginfiles_embeddable[$plugin->get_type()] = true;
+        $allfileembeddable[$plugin->get_type()] = true;
         if ($plugin->is_enabled() && $plugin->is_visible() && $plugin->has_user_summary() &&
                 (!$plugin->is_empty($submission) || !$plugin->allow_submissions())) {
             $plugincomponent = $plugin->get_subtype() . '_' . $plugin->get_type();
@@ -118,7 +118,7 @@ class comparisoncontroller extends basecontroller {
                     $embeddable = in_array($file->get_mimetype(), comparison::$skipconversion);
                     $convertable = $converter->can_convert_format_to($extension, 'pdf');
                     if (!$embeddable && !$convertable) {
-                        $all_assignsubmission_file_pluginfiles_embeddable = false;
+                        $allfileembeddable = false;
                     }
 
                     $url = moodle_url::make_pluginfile_url($this->assignment->get_context()->id,
@@ -142,7 +142,7 @@ class comparisoncontroller extends basecontroller {
                 }
             }
         }
-        return [$all_assignsubmission_file_pluginfiles_embeddable, $o];
+        return [$allfileembeddable, $o];
     }
 
     /**
@@ -242,7 +242,7 @@ class comparisoncontroller extends basecontroller {
                 }
 
                 if ($plugincomponent == 'assignsubmission_file') { // All other plugins we rely on the user summary.
-                    list($all_assignsubmission_file_pluginfiles_embeddable, $pluginsubmissionfiles) =
+                    list($allfileembeddable, $pluginsubmissionfiles) =
                             $this->getsubmissionpluginfiles($plugin, $submission);
 
                     if (!empty($pluginsubmissionfiles)) {
@@ -250,7 +250,7 @@ class comparisoncontroller extends basecontroller {
                                                        'content' => $pluginsubmissionfiles];
                     }
 
-                    if ($all_assignsubmission_file_pluginfiles_embeddable) {
+                    if ($allfileembeddable) {
                         $pluginsusedinsubmission++;
                         continue; // If all files can be embedded then we don't display the user summary for the files plugin.
                     }
@@ -274,21 +274,21 @@ class comparisoncontroller extends basecontroller {
 
         $now = time();
 
-        $default_values = [
+        $defaultvalues = [
                 'winner'    => $submissionsunkeyed[0]->id,
                 'loser'     => $submissionsunkeyed[1]->id,
                 'starttime' => $now,
                 'position'  => comparison::POSITION_LEFT
         ];
-        $leftform->set_data($default_values);
+        $leftform->set_data($defaultvalues);
 
-        $default_values = [
+        $defaultvalues = [
                 'winner'    => $submissionsunkeyed[1]->id,
                 'loser'     => $submissionsunkeyed[0]->id,
                 'starttime' => $now,
                 'position'  => comparison::POSITION_RIGHT
         ];
-        $rightform->set_data($default_values);
+        $rightform->set_data($defaultvalues);
 
         $PAGE->requires->js_call_amd('assignsubmission_comparativejudgement/judge', 'init');
 
@@ -314,8 +314,8 @@ class comparisoncontroller extends basecontroller {
             }
             $renderable['buttonfinish'] = $OUTPUT->single_button('',
                     get_string('comparisonprogress', 'assignsubmission_comparativejudgement',
-                            ['number' => $comparisoncount + 1, 'required' => $this->assignmentsettings->minjudgementsperuser]), 'get',
-                            ['disabled' => 'disabled']);
+                            ['number' => $comparisoncount + 1, 'required' => $this->assignmentsettings->minjudgementsperuser]),
+                            'get', ['disabled' => 'disabled']);
         }
 
         $renderable['footer'] = $this->getfooter();

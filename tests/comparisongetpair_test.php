@@ -135,9 +135,9 @@ class assignsubmission_comparativejudgement_comparisongetpair_testcase extends a
                 comparison::recordcomparison($secondassign->get_instance()->id, 50, current($getpairtojudge)->id,
                         comparison::POSITION_RIGHT, next($getpairtojudge)->id);
 
-                $array_keys = array_keys($getpairtojudge);
-                sort($array_keys);
-                $key = implode('|', $array_keys);
+                $akeys = array_keys($getpairtojudge);
+                sort($akeys);
+                $key = implode('|', $akeys);
                 $this->assertNotContains($key, $compared);
                 $compared[] = $key;
             }
@@ -199,9 +199,9 @@ class assignsubmission_comparativejudgement_comparisongetpair_testcase extends a
                 comparison::recordcomparison($secondassign->get_instance()->id, 50, current($getpairtojudge)->id,
                         comparison::POSITION_RIGHT, next($getpairtojudge)->id);
 
-                $array_keys = array_keys($getpairtojudge);
-                sort($array_keys);
-                $key = implode('|', $array_keys);
+                $akeys = array_keys($getpairtojudge);
+                sort($akeys);
+                $key = implode('|', $akeys);
                 $this->assertNotContains($key, $compared);
                 $compared[] = $key;
             }
@@ -219,9 +219,9 @@ class assignsubmission_comparativejudgement_comparisongetpair_testcase extends a
                 comparison::recordcomparison($secondassign->get_instance()->id, 50, current($getpairtojudge)->id,
                         comparison::POSITION_RIGHT, next($getpairtojudge)->id);
 
-                $array_keys = array_keys($getpairtojudge);
-                sort($array_keys);
-                $key = implode('|', $array_keys);
+                $akeys = array_keys($getpairtojudge);
+                sort($akeys);
+                $key = implode('|', $akeys);
                 $this->assertNotContains($key, $compared);
                 $compared[] = $key;
             }

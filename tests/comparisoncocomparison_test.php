@@ -60,12 +60,11 @@ class assignsubmission_comparativejudgement_comparison_testcase extends advanced
         $plugin->set_config('judges', \assign_submission_comparativejudgement::FAKEROLE_ASSIGNMENT_SUBMITTED);
 
         $students = [];
-        for($i=0; $i < 4;$i++){
+        for ($i = 0; $i < 4; $i++) {
             $students[$i] = $this->getDataGenerator()->create_and_enrol($course, 'student');
             $this->add_submission($students[$i] , $secondassign);
             $this->submit_for_grading($students[$i] , $secondassign);
         }
-
 
         for ($j = 0; $j < 3; $j++) {
             $this->setUser($students[$j]);
@@ -74,7 +73,7 @@ class assignsubmission_comparativejudgement_comparison_testcase extends advanced
                 $getpairtojudge1 = $comparisonmanager->getpairtojudge();
                 $subs = [current($getpairtojudge1)->id, next($getpairtojudge1)->id];
                 sort($subs);
-                comparison::recordcomparison($secondassign->get_instance()->id, 50, $subs[0],comparison::POSITION_RIGHT, $subs[1]);
+                comparison::recordcomparison($secondassign->get_instance()->id, 50, $subs[0], comparison::POSITION_RIGHT, $subs[1]);
             }
         }
 

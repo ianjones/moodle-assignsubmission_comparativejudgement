@@ -78,10 +78,10 @@ class managecomparisoncommentstable extends \table_sql {
                 'assignmentid' => $assignment->get_instance()->id
         ];
 
-        $this->set_sql("compsub.id, 
+        $this->set_sql("compsub.id,
                             u.id as judgeid,
-                            $namefields, 
-                             compsub.comments, 
+                            $namefields,
+                             compsub.comments,
                              compsub.commentsformat,
                              CASE WHEN exclusion.id IS NOT NULL THEN 1 ELSE 0 END as excluded,
                              asssub.userid as subuserid,
