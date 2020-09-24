@@ -92,7 +92,13 @@ where comp.assignmentid = :assignmentid
         $rhandler->setinput($csv);
         $rhandler->execute();
 
-        $output = array_map('str_getcsv', explode("\n", $rhandler->get('output')));
+        $rawoutput = $rhandler->get('output');
+
+        if (empty($rawoutput)) {
+            print_error('errorexecutingscript', 'assignsubmission_comparativejudgement', null, null, $rhandler->get('errors'));
+        }
+
+        $output = array_map('str_getcsv', explode("\n",$rawoutput));
         array_shift($output); //Ditch header
 
         $ranking = self::get_record(['assignmentid' => $assignmentid]);

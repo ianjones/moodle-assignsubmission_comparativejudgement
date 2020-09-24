@@ -56,6 +56,7 @@ $string['editemail'] = 'Edit email';
 $string['editexemplar'] = 'Edit exemplar';
 $string['enabled_help'] = 'If enabled, submissions are graded through comparative judgement.';
 $string['enabled'] = 'Comparative judgement';
+$string['errorexecutingscript'] = 'Error executing RScript';
 $string['exemplartitle'] = 'Title';
 $string['fakerole_assignment_submitted'] = 'Users with completed submissions';
 $string['fakerole_gradable_users'] = 'Gradable users';
