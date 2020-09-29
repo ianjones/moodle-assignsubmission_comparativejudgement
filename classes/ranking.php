@@ -88,7 +88,7 @@ where comp.assignmentid = :assignmentid
 
         $csv = self::getrawjudgedatacsv($assignmentid);
 
-        $rhandler = new rhandler("$CFG->dirroot/mod/assign/submission/comparativejudgement/lib/pipeablescript.R");
+        $rhandler = new rhandler("/mod/assign/submission/comparativejudgement/lib/pipeablescript.R");
         $rhandler->setinput($csv);
         $rhandler->execute();
 
