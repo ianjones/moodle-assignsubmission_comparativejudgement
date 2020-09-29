@@ -27,9 +27,15 @@ You need the following three components.
 
 If running remotely, first copy over the R scripts:
 
-`scp *.R _username_@_servername_:~`
+Create the folder structure
 
-Run the prereqs script to install required libraries into your R environment:
+`ssh _username_@_servername_ "mkdir -p ~/mod/assign/submission/comparativejudgement/lib"`
+
+Copy the files
+
+`scp *.R _username_@_servername_:~/mod/assign/submission/comparativejudgement/lib`
+
+Then (local or remote) run the prereqs script to install required libraries into your R environment:
 
 `sudo Rscript prereqs.R`
 
@@ -41,7 +47,7 @@ Local version:
 
 Remote version:
 
-`cat docs/exampledecisions.csv | ssh _username_@_servername_ "Rscript pipeablescript.R"`
+`cat docs/exampledecisions.csv |  su - WEBSERVERUSERCONTEXT -c 'ssh _username_@_servername_ "Rscript pipeablescript.R"'`
 
 
 
