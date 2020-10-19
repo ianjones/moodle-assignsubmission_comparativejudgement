@@ -77,9 +77,8 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
 
         $this->add_submission($student, $secondassign);
 
-        $sink = $this->redirectEmails();
-
         ob_start();
+        $sink = $this->redirectMessages();
         $task->get_emails_to_send(0, time());
         $output = ob_get_contents();
         ob_end_clean();
@@ -90,6 +89,7 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
         $this->submit_for_grading($student, $secondassign);
 
         ob_start();
+        $sink = $this->redirectMessages();
         $task->get_emails_to_send(0, time());
         $output = ob_get_contents();
         ob_end_clean();
@@ -106,6 +106,7 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
         $this->add_submission($students[5], $secondassign); // Don't submit.
 
         ob_start();
+        $sink = $this->redirectMessages();
         $task->get_emails_to_send(0, time());
         $output = ob_get_contents();
         ob_end_clean();
@@ -118,6 +119,7 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
 
         $sink->clear();
         ob_start();
+        $sink = $this->redirectMessages();
         $task->get_emails_to_send(0, time());
         $output = ob_get_contents();
         ob_end_clean();
@@ -127,6 +129,7 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
 
         $sink->clear();
         ob_start();
+        $sink = $this->redirectMessages();
         $task->get_emails_to_send(time(), time() + 10);
         $output = ob_get_contents();
         ob_end_clean();
@@ -151,7 +154,6 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
         $email->save();
 
         $plugin->set_config('judges', \assign_submission_comparativejudgement::FAKEROLE_GRADABLE_USERS);
-        $sink = $this->redirectEmails();
 
         for ($i = 0; $i < 4; $i++) {
             $students[$i] = $this->getDataGenerator()->create_and_enrol($course, 'student');
@@ -163,6 +165,7 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
         $this->add_submission($students[5], $secondassign); // Don't submit.
 
         ob_start();
+        $sink = $this->redirectMessages();
         $task->get_emails_to_send(0, $now); // Before cut off.
         $output = ob_get_contents();
         ob_end_clean();
@@ -176,6 +179,7 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
 
         $sink->clear();
         ob_start();
+        $sink = $this->redirectMessages();
         $task->get_emails_to_send(0, $now + 4); // After cut off and delay.
         $output = ob_get_contents();
         ob_end_clean();
@@ -226,6 +230,7 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
 
         $sink->clear();
         ob_start();
+        $sink = $this->redirectMessages();
         $task->get_emails_to_send(0, $now + 12); // After cut off and delay.
         $output = ob_get_contents();
         ob_end_clean();
@@ -236,6 +241,7 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
         $sink->clear();
         ob_start();
         $this->submit_for_grading($students[5], $secondassign);
+        $sink = $this->redirectMessages();
         $task->get_emails_to_send($now + 12, $now + 112); // After cut off and extension.
         $output = ob_get_contents();
         ob_end_clean();
@@ -245,6 +251,7 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
 
         $sink->clear();
         ob_start();
+        $sink = $this->redirectMessages();
         $task->get_emails_to_send($now + 113, $now + 150); // After cut off and extension.
         $output = ob_get_contents();
         ob_end_clean();
@@ -269,7 +276,6 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
         $email->save();
 
         $plugin->set_config('judges', \assign_submission_comparativejudgement::FAKEROLE_GRADABLE_USERS);
-        $sink = $this->redirectEmails();
 
         for ($j = 0; $j < 3; $j++) {
             $group = $this->getDataGenerator()->create_group(['courseid' => $course->id]);
@@ -306,8 +312,8 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
         ];
         $DB->insert_record('assign_overrides', $override);
 
-        $sink->clear();
         ob_start();
+        $sink = $this->redirectMessages();
         $task->get_emails_to_send(0, $now + 12); // After cut off and delay.
         $output = ob_get_contents();
         ob_end_clean();
@@ -317,6 +323,7 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
 
         $sink->clear();
         ob_start();
+        $sink = $this->redirectMessages();
         $task->get_emails_to_send($now + 12, $now + 112); // After cut off and extension.
         $output = ob_get_contents();
         ob_end_clean();
@@ -326,6 +333,7 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
 
         $sink->clear();
         ob_start();
+        $sink = $this->redirectMessages();
         $task->get_emails_to_send($now + 113, $now + 150); // After cut off and extension.
         $output = ob_get_contents();
         ob_end_clean();
@@ -365,13 +373,14 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
 
         $sink->clear();
         ob_start();
+        $sink = $this->redirectMessages();
         $task->get_emails_to_send(0, $now + 3); // After cut off and delay.
         $output = ob_get_contents();
         ob_end_clean();
 
         $messages = $sink->get_messages();
         // Students in the array and the one created at the end without submitting.
-        $this->assertCount(5, $messages); // Everyone except the user with the extension.
+        $this->assertCount(6, $messages); // Everyone except the user with the extension.
 
         $sink->clear();
         ob_start();
@@ -381,6 +390,7 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
             sleep(1);
         }
 
+        $sink = $this->redirectMessages();
         $task->get_emails_to_send($now + 3, $now + 6); // After cut off and extension.
         $output = ob_get_contents();
         ob_end_clean();
@@ -390,6 +400,7 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
 
         $sink->clear();
         ob_start();
+        $sink = $this->redirectMessages();
         $task->get_emails_to_send($now + 7, $now + 10); // After cut off and extension.
         $output = ob_get_contents();
         ob_end_clean();
