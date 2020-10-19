@@ -84,5 +84,14 @@ function xmldb_assignsubmission_comparativejudgement_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2019111812, 'assignsubmission', 'comparativejudgement');
     }
 
+    if ($oldversion < 2019111814) {
+        $table = new xmldb_table('assignsubmission_exclusion');
+        $field = new xmldb_field('entityid', XMLDB_TYPE_INTEGER, '10', null, null, null, '0', 'useritemsallowed');
+        $dbman->change_field_type($table, $field);
+
+        // Assignment savepoint reached.
+        upgrade_plugin_savepoint(true, 2019111814, 'assignsubmission', 'comparativejudgement');
+    }
+
     return true;
 }

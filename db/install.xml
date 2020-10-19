@@ -90,7 +90,7 @@
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="type" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
-                <FIELD NAME="entityid" TYPE="char" LENGTH="255" NOTNULL="true" DEFAULT="title" SEQUENCE="false" COMMENT="Judge or submission"/>
+                <FIELD NAME="entityid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Judge or submission"/>
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="The unique id for this comparativejudgement submission."/>
