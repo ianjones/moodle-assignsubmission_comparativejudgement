@@ -100,10 +100,10 @@ class managejudgestable extends \table_sql {
                             CASE WHEN exclusion.id IS NULL THEN 0 ELSE 1 END as excluded,
                             SUM(CASE WHEN winningsubmissionposition = $left THEN 1 ELSE 0 END) as leftchoices,
                             SUM(CASE WHEN winningsubmissionposition = $right THEN 1 ELSE 0 END) as rightchoices",
-                '{user} u
+                "{user} u
                         LEFT JOIN {assignsubmission_comp} comp ON comp.usermodified = u.id
-                        LEFT JOIN {assignsubmission_exclusion} exclusion ON exclusion.entityid = u.id AND exclusion.type = :entitytype',
-                "u.id $insql GROUP BY u.id, $namefields",
+                        LEFT JOIN {assignsubmission_exclusion} exclusion ON exclusion.entityid = u.id AND exclusion.type = :entitytype",
+                "u.id $insql GROUP BY u.id, exclusion.id, $namefields",
                 $inparams);
     }
 

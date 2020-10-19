@@ -86,9 +86,9 @@ class comparisonmanager {
         for ($i = 0; $i < 2; $i++) {
             if ($urgent) {
                 if (!empty($settings->minjudgementspersubmission)) {
-                    $threshold = "HAVING totaluserjudgements_$i < $settings->minjudgementspersubmission";
+                    $threshold = "HAVING SUM(CASE WHEN comp.usermodified = $this->userid THEN 1 ELSE 0 END) < $settings->minjudgementspersubmission";
                 } else {
-                    $threshold = "HAVING totaluserjudgements_$i < 1";
+                    $threshold = "HAVING SUM(CASE WHEN comp.usermodified = $this->userid THEN 1 ELSE 0 END) < 1";
                 }
             } else {
                 $threshold = '';
@@ -107,8 +107,7 @@ class comparisonmanager {
                   AND sub.assignment = $assignmentid
                   AND $teamfrag
                 GROUP BY sub.id, sub.assignment, sub.userid, sub.timecreated, sub.timemodified, sub.status, sub.groupid, sub.attemptnumber, sub.latest, exemp.id
-                  $threshold
-                ORDER BY totaluserjudgements_$i, totaljudgements_$i, sub.timecreated";
+                  $threshold";
         }
 
         $sql = "

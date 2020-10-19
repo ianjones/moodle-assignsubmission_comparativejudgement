@@ -134,7 +134,7 @@ class managesubmissionstable extends \table_sql {
                             LEFT JOIN {assignsubmission_comp} comp ON comp.id = compsubs.judgementid
                             LEFT JOIN {assignsubmission_rankingsub} rsub ON rsub.submissionid = asssub.id
                             LEFT JOIN {assignsubmission_exclusion} exclusion ON exclusion.entityid = asssub.id AND exclusion.type = :entitytype',
-                    "asssub.assignment = :assignmentid AND asssub.status = :status AND asssub.userid <> 0 GROUP BY u.id, exclusion.id, rsub.score, asssub.id, $namefields",
+                    "asssub.assignment = :assignmentid AND asssub.status = :status AND asssub.userid <> 0 GROUP BY u.id, exemp.title, exemp.id, exclusion.id, rsub.score, asssub.id, $namefields",
                     ['assignmentid' => $assignment->get_instance()->id, 'status' => ASSIGN_SUBMISSION_STATUS_SUBMITTED,
                      'entitytype'   => exclusion::EXCLUSION_TYPE_SUBMISSION]);
         }
