@@ -79,19 +79,19 @@ class managecomparisoncommentstable extends \table_sql {
         ];
 
         $this->set_sql("compsub.id,
-                            u.id as judgeid,
-                            $namefields,
-                             compsub.comments,
-                             compsub.commentsformat,
-                             CASE WHEN exclusion.id IS NOT NULL THEN 1 ELSE 0 END as excluded,
-                             asssub.userid as subuserid,
-                             asssub.id as submissionid,
-                             compsub.commentpublished",
-                "{assignsubmission_compsubs} compsub
-                            INNER JOIN {assignsubmission_comp} comp ON compsub.judgementid = comp.id
-                            INNER JOIN {user} u ON u.id = comp.usermodified
-                            INNER JOIN {assign_submission} asssub ON asssub.id = compsub.submissionid
-                            LEFT JOIN {assignsubmission_exclusion} exclusion ON exclusion.entityid = compsub.id AND exclusion.type = :entitytype",
+                u.id as judgeid,
+                $namefields,
+                compsub.comments,
+                compsub.commentsformat,
+                CASE WHEN exclusion.id IS NOT NULL THEN 1 ELSE 0 END as excluded,
+                asssub.userid as subuserid,
+                asssub.id as submissionid,
+                compsub.commentpublished",
+            "{assignsubmission_compsubs} compsub
+                INNER JOIN {assignsubmission_comp} comp ON compsub.judgementid = comp.id
+                INNER JOIN {user} u ON u.id = comp.usermodified
+                INNER JOIN {assign_submission} asssub ON asssub.id = compsub.submissionid
+                LEFT JOIN {assignsubmission_exclusion} exclusion ON exclusion.entityid = compsub.id AND exclusion.type = :entitytype",
                 "compsub.comments is not null AND compsub.comments <> '' AND comp.assignmentid = :assignmentid",
                 $inparams);
     }

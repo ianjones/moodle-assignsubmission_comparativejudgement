@@ -57,15 +57,16 @@ class judgerequestemails extends scheduled_task {
            END
             ) + delay";
 
-        $sql_emails_due = "SELECT e.*, cm.id as cmid, (CASE WHEN c.id is null THEN 0 ELSE 1 END) as judgementstartdateset
+        $sqlemailsdue = "SELECT e.*, cm.id as cmid, (CASE WHEN c.id is null THEN 0 ELSE 1 END) as judgementstartdateset
         FROM {assignsubmission_email} e
         INNER JOIN {assign} a on e.assignmentid = a.id
         INNER JOIN {course_modules} cm on cm.instance = a.id
         INNER JOIN {modules} m on cm.module = m.id and m.name = 'assign'
-        LEFT JOIN {assign_plugin_config} c on c.assignment = a.id and plugin = 'comparativejudgement' and subtype = 'assignsubmission' and c.name = 'judgementstartdate'
+        LEFT JOIN {assign_plugin_config} c on c.assignment = a.id and plugin = 'comparativejudgement' and
+            subtype = 'assignsubmission' and c.name = 'judgementstartdate'
         WHERE $enddatefrag <= :now and $enddatefrag > :last";
 
-        $emailsdue = $DB->get_records_sql($sql_emails_due, ['now' => $thisrun, 'last' => $lastrun]);
+        $emailsdue = $DB->get_records_sql($sqlemailsdue, ['now' => $thisrun, 'last' => $lastrun]);
 
         foreach ($emailsdue as $email) {
             $assign = new assign(context_module::instance($email->cmid), false, false);
@@ -73,7 +74,8 @@ class judgerequestemails extends scheduled_task {
             $judges = $comparisonmanager->getalljudges();
             $judgesassoc = array_combine($judges, $judges);
 
-            // For any with judgementstartdateset = 0 find users with extensions to exclude - they will get picked up at the end of their cutoff/due date.
+            // For any with judgementstartdateset = 0 find users with extensions to exclude.
+            // They will get picked up at the end of their cutoff/due date.
             if (empty($email->judgementstartdateset)) {
                 $overrides = $DB->get_records('assign_overrides', ['assignid' => $assign->get_instance()->id]);
 
@@ -110,16 +112,18 @@ class judgerequestemails extends scheduled_task {
            END
             ) + delay";
 
-        $sql_emails_due_overrides = "SELECT e.*, cm.id as cmid, ao.groupid, ao.userid, (CASE WHEN c.id is null THEN 0 ELSE 1 END) as judgementstartdateset
+        $sqlemailsdueoverrides = "SELECT e.*, cm.id as cmid, ao.groupid, ao.userid,
+        (CASE WHEN c.id is null THEN 0 ELSE 1 END) as judgementstartdateset
         FROM {assignsubmission_email} e
         INNER JOIN {assign} a on e.assignmentid = a.id
         INNER JOIN {assign_overrides} ao on ao.assignid = a.id
         INNER JOIN {course_modules} cm on cm.instance = a.id
         INNER JOIN {modules} m on cm.module = m.id and m.name = 'assign'
-        LEFT JOIN {assign_plugin_config} c on c.assignment = a.id and plugin = 'comparativejudgement' and subtype = 'assignsubmission' and c.name = 'judgementstartdate'
+        LEFT JOIN {assign_plugin_config} c on c.assignment = a.id and plugin = 'comparativejudgement' and
+            subtype = 'assignsubmission' and c.name = 'judgementstartdate'
         WHERE $enddatefrag <= :now AND $enddatefrag > :last AND c.id is null";
 
-        $emailsdue = $DB->get_records_sql($sql_emails_due_overrides, ['now' => $thisrun, 'last' => $lastrun]);
+        $emailsdue = $DB->get_records_sql($sqlemailsdueoverrides, ['now' => $thisrun, 'last' => $lastrun]);
 
         foreach ($emailsdue as $email) {
             $assign = new assign(context_module::instance($email->cmid), false, false);
@@ -135,16 +139,18 @@ class judgerequestemails extends scheduled_task {
             }
         }
 
-        $sql_emails_due_overrides = "SELECT e.*, ao.userid, cm.id as cmid, (CASE WHEN c.id is null THEN 0 ELSE 1 END) as judgementstartdateset
+        $sqlemailsdueoverrides = "SELECT e.*, ao.userid, cm.id as cmid,
+                (CASE WHEN c.id is null THEN 0 ELSE 1 END) as judgementstartdateset
         FROM {assignsubmission_email} e
         INNER JOIN {assign} a on e.assignmentid = a.id
         INNER JOIN {assign_user_flags} ao on ao.assignment = a.id
         INNER JOIN {course_modules} cm on cm.instance = a.id
         INNER JOIN {modules} m on cm.module = m.id and m.name = 'assign'
-        LEFT JOIN {assign_plugin_config} c on c.assignment = a.id and plugin = 'comparativejudgement' and subtype = 'assignsubmission' and c.name = 'judgementstartdate'
+        LEFT JOIN {assign_plugin_config} c on c.assignment = a.id and plugin = 'comparativejudgement' and
+                subtype = 'assignsubmission' and c.name = 'judgementstartdate'
         WHERE (extensionduedate + delay) <= :now AND (extensionduedate + delay) > :last AND c.id is null";
 
-        $emailsdue = $DB->get_records_sql($sql_emails_due_overrides, ['now' => $thisrun, 'last' => $lastrun]);
+        $emailsdue = $DB->get_records_sql($sqlemailsdueoverrides, ['now' => $thisrun, 'last' => $lastrun]);
 
         foreach ($emailsdue as $email) {
             $assign = new assign(context_module::instance($email->cmid), false, false);

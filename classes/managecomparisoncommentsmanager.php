@@ -48,7 +48,8 @@ class managecomparisoncommentsmanager {
                             LEFT JOIN {assignsubmission_exclusion} exclusion ON exclusion.entityid = comp.id AND exclusion.type = :entitytype
                         WHERE comp.comments is not null AND comp.comments <> '' AND sub.assignment = :assignmentid
                             AND commentpublished = 0 AND exclusion.id IS NULL";
-        $comments = $DB->get_records_sql($commentssql, ['assignmentid' => $this->assignmentinstance->id, 'entitytype'   => exclusion::EXCLUSION_TYPE_COMPARISONCOMMENT]);
+        $comments = $DB->get_records_sql($commentssql,
+            ['assignmentid' => $this->assignmentinstance->id, 'entitytype' => exclusion::EXCLUSION_TYPE_COMPARISONCOMMENT]);
 
         $commenthandler = new \assign_feedback_comments($this->assignment, 'comments');
 
@@ -57,7 +58,8 @@ class managecomparisoncommentsmanager {
             if (!isset($formattedcommentsbysubmissionid[$commentsubmission->id])) {
                 $formattedcommentsbysubmissionid[$commentsubmission->id] = ['submission' => $commentsubmission, 'comments' => ''];
             }
-            $formattedcommentsbysubmissionid[$commentsubmission->id]['comments'] .= format_text($commentsubmission->comments, $commentsubmission->commentsformat);
+            $formattedcommentsbysubmissionid[$commentsubmission->id]['comments'] .=
+                format_text($commentsubmission->comments, $commentsubmission->commentsformat);
         }
 
         foreach ($formattedcommentsbysubmissionid as $info) {

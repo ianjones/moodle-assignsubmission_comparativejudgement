@@ -37,7 +37,7 @@ class exemplarform extends moodleform {
         $mform = $this->_form;
         list($assign, $data, $submission) = $this->_customdata;
 
-        $mform->addElement('text','title', get_string('exemplartitle', 'assignsubmission_comparativejudgement'));
+        $mform->addElement('text', 'title', get_string('exemplartitle', 'assignsubmission_comparativejudgement'));
         $mform->addRule('title', null, 'required', null, 'server');
         $mform->setType('title', PARAM_TEXT);
 

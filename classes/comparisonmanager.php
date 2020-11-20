@@ -264,12 +264,12 @@ class comparisonmanager {
         $now = time();
 
         $settings = $this->getsettings();
-        // Be after start of judgements
+        // Be after start of judgements.
         if (!empty($settings->judgementstartdate) && $now < $settings->judgementstartdate) {
             return false;
         }
 
-        // Not have exceeded max judgements per user
+        // Not have exceeded max judgements per user.
         $comparisoncount =
                 comparison::count_records(['usermodified' => $this->userid, 'assignmentid' => $this->assignmentinstance->id]);
         if (!empty($settings->maxjudgementsperuser) && $comparisoncount >= $settings->maxjudgementsperuser) {
@@ -293,7 +293,7 @@ class comparisonmanager {
 
         $settings = $this->getsettings();
 
-        // Be after start of judgements
+        // Be after start of judgements.
         if (!empty($settings->judgementstartdate)) {
             return $now > $settings->judgementstartdate;
         }
@@ -317,7 +317,7 @@ class comparisonmanager {
     public function getlastdate() {
         $settings = $this->getsettings();
 
-        // Be after start of judgements
+        // Be after start of judgements.
         if (!empty($settings->judgementstartdate)) {
             return $settings->judgementstartdate;
         }

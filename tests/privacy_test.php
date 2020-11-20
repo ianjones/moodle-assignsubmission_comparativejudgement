@@ -31,5 +31,5 @@ require_once($CFG->dirroot . '/mod/assign/tests/privacy_test.php');
  * @group assignsubmission_comparativejudgement
  */
 class assignsubmission_comparativejudgement_privacy_testcase extends \mod_assign\tests\mod_assign_privacy_testcase {
-    // TODO
+    // TODO!
 }

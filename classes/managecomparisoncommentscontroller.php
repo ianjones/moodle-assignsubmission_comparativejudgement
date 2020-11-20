@@ -34,7 +34,8 @@ class managecomparisoncommentscontroller extends basecontroller {
             return '';
         }
 
-        return $OUTPUT->single_button($this->getinternallink('managecomparisoncomments'), get_string('managecomparisoncomments', 'assignsubmission_comparativejudgement'), 'get');
+        return $OUTPUT->single_button($this->getinternallink('managecomparisoncomments'),
+                get_string('managecomparisoncomments', 'assignsubmission_comparativejudgement'), 'get');
     }
 
     public function view() {
