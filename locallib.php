@@ -90,7 +90,7 @@ class assign_submission_comparativejudgement extends assign_submission_plugin {
         $commenthandler = new \assign_feedback_comments($this->assignment, 'comments');
         if ($commenthandler->is_enabled()) {
             $mform->addElement('advcheckbox', 'comparativejudgement_enablecomments',
-                    '',get_string('comparativejudgement_enablecomments', 'assignsubmission_comparativejudgement'));
+                    '', get_string('comparativejudgement_enablecomments', 'assignsubmission_comparativejudgement'));
             $mform->setDefault('comparativejudgement_enablecomments',
                     $this->get_config_or_default('enablecomments'));
         }

@@ -159,7 +159,8 @@ class assignsubmission_comparativejudgement_comparisoncanuserjudge_testcase exte
     }
 
     public function test_canuserjudge_fakerole_gradable_users_after_cutoff() {
-        list($teacher, $editingteacher, $student, $secondassign, $plugin) = $this->setupstandardscenario(['cutoffdate' => time() - 10]);
+        list($teacher, $editingteacher, $student, $secondassign, $plugin) =
+            $this->setupstandardscenario(['cutoffdate' => time() - 10]);
         $plugin->set_config('judgementswhileeditable', false);
 
         $plugin->set_config('judges', \assign_submission_comparativejudgement::FAKEROLE_GRADABLE_USERS);
@@ -172,7 +173,8 @@ class assignsubmission_comparativejudgement_comparisoncanuserjudge_testcase exte
     }
 
     public function test_canuserjudge_fakerole_gradable_users_before_cutoff() {
-        list($teacher, $editingteacher, $student, $secondassign, $plugin) = $this->setupstandardscenario(['cutoffdate' => time() + 10]);
+        list($teacher, $editingteacher, $student, $secondassign, $plugin) =
+            $this->setupstandardscenario(['cutoffdate' => time() + 10]);
         $plugin->set_config('judgementswhileeditable', false);
         $plugin->set_config('judges', \assign_submission_comparativejudgement::FAKEROLE_GRADABLE_USERS);
 
@@ -184,7 +186,8 @@ class assignsubmission_comparativejudgement_comparisoncanuserjudge_testcase exte
     }
 
     public function test_canuserjudge_fakerole_gradable_users_before_cutoff_judgementswhileeditable() {
-        list($teacher, $editingteacher, $student, $secondassign, $plugin) = $this->setupstandardscenario(['cutoffdate' => time() + 10]);
+        list($teacher, $editingteacher, $student, $secondassign, $plugin) =
+            $this->setupstandardscenario(['cutoffdate' => time() + 10]);
         $plugin->set_config('judgementswhileeditable', true);
         $plugin->set_config('judges', \assign_submission_comparativejudgement::FAKEROLE_GRADABLE_USERS);
 
@@ -238,7 +241,7 @@ class assignsubmission_comparativejudgement_comparisoncanuserjudge_testcase exte
     public function test_canuserjudge_maxjudgements() {
         list($teacher, $editingteacher, $student, $secondassign, $plugin) = $this->setupstandardscenario();
 
-        // TO DO
+        // TO DO!
     }
 
     /**

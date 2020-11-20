@@ -127,7 +127,7 @@ function assignsubmission_comparativejudgement_pluginfile($course,
         $file = $conversion->get_destfile();
     }
 
-    $path_parts = pathinfo($file->get_filename());
-    $options['filename'] = 'comparativejudgement_' . $submission->id . '_' . $file->get_id() . '.' . $path_parts['extension'];
+    $pathparts = pathinfo($file->get_filename());
+    $options['filename'] = 'comparativejudgement_' . $submission->id . '_' . $file->get_id() . '.' . $pathparts['extension'];
     send_stored_file($file, 0, 0, false, $options);
 }

@@ -65,7 +65,8 @@ class exemplarcontroller extends basecontroller {
         $o .= ob_get_contents();
         ob_end_clean();
 
-        $o .= $OUTPUT->single_button($this->getinternallink('addexemplar'), get_string('addexemplar', 'assignsubmission_comparativejudgement'));
+        $o .= $OUTPUT->single_button($this->getinternallink('addexemplar'),
+                get_string('addexemplar', 'assignsubmission_comparativejudgement'));
 
         $o .= $this->getfooter();
 
@@ -98,7 +99,7 @@ class exemplarcontroller extends basecontroller {
             redirect($this->getinternallink('manageexemplars'));
         } else if ($data = $mform->get_data()) {
             exemplar::save_exemplar_submission($data, $this->assignment, $submission, $notices);
-            // do something with notices
+            // Do something with notices.
             redirect($this->getinternallink('manageexemplars'));
         }
 
