@@ -23,6 +23,8 @@
 
 namespace assignsubmission_comparativejudgement;
 
+defined('MOODLE_INTERNAL') || die();
+
 use assign;
 use core\persistent;
 

@@ -23,6 +23,8 @@
 
 namespace assignsubmission_comparativejudgement;
 
+defined('MOODLE_INTERNAL') || die();
+
 class exemplarcontroller extends basecontroller {
     public function summary() {
         global $OUTPUT;

@@ -23,6 +23,8 @@
 
 namespace assignsubmission_comparativejudgement;
 
+defined('MOODLE_INTERNAL') || die();
+
 use local_certification\event\judgerequestemail_sent;
 
 class judgerequestemail extends \core\persistent {

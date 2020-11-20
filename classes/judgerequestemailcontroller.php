@@ -23,6 +23,8 @@
 
 namespace assignsubmission_comparativejudgement;
 
+defined('MOODLE_INTERNAL') || die();
+
 use assignsubmission_comparativejudgement\event\judgerequestemail_deleted;
 use assignsubmission_comparativejudgement\event\judgerequestemail_modified;
 use html_writer;

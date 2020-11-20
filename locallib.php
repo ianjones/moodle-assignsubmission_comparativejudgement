@@ -21,6 +21,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 use assignsubmission_comparativejudgement\comparisoncontroller;
 use assignsubmission_comparativejudgement\comparisonmanager;
 use assignsubmission_comparativejudgement\exemplarcontroller;

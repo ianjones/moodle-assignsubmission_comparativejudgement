@@ -23,6 +23,8 @@
 
 namespace assignsubmission_comparativejudgement;
 
+defined('MOODLE_INTERNAL') || die();
+
 use assignsubmission_comparativejudgement\event\comments_imported;
 
 class managecomparisoncommentscontroller extends basecontroller {

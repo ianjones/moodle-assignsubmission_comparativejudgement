@@ -21,6 +21,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 $functions = [
         'assignsubmission_comparativejudgement_toggle_exclusion' => [
                 'classname'     => '\assignsubmission_comparativejudgement\external',

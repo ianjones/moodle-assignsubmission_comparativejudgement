@@ -23,6 +23,8 @@
 
 namespace assignsubmission_comparativejudgement;
 
+defined('MOODLE_INTERNAL') || die();
+
 use moodleform;
 require_once($CFG->libdir . '/formslib.php');
 

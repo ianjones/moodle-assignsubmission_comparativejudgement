@@ -23,6 +23,8 @@
 
 namespace assignsubmission_comparativejudgement;
 
+defined('MOODLE_INTERNAL') || die();
+
 use assign;
 use assign_submission_comparativejudgement;
 
@@ -137,9 +139,9 @@ class comparisonmanager {
         foreach ((array) $submissionpair as $key => $value) {
             list($key, $index) = explode('_', $key);
             if ($index == 0) {
-                $subone->$key = $value;
+                $subone->{$key} = $value;
             } else if ($index == 1) {
-                $subtwo->$key = $value;
+                $subtwo->{$key} = $value;
             }
         }
 

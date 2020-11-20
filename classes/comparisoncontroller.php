@@ -23,6 +23,8 @@
 
 namespace assignsubmission_comparativejudgement;
 
+defined('MOODLE_INTERNAL') || die();
+
 use assign_submission_comparativejudgement;
 use assign_submission_plugin;
 use assignsubmission_comparativejudgement\event\comparison_made;
@@ -179,11 +181,11 @@ class comparisoncontroller extends basecontroller {
         if ($data) {
             if ($showcomments) {
                 $winnerprop = "comments_winner_" . $data->position;
-                $winnercomments = $data->$winnerprop['text'];
-                $winnerformat = $data->$winnerprop['format'];
+                $winnercomments = $data->{$winnerprop}['text'];
+                $winnerformat = $data->{$winnerprop}['format'];
                 $loserprop = "comments_loser_" . $data->position;
-                $losercomments = $data->$loserprop['text'];
-                $loserformat = $data->$loserprop['format'];
+                $losercomments = $data->{$loserprop}['text'];
+                $loserformat = $data->{$loserprop}['format'];
             } else {
                 $winnercomments = '';
                 $winnerformat = FORMAT_HTML;

@@ -23,6 +23,8 @@
 
 namespace assignsubmission_comparativejudgement;
 
+defined('MOODLE_INTERNAL') || die();
+
 use assignsubmission_comparativejudgement\event\grades_calculated;
 use assignsubmission_comparativejudgement\event\grades_imported;
 use html_writer;
