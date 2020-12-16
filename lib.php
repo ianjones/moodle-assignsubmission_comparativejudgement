@@ -124,7 +124,9 @@ function assignsubmission_comparativejudgement_pluginfile($course,
             }
         }
 
-        $file = $conversion->get_destfile();
+        if ($conversion->get('status') == conversion::STATUS_COMPLETE) {
+            $file = $conversion->get_destfile();
+        }
     }
 
     $pathparts = pathinfo($file->get_filename());
