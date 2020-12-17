@@ -59,10 +59,10 @@ class assign_submission_comparativejudgement extends assign_submission_plugin {
 
         ];
 
-        if (isset($defaults[$key])) {
+        $config = $this->get_config($key);
+
+        if ($config === false && isset($defaults[$key])) {
             $config = $defaults[$key];
-        } else {
-            $config = $this->get_config($key);
         }
 
         return $config;
