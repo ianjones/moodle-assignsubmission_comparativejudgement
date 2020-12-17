@@ -2,6 +2,8 @@
 
 This module extends the moodle assignment to provide support for comparative judgement (CJ).  Comparative judgement is an approach to assessment that offers an alternative to traditional marking, and this module has been specifically designed to support peer assessment and feedback. Students submit their work and then are presented with pairs of their peers' work and are asked simply to decide which is ‘better’ in terms of a high-level criterion such as 'problem solving' or ‘understanding of trigonometry’ or ‘quality of writing’. Many such pairwise decisions from the cohort are then used to produce a score for each submission. 
 
+An "author quick start" guide is available in the [documentation](docs/Author_quick_start.md).
+
 ## Install guide
 
 You need the following three components.
