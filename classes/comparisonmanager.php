@@ -208,6 +208,11 @@ class comparisonmanager {
             return false;
         }
 
+        // If the user is gradable but hasn't yet submitted a response then definitely don't redirect.
+        if ($this->isusergradable() && $this->getsubmission()->status !== ASSIGN_SUBMISSION_STATUS_SUBMITTED) {
+            return false;
+        }
+
         if ($this->alldatespastorempty()) {
             return !empty($this->getpairtojudge());
         } else {
