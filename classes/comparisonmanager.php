@@ -112,6 +112,18 @@ class comparisonmanager {
                   $threshold";
         }
 
+        if (empty($settings->allowrepeatcomparisons)) {
+            $preventrepeats = " subs.loosing IS NULL ";
+        } else {
+            $preventrepeats = ' 1 = 1 ';
+        }
+
+        if (!empty($settings->allowcompareexemplars)) {
+            $preventcompareexemplars = ' 1 = 1 ';
+        } else {
+            $preventcompareexemplars = " (subone.exemp_1 IS NULL OR subzero.exemp_0 IS NULL) ";
+        }
+
         $sql = "
             SELECT subone.*, subzero.*
             FROM ($sql[0]) as subzero
@@ -123,7 +135,8 @@ class comparisonmanager {
                 WHERE comp.usermodified = $this->userid
                 )  as subs ON (subzero.id_0 = subs.winning and subone.id_1 = subs.loosing) OR (subone.id_1 = subs.winning and subzero.id_0 = subs.loosing
             )
-             WHERE subs.loosing IS NULL AND (subone.exemp_1 IS NULL OR subzero.exemp_0 IS NULL)
+             WHERE $preventrepeats AND $preventcompareexemplars
+            ORDER BY subzero.totaluserjudgements_0 asc, subone.totaluserjudgements_1 asc, subzero.totaljudgements_0 asc, subone.totaljudgements_1
              ";
 
         $submissions = $DB->get_records_sql($sql, null, 0, 1);

@@ -55,8 +55,9 @@ class assign_submission_comparativejudgement extends assign_submission_plugin {
                 'judgementswhileeditable'    => true,
                 'enablecomments'             => true,
                 'judges'                     => self::FAKEROLE_ASSIGNMENT_SUBMITTED,
-                'introduction'               => ''
-
+                'introduction'               => '',
+                'allowrepeatcomparisons'    => false,
+                'allowcompareexemplars'    => false,
         ];
 
         $config = $this->get_config($key);
@@ -69,6 +70,18 @@ class assign_submission_comparativejudgement extends assign_submission_plugin {
     }
 
     public function get_settings(MoodleQuickForm $mform) {
+        $mform->addElement('advcheckbox', 'comparativejudgement_allowcompareexemplars',
+                get_string('comparativejudgement_allowcompareexemplars', 'assignsubmission_comparativejudgement'));
+        $mform->addHelpButton('comparativejudgement_allowcompareexemplars', 'comparativejudgement_allowcompareexemplars', 'assignsubmission_comparativejudgement');
+        $mform->setDefault('comparativejudgement_allowcompareexemplars',
+                $this->get_config_or_default('allowcompareexemplars'));
+
+        $mform->addElement('advcheckbox', 'comparativejudgement_allowrepeatcomparisons',
+                get_string('comparativejudgement_allowrepeatcomparisons', 'assignsubmission_comparativejudgement'));
+        $mform->addHelpButton('comparativejudgement_allowrepeatcomparisons', 'comparativejudgement_allowrepeatcomparisons', 'assignsubmission_comparativejudgement');
+        $mform->setDefault('comparativejudgement_allowrepeatcomparisons',
+                $this->get_config_or_default('allowrepeatcomparisons'));
+
         $mform->addElement('text', 'comparativejudgement_minjudgementsperuser',
                 get_string('minjudgementsperuser', 'assignsubmission_comparativejudgement'));
         $mform->setDefault('comparativejudgement_minjudgementsperuser', $this->get_config_or_default('minjudgementsperuser'));

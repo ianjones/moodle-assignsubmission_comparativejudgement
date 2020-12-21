@@ -101,6 +101,73 @@ class assignsubmission_comparativejudgement_comparisongetpair_testcase extends a
         $this->assertFalse($getpairtojudge);
     }
 
+    public function test_canuserjudge_fakerole_assignment_do_infinite_comparisons() {
+        $this->resetAfterTest();
+
+        $course = $this->getDataGenerator()->create_course();
+
+        // Assignment with submissions.
+        $secondassign = $this->create_instance($course, [
+                'name'                                                    => 'Assignment with submissions',
+                'duedate'                                                 => time(),
+                'attemptreopenmethod'                                     => ASSIGN_ATTEMPT_REOPEN_METHOD_MANUAL,
+                'maxattempts'                                             => 3,
+                'submissiondrafts'                                        => 1,
+                'assignsubmission_onlinetext_enabled'                     => 1,
+                'assignsubmission_comparativejudgement_enabled'           => 1,
+        ]);
+        $plugin = \assign_submission_comparativejudgement::getplugin($secondassign);
+        $plugin->set_config('judges', \assign_submission_comparativejudgement::FAKEROLE_ASSIGNMENT_SUBMITTED);
+        $plugin->set_config('allowrepeatcomparisons', true);
+
+        $teacher = $this->getDataGenerator()->create_and_enrol($course, 'teacher');
+
+        $students = [];
+        for ($i = 0; $i < 4; $i++) {
+            $students[$i] = $this->getDataGenerator()->create_and_enrol($course, 'student');
+            $this->add_submission($students[$i], $secondassign);
+            $this->submit_for_grading($students[$i], $secondassign);
+        }
+
+        $this->setUser($students[0]);
+
+        $comparisonmanager = new comparisonmanager($students[0]->id, $secondassign);
+        $getpairtojudge1 = $comparisonmanager->getpairtojudge();
+        $this->assertCount(2, $getpairtojudge1);
+        $this->assertCount(2, $comparisonmanager->getpairtojudge(true));
+
+        comparison::recordcomparison($secondassign->get_instance()->id, 50, current($getpairtojudge1)->id,
+                comparison::POSITION_RIGHT, next($getpairtojudge1)->id);
+
+        $getpairtojudge2 = $comparisonmanager->getpairtojudge();
+        $this->assertCount(2, $getpairtojudge2);
+        $this->assertCount(1, array_intersect_key($getpairtojudge1, $getpairtojudge2));
+
+        $this->assertFalse($comparisonmanager->getpairtojudge(true));
+
+        comparison::recordcomparison($secondassign->get_instance()->id, 50, current($getpairtojudge2)->id,
+                comparison::POSITION_RIGHT, next($getpairtojudge2)->id);
+
+        $getpairtojudge3 = $comparisonmanager->getpairtojudge();
+        $this->assertCount(2, $getpairtojudge3);
+        $this->assertCount(1, array_intersect_key($getpairtojudge3, $getpairtojudge2));
+        $this->assertCount(1, array_intersect_key($getpairtojudge3, $getpairtojudge1));
+
+        comparison::recordcomparison($secondassign->get_instance()->id, 50, current($getpairtojudge3)->id,
+                comparison::POSITION_RIGHT, next($getpairtojudge3)->id);
+
+        $getpairtojudge4 = $comparisonmanager->getpairtojudge();
+        $this->assertCount(2, $getpairtojudge4);
+        $this->assertCount(2, array_intersect_key($getpairtojudge1, $getpairtojudge4));
+
+        comparison::recordcomparison($secondassign->get_instance()->id, 50, current($getpairtojudge4)->id,
+                comparison::POSITION_RIGHT, next($getpairtojudge4)->id);
+
+        $getpairtojudge5 = $comparisonmanager->getpairtojudge();
+        $this->assertCount(2, $getpairtojudge5);
+        $this->assertCount(2, array_intersect_key($getpairtojudge2, $getpairtojudge5));
+    }
+
     public function test_canuserjudge_fakerole_assignment_do_loads_of_comparisons() {
         $this->resetAfterTest();
 
