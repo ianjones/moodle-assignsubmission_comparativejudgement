@@ -40,7 +40,7 @@ You can monitor the quantity and quality of the comparisons completed by each ju
 You can monitor both your uploaded exemplars and the students' submissions, see *Column headings* subsection below. You can also **Calculate grades** and download **Raw judgement data**, see *Grades and judgement data* subsection below.
 
 ### Column headings
-* **Submission ID**: a unique identifier assigned by the plug-in to help connect submissions with judges. See LINK NEEDED.
+* **Submission ID**: a unique identifier assigned by the plug-in to help connect submissions with judges. 
 * **Comparisons received**: the number of comparisons received by the exemplar or submission.
 * **Time spent**: the total time judges have collectively spent doing comparisons on the exemplar or submission. 
 * **Average time spent**: the median time judges have collectively spent doing comparisons on the exemplar or submission.
@@ -52,7 +52,7 @@ You can monitor both your uploaded exemplars and the students' submissions, see 
 ### Grades and judgement data
 At the bottom of the page are three buttons.
 * **Calculate grades**: uses the comparisons made so far to calculate a score for each exemplar or submission. It will also calcuate a reliability figure that will be displayed just above the **Calculate grades** button. This reliability figure is what is known as [Scale Separation Reliability](https://doi.org/10.1177%2F0146621617748321) and should be greater than **0.7** before you can be confident in your scores. 
-* **Raw judgement data**: for advance users, download the comparisons made and calculate your own scores offline. See LINK NEEDED.
+* **Raw judgement data**: for advance users, download the comparisons made and calculate your own scores offline. For support processing comparative judgement decisions offline see this [user guide](https://www.notion.so/nmm/No-More-Marking-for-researchers-70cb4eec46d547cd91c65ff2066d415f).
 * **Copy grades to gradebook**: click once all comparisons are complete to copy the grades to the Moodle gradebook.
 
 ## 6. Manage judgement request emails.
