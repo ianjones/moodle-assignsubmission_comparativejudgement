@@ -1,6 +1,8 @@
 # Setting up a comparative judgement assignment.
 
-In this **Getting started guide** we will add a comparative judgement assignment to a Moodle page, and work through the **Submission type** settings.
+In this **Getting started guide** we will add a comparative judgement assignment to a Moodle page, and work through the **Submission type** settings. 
+
+Since this project extends the the Moodle Assignment module, the code can be found under `mod/assign/submission/comparativejudgement` on the Moodle site.  That is, it is merely another `submission` type for the Assignment.
 
 ## 1. Add an Assignment. 
 Click on **Add an activity or resource** and select **Assignment**.
