@@ -1,3 +1,0 @@
-# Going deeper
-
-Under development.
