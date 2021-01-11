@@ -75,14 +75,14 @@ Below is a list of peer-reviewed academic outputs describing the use of comparat
 * Davies, B., Alcock, L., & Jones, I. (2020). Comparative judgement, proof summaries and proof comprehension. *Educational Studies in Mathematics, 105*, 181–197. [Link.](https://doi.org/10.1007/s10649-020-09984-x)
 
 ## Writing.
-* van Daal, T., Lesterhuis, M., Coertjens, L., Donche, V., & De Maeyer, S. (2019). Validity of comparative judgement to assess academic writing: Examining implications of its holistic character and building on a shared consensus. *Assessment in Education: Principles, Policy & Practice, 26*, 59–74. [Link.](https://doi.org/10.1080/0969594X.2016.1253542)
+* van Daal, T., Lesterhuis, M., Coertjens, L., Donche, V., & De Maeyer, S. (2019). Validity of comparative judgement to assess academic writing: Examining implications of its holistic character and building on a shared consensus. Assessment in Education: Principles, Policy & Practice, 26*, 59–74. [Link.](https://doi.org/10.1080/0969594X.2016.1253542)
 
 ## Teacher training.
-Roose, I., Goossens, M., Vanderlinde, R., Vantieghem, W., & Avermaet, P. V. (2018). Measuring professional vision of inclusive classrooms in secondary education through video-based comparative judgement: An expert study. *Studies in Educational Evaluation, 56*, 71–84. [Link.](https://doi.org/10.1016/j.stueduc.2017.11.007)
-Seery, N., Canty, D., & Phelan, P. (2012). The validity and value of peer assessment using Adaptive Comparative Judgement in design driven practical education. *International Journal of Technology and Design Education, 22*, 205–226. [Link.](https://doi.org/10.1007/s10798-011-9194-0)
+* Roose, I., Goossens, M., Vanderlinde, R., Vantieghem, W., & Avermaet, P. V. (2018). Measuring professional vision of inclusive classrooms in secondary education through video-based comparative judgement: An expert study. *Studies in Educational Evaluation, 56*, 71–84. [Link.](https://doi.org/10.1016/j.stueduc.2017.11.007)
+* Seery, N., Canty, D., & Phelan, P. (2012). The validity and value of peer assessment using Adaptive Comparative Judgement in design driven practical education. *International Journal of Technology and Design Education, 22*, 205–226. [Link.](https://doi.org/10.1007/s10798-011-9194-0)
 
 ## Engineering.
-Williams, P. J. (2012). Investigating the feasibility of using digital representations of work for performance assessment in engineering. *International Journal of Technology and Design Education, 22*, 187–203. [Link.](https://doi.org/10.1007/s10798-011-9192-2)
+* Williams, P. J. (2012). Investigating the feasibility of using digital representations of work for performance assessment in engineering. *International Journal of Technology and Design Education, 22*, 187–203. [Link.](https://doi.org/10.1007/s10798-011-9192-2)
 
 
 
