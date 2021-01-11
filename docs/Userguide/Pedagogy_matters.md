@@ -75,7 +75,7 @@ Below is a list of peer-reviewed academic outputs describing the use of comparat
 * Davies, B., Alcock, L., & Jones, I. (2020). Comparative judgement, proof summaries and proof comprehension. *Educational Studies in Mathematics, 105*, 181–197. [Link.](https://doi.org/10.1007/s10649-020-09984-x)
 
 ## Writing.
-* van Daal, T., Lesterhuis, M., Coertjens, L., Donche, V., & De Maeyer, S. (2019). Validity of comparative judgement to assess academic writing: Examining implications of its holistic character and building on a shared consensus. Assessment in Education: Principles, Policy & Practice, 26*, 59–74. [Link.](https://doi.org/10.1080/0969594X.2016.1253542)
+* van Daal, T., Lesterhuis, M., Coertjens, L., Donche, V., & De Maeyer, S. (2019). Validity of comparative judgement to assess academic writing: Examining implications of its holistic character and building on a shared consensus. *Assessment in Education: Principles, Policy & Practice, 26*, 59–74. [Link.](https://doi.org/10.1080/0969594X.2016.1253542)
 
 ## Teacher training.
 * Roose, I., Goossens, M., Vanderlinde, R., Vantieghem, W., & Avermaet, P. V. (2018). Measuring professional vision of inclusive classrooms in secondary education through video-based comparative judgement: An expert study. *Studies in Educational Evaluation, 56*, 71–84. [Link.](https://doi.org/10.1016/j.stueduc.2017.11.007)
