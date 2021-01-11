@@ -29,7 +29,11 @@ That's the bare bones, but in practice a motivation for using comparative judgem
 # 2. Example use case.
 Comparative judgement has been used for several years on mathematics modules at Loughborough University. This section gives a high-level overview of typical usage, for the case of a Foundation Mathematics module. 
 
-Early in the module, usually in the first lecture, students are first presented with an open-ended prompt, such as *What is an equation? Give examples of how equations can be useful* at the top of a blank page. Such open-ended tasks are usually unfamiliar to students in mathematics, and they are asked to answer as best they can using writing, diagrams and symbols. They are given about ten minutes to answer in test conditions, and then submit their responses via an **Assignment** link in Moodle.
+Early in the module, usually in the first lecture, students are first presented with an open-ended prompt, such as 
+
+>*What is an equation? Give examples of how equations can be useful* 
+
+at the top of a blank page. Such open-ended tasks are usually unfamiliar to students in mathematics, and they are asked to answer as best they can using writing, diagrams and symbols. They are given about ten minutes to answer in test conditions, and then submit their responses via an **Assignment** link in Moodle.
 
 In the subsequent lecture, which might take place in a computer lab or using students' own devices, the students are then instructed to complete 10 comparisons of their peers' (anonymised). The students are told that for each pairing they should choose, for the case of this example, *the better understanding of equation*. Students are told to discuss and justify their decisions within one another whilst making comparisons, and they typically do this in groups of two or three.
 
