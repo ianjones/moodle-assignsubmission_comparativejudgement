@@ -49,7 +49,7 @@ class assign_submission_comparativejudgement extends assign_submission_plugin {
 
     public function get_config_or_default($key) {
         $defaults = [
-                'minjudgementsperuser'       => '',
+                'minjudgementsperuser'       => 10,
                 'maxjudgementsperuser'       => '',
                 'minjudgementspersubmission' => 5,
                 'judgementswhileeditable'    => true,
