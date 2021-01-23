@@ -45,7 +45,7 @@ abstract class basecontroller {
     protected function getheader($title) {
         $settings = \assign_submission_comparativejudgement::getpluginsettings($this->assignment);
         // If there are non-trivial judging instructions then display them as an alert.
-        $judgeinst = trim($settings->introduction);
+        $judgeinst = format_text(trim($settings->introduction));
         if ($judgeinst != '') {
             $judgeinst = \html_writer::div($judgeinst, 'alert alert-info');
         }

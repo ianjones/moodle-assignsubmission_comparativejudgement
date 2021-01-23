@@ -329,7 +329,7 @@ class comparisoncontroller extends basecontroller {
         $settings = assign_submission_comparativejudgement::getpluginsettings($this->assignment);
 
         $o = $this->getheader(get_string('docomparison', 'assignsubmission_comparativejudgement'));
-        $o .= \html_writer::div($settings->introduction, 'introtojudging');
+        $o .= \html_writer::div(format_text($settings->introduction), 'introtojudging');
         $o .= \html_writer::link($this->getinternallink('comparison'), get_string('continue'), ['class' => 'btn btn-primary']);
         $o .= $this->getfooter();
 
