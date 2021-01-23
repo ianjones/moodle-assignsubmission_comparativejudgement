@@ -23,7 +23,7 @@
 
 $string['addexemplar'] = 'Add exemplar';
 $string['alwayssameside'] = 'User always picked the same side';
-$string['avgtimetakencomparing'] = 'Average time spent';
+$string['avgtimetakencomparing'] = 'Median time spent';
 $string['body'] = 'Body';
 $string['bodydefault'] = '[fullname],
 As part of the grading of assignment [assignname] you are required to compare other submissions, you can do this by going to [judgeurl].';
@@ -34,20 +34,20 @@ $string['body_help'] = 'Body of message to send to judges, available placeholder
        [assignurl]
        [judgeurl]
        [assignname]';
-$string['calculategrades'] = 'Calculate grades';
+$string['calculategrades'] = 'Calculate scores';
 $string['comments'] = 'Comments';
 $string['comment'] = 'Comment';
 $string['commentpublished'] = 'Published';
 $string['comparisonprogress'] = 'Comaprison {$a->number} of {$a->required}';
 $string['comparativejudgement_allowcompareexemplars'] = 'Allow comparison of pairs of exemplars';
-$string['comparativejudgement_allowcompareexemplars_help'] = 'If this setting is disabled then users will never see pairs of exemplars for comparison';
+$string['comparativejudgement_allowcompareexemplars_help'] = 'If this setting is disabled then judges will never see pairs of exemplars for comparison';
 $string['comparativejudgement_allowrepeatcomparisons'] = 'Enable repeat comparisons';
-$string['comparativejudgement_allowrepeatcomparisons_help'] = 'If this setting is disabled then users will stop being presented with new pairs once they have compared every submission to every other submission once.';
+$string['comparativejudgement_allowrepeatcomparisons_help'] = 'If this setting is disabled then judges will stop being presented with new pairs once they have compared every submission to every other submission once.';
 $string['comparativejudgement_enablecomments'] = 'Enable comparison comments';
 $string['comparativejudgement_introduction'] = 'Introduction for judges';
-$string['comparativejudgement_judgementswhileeditable'] = 'Allow user to judge while their submission is editable';
+$string['comparativejudgement_judgementswhileeditable'] = 'Allow judge to make judgements while their submission is editable';
 $string['comparativejudgement:manageemails'] = 'Manage emails';
-$string['comparativejudgement:manageexemplars'] = 'Manage exemplars';
+$string['comparativejudgement:manageexemplars'] = 'Manage submissions';
 $string['copytogradebook'] = 'Copy grades to gradebook';
 $string['delay'] = 'Delay';
 $string['delaydetail'] = '{$a->delay} (currently {$a->current})';
@@ -68,7 +68,7 @@ $string['firstcomparison'] = 'First comparison';
 $string['importcomments'] = 'Import comments';
 $string['include'] = 'Include in grading';
 $string['judgeid'] = 'Judge id';
-$string['judgementstartdate'] = 'Start date for judgements';
+$string['judgementstartdate'] = 'Start date for comparisons';
 $string['judge'] = 'Judge';
 $string['judges'] = 'Judges';
 $string['lastcalculation'] = 'Last calculation of grades at: {$a}';
@@ -80,13 +80,13 @@ $string['managecomparisoncomments'] = 'Comparison comments';
 $string['manageexemplars'] = 'Manage exemplars';
 $string['managejudgerequestemail'] = 'Manage judgement request emails';
 $string['managejudgerequestemailintro'] =
-        'Reminder emails will be sent to all users elligible to make judgements, they will be sent out on a schedule starting from the judgement start date if set, otherwise the submission cut off date or due date. If cut off date or due date are used then any extensions applied to users will impact on the date they receive the reminder.';
+        'Reminder emails will be sent to all elligible judges, they will be sent out on a schedule starting from the judgement start date if set, otherwise the submission cut off date or due date. If cut off date or due date are used then any extensions applied to users will impact on the date they receive the reminder.';
 $string['managejudges'] = 'Manage judges';
 $string['managesubmissions'] = 'Manage submissions';
-$string['maxjudgementsperuser'] = 'Maximum judgements per user';
+$string['maxjudgementsperuser'] = 'Maximum comparisons per judge';
 $string['maxtimetakencomparing'] = 'Max. time spent';
-$string['minjudgementspersubmission'] = 'Minimum judgements per submission';
-$string['minjudgementsperuser'] = 'Minimum judgements per user';
+$string['minjudgementspersubmission'] = 'Minimum comparisons per submission';
+$string['minjudgementsperuser'] = 'Minimum comparisons per judge';
 $string['mintimetakencomparing'] = 'Min. time spent';
 $string['newreminderemail'] = 'New reminder email';
 $string['noofcomparisons'] = 'Comparisons made';
@@ -123,7 +123,7 @@ $string['privacy:metadata:assignsubmission_comparativejudgement:rankingid'] = 'R
 $string['privacy:metadata:assignsubmission_comparativejudgement:winningsubmission'] = 'Winning submission chosen during judgement';
 $string['privacy:metadata:assignsubmission_comparativejudgement:winningsubmissionposition'] = 'Position of winning submission chosen during judgement';
 
-$string['privacy:metadata:assignsubmission_comparativejudgement:assignsubmission_comp:tablepurpose'] = 'Comparisons performed by users';
+$string['privacy:metadata:assignsubmission_comparativejudgement:assignsubmission_comp:tablepurpose'] = 'Comparisons performed by judges';
 $string['privacy:metadata:assignsubmission_comparativejudgement:assignsubmission_compsubs:tablepurpose'] = 'Assignment submissions that have been compared and related comments';
 $string['privacy:metadata:assignsubmission_comparativejudgement:assignsubmission_rankingsub:tablepurpose'] = 'Scores that have been automatically generated for a submission';
 
