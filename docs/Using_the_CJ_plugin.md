@@ -2,7 +2,7 @@
 
 In this **Getting started guide** we will add a comparative judgement assignment to a Moodle course.
 
-This project extends the the Moodle Assignment module.  Hence there is no separate CJ module, and most CJ settings are through the assignment module **Submission type** settings.  That is, it is merely another `submission` type for the existing Assignment.
+This project extends the the Moodle Assignment module.  Hence there is no separate CJ module, and most CJ settings are through the assignment module **Submission type** settings.  That is, this plugin is merely another `submission` type for the existing Assignment.
 
 ## 1. Add an Assignment. 
 Click on **Add an activity or resource** and select **Assignment**.
