@@ -42,14 +42,7 @@ abstract class basecontroller {
         $this->assignmentsettings = \assign_submission_comparativejudgement::getpluginsettings($this->assignment);
     }
 
-    protected function getheader($title) {
-        $settings = \assign_submission_comparativejudgement::getpluginsettings($this->assignment);
-        // If there are non-trivial judging instructions then display them as an alert.
-        $judgeinst = format_text(trim($settings->introduction));
-        if ($judgeinst != '') {
-            $judgeinst = \html_writer::div($judgeinst, 'alert alert-info');
-        }
-
+    protected function getheader($title, $judgeinst = '') {
         $header = new assign_header($this->assignment->get_instance(),
                 $this->assignment->get_context(),
                 false,

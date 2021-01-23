@@ -225,8 +225,15 @@ class comparisoncontroller extends basecontroller {
 
         $submissionsunkeyed = array_values($submissions);
 
+        $settings = \assign_submission_comparativejudgement::getpluginsettings($this->assignment);
+        // If there are non-trivial judging instructions then display them as an alert.
+        $judgeinst = format_text(trim($settings->introduction));
+        if ($judgeinst != '') {
+            $judgeinst = \html_writer::div($judgeinst, 'alert alert-info');
+        }
+
         $renderable = [];
-        $renderable['header'] = $this->getheader(get_string('docomparison', 'assignsubmission_comparativejudgement'));
+        $renderable['header'] = $this->getheader(get_string('docomparison', 'assignsubmission_comparativejudgement'), $judgeinst);
         $renderable['submissions'] = [];
 
         $position = comparison::POSITION_LEFT;
