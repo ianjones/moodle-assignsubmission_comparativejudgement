@@ -6,7 +6,4 @@ Comparative judgement is particularly useful for reliably assessing complex and 
 
 Comparative judgement is particularly well suited to peer assessment, and this Moodle plug-in has been designed with peer assessment in mind. Students upload their own work through the Assessment resource, and can then make comparisons of their peers work.
 
-This plug-in was funded by the [Centre for Mathematical Cognition](https://www.lboro.ac.uk/research/cmc/) at [Loughborough University](https://www.lboro.ac.uk), and developed by [Andrew Hancox](https://uk.linkedin.com/in/andrewdchancox) and [Ian Jones](https://www.lboro.ac.uk/departments/mec/staff/ian-jones/) with input from [Chris Sangwin](https://www.maths.ed.ac.uk/~csangwin/). 
-
-If you are interested in using comparative judgement for assessment, learning or research purposes please contact [Ian Jones](https://www.lboro.ac.uk/departments/mec/staff/ian-jones/) who is dead keen on getting people to use comparative judgement and who will be very pleased to hear from you.
 
