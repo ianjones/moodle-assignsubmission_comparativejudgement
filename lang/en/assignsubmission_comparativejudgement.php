@@ -108,6 +108,7 @@ $string['userupload'] = 'Uploaded file';
 $string['viewassignment'] = 'View';
 $string['viewexemplar'] = 'View';
 $string['wins'] = 'Wins';
+$string['remainingjudgements'] = 'Minimum judgements remaining:';
 
 $string['privacy:judgement'] = 'Judgement received';
 $string['privacy:judgementmade'] = 'Judgement made';

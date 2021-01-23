@@ -202,8 +202,7 @@ class comparisonmanager {
 
         $settings = $this->getsettings();
         // Are they over the minimum number of judgements or is minjudgements empty.
-        $comparisoncount =
-                comparison::count_records(['usermodified' => $this->userid, 'assignmentid' => $this->assignmentinstance->id]);
+        $comparisoncount = $this->countjudgementsmade($this->userid, $this->assignmentinstance->id);
         if (empty($settings->minjudgementsperuser) || $comparisoncount >= $settings->minjudgementsperuser) {
             return false;
         }
@@ -218,6 +217,10 @@ class comparisonmanager {
         } else {
             return !empty($this->getpairtojudge(true));
         }
+    }
+
+    public static function countjudgementsmade($userid, $assignmentid) {
+        return comparison::count_records(['usermodified' => $userid, 'assignmentid' => $assignmentid]);
     }
 
     private function isusergradable() {
