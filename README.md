@@ -5,7 +5,7 @@ This module extends the moodle assignment to provide support for comparative jud
 Documentation is available.
 
 1. [What is comparative judgement](docs/What_is_CJ.md) (CJ) and why would you use it?
-2. [How to use this particular CJ implementation](Using_the_CJ_plugin.md) as part of the Moodle assignment module.
+2. [How to use this particular CJ implementation](docs/Using_the_CJ_plugin.md) as part of the Moodle assignment module.
 3. [Advice on practical pedagogy](docs/Pedagogy_matters.md], including using CJ as a research tool.
 
 Notes for [developers](docs/Developer.md) are also provided.
