@@ -1,4 +1,5 @@
 # Pedagogy matters
+
 Comparative judgement is a simple idea: compare pairs of submitted work and produce a score for each submission. This simplicity means that the comparative judgement Moodle plug-in is a very flexible tool that can be used in all sorts of ways. On this page we 
 * cover the basics of using comparative judgement for **summative assessment**;
 * provide an **example use case**, based on how one of the developers of the plug-in uses it;

@@ -1,8 +1,13 @@
 # Comparative Judgement
 
-This module extends the moodle assignment to provide support for comparative judgement (CJ).  Comparative judgement is an approach to assessment that offers an alternative to traditional marking, and this module has been specifically designed to support peer assessment and feedback. Students submit their work and then are presented with pairs of their peers' work and are asked simply to decide which is ‘better’ in terms of a high-level criterion such as 'problem solving' or ‘understanding of trigonometry’ or ‘quality of writing’. Many such pairwise decisions from the cohort are then used to produce a score for each submission. 
+This module extends the moodle assignment to provide support for comparative judgement (CJ).  Comparative judgement is an approach to assessment that offers an alternative to traditional marking, and this module has been specifically designed to support peer assessment and feedback. Students submit their work and then are presented with pairs of their peers' work and are asked simply to decide which is ‘better’ in terms of a high-level criterion such as 'problem solving' or ‘understanding of trigonometry’ or ‘quality of writing’. Many such pairwise decisions from the cohort are then used to produce a ranking of the submissions from which the module generates a score for each submission. 
 
-An "author quick start" guide is available in the [documentation](docs/Author_quick_start.md).
+[Documentation](docs/About/what_is_CJ.md) is available.
+
+1. What is comparative judgement (CJ) and why would you use it?
+2. How to use this particular CJ implementation as part of the Moodle assignment module?
+
+Notes for [developers](docs/Developer.md) are also provided.
 
 ## Install guide
 
@@ -50,7 +55,6 @@ Local version:
 Remote version:
 
 `cat docs/exampledecisions.csv |  su - WEBSERVERUSERCONTEXT -c 'ssh _username_@_servername_ "Rscript pipeablescript.R"'`
-
 
 
 https://rtask.thinkr.fr/installation-of-r-3-5-on-ubuntu-18-04-lts-and-tips-for-spatial-packages/
