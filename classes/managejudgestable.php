@@ -131,7 +131,8 @@ class managejudgestable extends \table_sql {
         if ($row->leftchoices == $row->comparisons || $row->rightchoices == $row->comparisons) {
 
             if (!optional_param('download', false, PARAM_ALPHA)) {
-                $text .= " " . $OUTPUT->pix_icon('i/warning', get_string('alwayssameside', 'assignsubmission_comparativejudgement'), '',
+                $text .= " " . $OUTPUT->pix_icon('i/warning',
+                        get_string('alwayssameside', 'assignsubmission_comparativejudgement'), '',
                         array('class' => 'icon icon-pre', 'title' => ''));
             }
         }
