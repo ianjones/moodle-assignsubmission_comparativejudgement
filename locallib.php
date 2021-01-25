@@ -175,19 +175,23 @@ class assign_submission_comparativejudgement extends assign_submission_plugin {
         global $DB;
 
         $DB->delete_records('assignsubmission_comp',
-                ['assignment' => $this->assignment->get_instance()->id]);
-        $DB->delete_records('assignsubmission_compsubs',
-                ['assignment' => $this->assignment->get_instance()->id]);
+                ['assignmentid' => $this->assignment->get_instance()->id]);
         $DB->delete_records('assignsubmission_ranking',
-                ['assignment' => $this->assignment->get_instance()->id]);
-        $DB->delete_records('assignsubmission_rankingsub',
-                ['assignment' => $this->assignment->get_instance()->id]);
-        $DB->delete_records('assignsubmission_exemplars',
-                ['assignment' => $this->assignment->get_instance()->id]);
-        $DB->delete_records('assignsubmission_exclusion',
-                ['assignment' => $this->assignment->get_instance()->id]);
+                ['assignmentid' => $this->assignment->get_instance()->id]);
         $DB->delete_records('assignsubmission_email',
-                ['assignment' => $this->assignment->get_instance()->id]);
+                ['assignmentid' => $this->assignment->get_instance()->id]);
+
+        $DB->delete_records_subquery('assignsubmission_compsubs', 'submissionid', 'id',
+                "select id from {assignment_submissions} where assignment = :assignmentid", ['assignmentid' => $this->assignment->get_instance()->id]);
+
+        $DB->delete_records_subquery('assignsubmission_rankingsub', 'submissionid', 'id',
+                "select id from {assignment_submissions} where assignment = :assignmentid", ['assignmentid' => $this->assignment->get_instance()->id]);
+
+        $DB->delete_records_subquery('assignsubmission_exemplars', 'submissionid', 'id',
+                "select id from {assignment_submissions} where assignment = :assignmentid", ['assignmentid' => $this->assignment->get_instance()->id]);
+
+        $DB->execute('delete from {assignsubmission_exclusion} where type = :type and id in (select id from {assignment_submissions} where assignment = :assignmentid)',
+                ['assignmentid' => $this->assignment->get_instance()->id, 'type' => \assignsubmission_comparativejudgement\exclusion::EXCLUSION_TYPE_SUBMISSION]);
 
         return true;
     }
