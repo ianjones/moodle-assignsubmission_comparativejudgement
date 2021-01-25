@@ -43,10 +43,10 @@ class managecomparisoncommentstable extends \table_sql {
 
         parent::__construct('managecomparisoncomments_table');
 
-        $columns = ['judge', 'submission', 'comments'];
+        $columns = ['fullname', 'submission', 'comments'];
 
         $headers = [
-                get_string('judge', 'assignsubmission_comparativejudgement'),
+                get_string('fullname'),
                 get_string('submission', 'assignsubmission_comparativejudgement'),
                 get_string('comment', 'assignsubmission_comparativejudgement'),
         ];
@@ -128,10 +128,6 @@ class managecomparisoncommentstable extends \table_sql {
 
     public function col_comments($row) {
         return $this->format_text($row->comments, $row->commentsformat);
-    }
-
-    public function col_judge($row) {
-        return parent::col_fullname($row);
     }
 
     public function col_commentpublished($row) {
