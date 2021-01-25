@@ -1,4 +1,5 @@
 # Pedagogy matters
+
 Comparative judgement is a simple idea: compare pairs of submitted work and produce a score for each submission. This simplicity means that the comparative judgement Moodle plug-in is a very flexible tool that can be used in all sorts of ways. On this page we 
 * cover the basics of using comparative judgement for **summative assessment**;
 * provide an **example use case**, based on how one of the developers of the plug-in uses it;
@@ -45,6 +46,8 @@ Students are told to discuss and justify their decisions within one another whil
 Once the comparisons are complete the lecturer facilitates a whole class discussion in which students share what they think distinguishes better quality responses. During these discussions the lecturer might reveal the top two or three (anonymised) submissions to further stimulate discussion; lower-scoring submissions are not revealed, even anonymised, to spare the feelings of the students who scored poorly. For the case of open-ended prompts in mathematics similar conclusions usually arise from the group discussion: for example, that better quality responses use a range of representations (prose, equations, graphs, diagrams), tend not contain mathematical errors, contain worked through examples, and so on. 
 
 The above activity is repeated three or four times over the duration of a module, with different open-ended prompts. As the summative test nears towards the end of the module the students are told that the best way to revise is to practise the questions, submit their responses, and to continue making comparisons of their peers' work (there is no limit on how many comparisons they can make and how many responses they can submit once an **Assignment** is set up on Moodle). It is common in revision sessions to see students choosing to revisit the comparative judgement activities in small groups to discuss and make notes on how to produce high-quality responses. 
+
+You can see a youtube video covering this example use case [here](https://www.youtube.com/watch?v=A_5UOXBlJ24&feature=emb_logo).
 
 # 3. How to criterion reference scores.
 A common misconception about comparative judgement is that it is inherently norm-referenced. This is an understandable assumption given the scores are generated solely from relative comparisons of students' work. However, as is the case for scores produced by any assessment method, the scores can be interpreted and cut based on quotas or criterion. In practice most comparative judgement assessments are interpreted and the grade-boundaries applied using criterion-referencing, not norm-referencing.

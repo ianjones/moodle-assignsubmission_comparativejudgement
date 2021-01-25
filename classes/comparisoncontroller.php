@@ -41,16 +41,19 @@ class comparisoncontroller extends basecontroller {
     }
 
     public function view() {
-        global $PAGE;
+        global $PAGE, $USER;
         $url = $this->getinternallink('comparison');
         $PAGE->set_url($url);
 
         $assignmentid = $this->assignment->get_instance()->id;
+        $userid = $USER->id;
+        $judgementsmade = comparisonmanager::countjudgementsmade($userid, $assignmentid);
+
         $introviewed = get_user_preferences("assignsubmission_comparativejudgement_introviewed_$assignmentid", false);
         $settings = assign_submission_comparativejudgement::getpluginsettings($this->assignment);
 
         if (empty($settings->introduction) || $introviewed) {
-            return $this->showcomparisonscreen();
+            return $this->showcomparisonscreen($judgementsmade);
         } else {
             set_user_preferences(["assignsubmission_comparativejudgement_introviewed_$assignmentid" => true]);
             return $this->showintro();
@@ -152,7 +155,7 @@ class comparisoncontroller extends basecontroller {
      * @throws \coding_exception
      * @throws \moodle_exception
      */
-    private function showcomparisonscreen() {
+    private function showcomparisonscreen($judgementsmade) {
         global $USER, $OUTPUT, $PAGE;
 
         $comparisonmanager = new comparisonmanager($USER->id, $this->assignment);
@@ -225,8 +228,21 @@ class comparisoncontroller extends basecontroller {
 
         $submissionsunkeyed = array_values($submissions);
 
+        $settings = \assign_submission_comparativejudgement::getpluginsettings($this->assignment);
+        // If there are non-trivial judging instructions then display them as an alert.
+        $judgeinst = format_text(trim($settings->introduction));
+        if ($judgeinst != '') {
+            $judgeinst = \html_writer::div($judgeinst, 'alert alert-info');
+        }
+        $judgementsremaining = $settings->minjudgementsperuser - $judgementsmade;
+        if ($judgementsremaining > 0) {
+            $judgeinst .= \html_writer::tag('p',
+                    get_string('remainingjudgements', 'assignsubmission_comparativejudgement') . ' ' . $judgementsremaining);
+        }
+
         $renderable = [];
-        $renderable['header'] = $this->getheader(get_string('docomparison', 'assignsubmission_comparativejudgement'));
+        $renderable['header'] = $this->getheader(get_string('docomparison', 'assignsubmission_comparativejudgement'),
+                $judgeinst);
         $renderable['submissions'] = [];
 
         $position = comparison::POSITION_LEFT;
@@ -329,7 +345,7 @@ class comparisoncontroller extends basecontroller {
         $settings = assign_submission_comparativejudgement::getpluginsettings($this->assignment);
 
         $o = $this->getheader(get_string('docomparison', 'assignsubmission_comparativejudgement'));
-        $o .= \html_writer::div($settings->introduction, 'introtojudging');
+        $o .= \html_writer::div(format_text($settings->introduction), 'introtojudging');
         $o .= \html_writer::link($this->getinternallink('comparison'), get_string('continue'), ['class' => 'btn btn-primary']);
         $o .= $this->getfooter();
 

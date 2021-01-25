@@ -42,12 +42,13 @@ abstract class basecontroller {
         $this->assignmentsettings = \assign_submission_comparativejudgement::getpluginsettings($this->assignment);
     }
 
-    protected function getheader($title) {
+    protected function getheader($title, $judgeinst = '') {
         $header = new assign_header($this->assignment->get_instance(),
                 $this->assignment->get_context(),
                 false,
                 $this->assignment->get_course_module()->id,
-                $title);
+                $title,
+                $judgeinst);
         return $this->renderer->render($header);
     }
 

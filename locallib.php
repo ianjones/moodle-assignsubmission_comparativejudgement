@@ -49,7 +49,7 @@ class assign_submission_comparativejudgement extends assign_submission_plugin {
 
     public function get_config_or_default($key) {
         $defaults = [
-                'minjudgementsperuser'       => '',
+                'minjudgementsperuser'       => 10,
                 'maxjudgementsperuser'       => '',
                 'minjudgementspersubmission' => 5,
                 'judgementswhileeditable'    => true,
@@ -72,13 +72,15 @@ class assign_submission_comparativejudgement extends assign_submission_plugin {
     public function get_settings(MoodleQuickForm $mform) {
         $mform->addElement('advcheckbox', 'comparativejudgement_allowcompareexemplars',
                 get_string('comparativejudgement_allowcompareexemplars', 'assignsubmission_comparativejudgement'));
-        $mform->addHelpButton('comparativejudgement_allowcompareexemplars', 'comparativejudgement_allowcompareexemplars', 'assignsubmission_comparativejudgement');
+        $mform->addHelpButton('comparativejudgement_allowcompareexemplars', 'comparativejudgement_allowcompareexemplars',
+                'assignsubmission_comparativejudgement');
         $mform->setDefault('comparativejudgement_allowcompareexemplars',
                 $this->get_config_or_default('allowcompareexemplars'));
 
         $mform->addElement('advcheckbox', 'comparativejudgement_allowrepeatcomparisons',
                 get_string('comparativejudgement_allowrepeatcomparisons', 'assignsubmission_comparativejudgement'));
-        $mform->addHelpButton('comparativejudgement_allowrepeatcomparisons', 'comparativejudgement_allowrepeatcomparisons', 'assignsubmission_comparativejudgement');
+        $mform->addHelpButton('comparativejudgement_allowrepeatcomparisons', 'comparativejudgement_allowrepeatcomparisons',
+                'assignsubmission_comparativejudgement');
         $mform->setDefault('comparativejudgement_allowrepeatcomparisons',
                 $this->get_config_or_default('allowrepeatcomparisons'));
 
