@@ -35,6 +35,7 @@ class managesubmissionstable extends \table_sql {
     private $cangrade;
     private $canmanageexemplars;
     private $cmid;
+    /** @var exemplarcontroller */
     private $exemplarcontroller;
 
     public function __construct(assign $assignment, $sortcolumn) {

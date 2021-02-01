@@ -34,9 +34,16 @@ require_once($CFG->dirroot . '/user/profile/lib.php');
 class managecomparisoncommentstable extends \table_sql {
     private $cangrade;
     private $cmid;
+    private $canmanageexemplars;
+
+    /** @var exemplarcontroller */
+    private $exemplarcontroller;
 
     public function __construct(assign $assignment, $sortcolumn) {
         global $PAGE;
+        $this->exemplarcontroller = new exemplarcontroller($assignment);
+        $this->canmanageexemplars =
+                has_capability('assignsubmission/comparativejudgement:manageexemplars', $assignment->get_context());
 
         $PAGE->requires->js_call_amd('assignsubmission_comparativejudgement/manage', 'init',
                 ['entitytype' => exclusion::EXCLUSION_TYPE_COMPARISONCOMMENT]);
@@ -86,11 +93,14 @@ class managecomparisoncommentstable extends \table_sql {
                 CASE WHEN exclusion.id IS NOT NULL THEN 1 ELSE 0 END as excluded,
                 asssub.userid as subuserid,
                 asssub.id as submissionid,
-                compsub.commentpublished",
+                compsub.commentpublished,
+                exemp.title as exemplartitle,
+                exemp.id as exemplarid",
             "{assignsubmission_compsubs} compsub
                 INNER JOIN {assignsubmission_comp} comp ON compsub.judgementid = comp.id
                 INNER JOIN {user} u ON u.id = comp.usermodified
                 INNER JOIN {assign_submission} asssub ON asssub.id = compsub.submissionid
+                LEFT JOIN {assignsubmission_exemplars} exemp ON exemp.submissionid = compsub.submissionid
                 LEFT JOIN {assignsubmission_exclusion} exclusion ON exclusion.entityid = compsub.id AND exclusion.type = :entitytype",
                 "compsub.comments is not null AND compsub.comments <> '' AND comp.assignmentid = :assignmentid",
                 $inparams);
@@ -108,12 +118,11 @@ class managecomparisoncommentstable extends \table_sql {
 
     public function col_submission($row) {
         if (!empty($row->exemplartitle) && $this->canmanageexemplars) {
-
-            $url = $this->exemplarcontroller->addexemplarlink();
+            $url = $this->exemplarcontroller->getinternallink('addexemplar');
             $url->param('exemplarid', $row->exemplarid);
             return \html_writer::link($url,
                     get_string('viewexemplar', 'assignsubmission_comparativejudgement'));
-        } else if ($this->cangrade) {
+        } else if ($this->cangrade && empty($row->exemplartitle)) {
             return \html_writer::link(new \moodle_url('/mod/assign/view.php', [
                     'id'     => $this->cmid,
                     'rownum' => 0,
