@@ -50,11 +50,12 @@ class managecomparisoncommentstable extends \table_sql {
 
         parent::__construct('managecomparisoncomments_table');
 
-        $columns = ['fullname', 'submission', 'comments'];
+        $columns = ['fullname', 'submission', 'othersubmission', 'comments'];
 
         $headers = [
                 get_string('fullname'),
                 get_string('submission', 'assignsubmission_comparativejudgement'),
+                get_string('comparedsubmission', 'assignsubmission_comparativejudgement'),
                 get_string('comment', 'assignsubmission_comparativejudgement'),
         ];
 
@@ -93,14 +94,21 @@ class managecomparisoncommentstable extends \table_sql {
                 CASE WHEN exclusion.id IS NOT NULL THEN 1 ELSE 0 END as excluded,
                 asssub.userid as subuserid,
                 asssub.id as submissionid,
+                asssubother.userid as othersubuserid,
+                compsubother.id as othersubmissionid,
                 compsub.commentpublished,
                 exemp.title as exemplartitle,
-                exemp.id as exemplarid",
+                exemp.id as exemplarid,
+                exempother.title as otherexemplartitle,
+                exempother.id as otherexemplarid",
             "{assignsubmission_compsubs} compsub
                 INNER JOIN {assignsubmission_comp} comp ON compsub.judgementid = comp.id
                 INNER JOIN {user} u ON u.id = comp.usermodified
                 INNER JOIN {assign_submission} asssub ON asssub.id = compsub.submissionid
                 LEFT JOIN {assignsubmission_exemplars} exemp ON exemp.submissionid = compsub.submissionid
+                LEFT JOIN {assignsubmission_compsubs} compsubother ON compsubother.judgementid = comp.id AND compsubother.id <> compsub.id
+                LEFT JOIN {assign_submission} asssubother ON asssubother.id = compsubother.submissionid
+                LEFT JOIN {assignsubmission_exemplars} exempother ON exempother.submissionid = compsubother.submissionid
                 LEFT JOIN {assignsubmission_exclusion} exclusion ON exclusion.entityid = compsub.id AND exclusion.type = :entitytype",
                 "compsub.comments is not null AND compsub.comments <> '' AND comp.assignmentid = :assignmentid",
                 $inparams);
@@ -116,18 +124,22 @@ class managecomparisoncommentstable extends \table_sql {
                 $attributes));
     }
 
-    public function col_submission($row) {
-        if (!empty($row->exemplartitle) && $this->canmanageexemplars) {
+    public function col_othersubmission($row) {
+        return $this->col_submission($row, 'othersubuserid', 'otherexemplartitle', 'otherexemplarid');
+    }
+
+    public function col_submission($row, $subuseridcol = 'subuserid', $exemplartitlecol = 'exemplartitle', $exemplaridcol = 'exemplarid') {
+        if (!empty($row->$exemplartitlecol) && $this->canmanageexemplars) {
             $url = $this->exemplarcontroller->getinternallink('addexemplar');
-            $url->param('exemplarid', $row->exemplarid);
+            $url->param('exemplarid', $row->$exemplaridcol);
             return \html_writer::link($url,
                     get_string('viewexemplar', 'assignsubmission_comparativejudgement'));
-        } else if ($this->cangrade && empty($row->exemplartitle)) {
+        } else if ($this->cangrade && empty($row->$exemplartitlecol)) {
             return \html_writer::link(new \moodle_url('/mod/assign/view.php', [
                     'id'     => $this->cmid,
                     'rownum' => 0,
                     'action' => 'grader',
-                    'userid' => $row->subuserid
+                    'userid' => $row->$subuseridcol
             ]),
                     get_string('viewassignment', 'assignsubmission_comparativejudgement'));
         } else {

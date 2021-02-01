@@ -48,6 +48,7 @@ $string['comparativejudgement_introduction'] = 'Introduction for judges';
 $string['comparativejudgement_judgementswhileeditable'] = 'Allow judge to make judgements while their submission is editable';
 $string['comparativejudgement:manageemails'] = 'Manage emails';
 $string['comparativejudgement:manageexemplars'] = 'Manage submissions';
+$string['comparedsubmission'] = 'Compared submission';
 $string['copytogradebook'] = 'Copy grades to gradebook';
 $string['delay'] = 'Delay';
 $string['delaydetail'] = '{$a->delay} (currently {$a->current})';
