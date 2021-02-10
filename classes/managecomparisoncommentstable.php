@@ -40,7 +40,7 @@ class managecomparisoncommentstable extends \table_sql {
     private $exemplarcontroller;
 
     public function __construct(assign $assignment, $sortcolumn) {
-        global $PAGE;
+        global $PAGE, $DB;
         $this->exemplarcontroller = new exemplarcontroller($assignment);
         $this->canmanageexemplars =
                 has_capability('assignsubmission/comparativejudgement:manageexemplars', $assignment->get_context());
@@ -86,7 +86,9 @@ class managecomparisoncommentstable extends \table_sql {
                 'assignmentid' => $assignment->get_instance()->id
         ];
 
-        $this->set_sql("compsub.id,
+        $uniquecol = $DB->sql_concat('compsub.id', '"_"', 'asssub.id', '"_"', 'asssubother.id');
+        $this->set_sql("$uniquecol,
+                compsub.id,
                 u.id as judgeid,
                 $namefields,
                 compsub.comments,
