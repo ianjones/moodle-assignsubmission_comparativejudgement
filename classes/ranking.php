@@ -86,9 +86,11 @@ where comp.assignmentid = :assignmentid
     }
 
     public static function docomparison($assignmentid) {
-        global $CFG;
-
         $csv = self::getrawjudgedatacsv($assignmentid);
+
+        if (empty($csv)) {
+            return false;
+        }
 
         $rhandler = new rhandler("/mod/assign/submission/comparativejudgement/lib/pipeablescript.R");
         $rhandler->setinput($csv);
