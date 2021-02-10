@@ -53,6 +53,8 @@ class managecomparisoncommentscontroller extends basecontroller {
                     'objectid'      => $this->assignment->get_course_module()->id,
                     'context'       => $this->assignment->get_context()
             ])->trigger();
+
+            redirect($this->getinternallink('managecomparisoncomments'), get_string('commentsimported', 'assignsubmission_comparativejudgement'));
         }
 
         $downloadformat = optional_param('download', false, PARAM_ALPHA);

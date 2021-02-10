@@ -37,6 +37,7 @@ $string['body_help'] = 'Body of message to send to judges, available placeholder
 $string['calculategrades'] = 'Calculate scores';
 $string['comments'] = 'Comments';
 $string['comment'] = 'Comment';
+$string['commentsimported'] = 'Comments imported';
 $string['commentpublished'] = 'Published';
 $string['comparisonprogress'] = 'Comaprison {$a->number} of {$a->required}';
 $string['comparativejudgement_allowcompareexemplars'] = 'Allow comparison of pairs of exemplars';
