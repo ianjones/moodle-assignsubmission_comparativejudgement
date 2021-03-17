@@ -55,6 +55,8 @@ At the bottom of the page are three buttons.
 * **Raw judgement data**: for advance users, download the comparisons made and calculate your own scores offline. For support processing comparative judgement decisions offline see this [user guide](https://www.notion.so/nmm/No-More-Marking-for-researchers-70cb4eec46d547cd91c65ff2066d415f).
 * **Copy grades to gradebook**: click once all comparisons are complete to copy the grades to the Moodle gradebook.
 
+Note that if you set the option to **Enable comparison comments**, there is an extra step to distribute the comments to students. On the "Comparison comments" page, press the button at the bottom of the table, **Import comments**. This copies across all comments received on a student's attempt into the "Feedback comments" field.
+
 ## 6. Manage judgement request emails.
 Use this feature to send emails informaing or reminding judges to start or complete their comparisons.
 
