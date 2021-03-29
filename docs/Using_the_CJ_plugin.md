@@ -36,7 +36,12 @@ You can monitor the quantity and quality of the comparisons completed by each ju
 * **First/Last comparison**: the date and time of the first comparison and the most recent comparison made by the judge.
 * **Include in grading**: exclude a judge's comparisons from contributing to submission scores, for example if the judge seems not to have taken their comparisons seriously.
 
-## 5. Manage submissions.
+## 5. Comparison comments.
+This button appears if **Enable comparison comments** is selected in **Settings**. Here you can view comments submitted by judges. 
+
+To distribute the comments to students, click the **Import comments** button at the bottom of the screen. The comments will appear to the students in the "Feedback comments" when students visit their submission.  If there is already a comment against the submission then the copied comment gets appended to it.
+
+## 6. Manage submissions.
 You can monitor both your uploaded exemplars and the students' submissions, see *Column headings* subsection below. You can also **Calculate grades** and download **Raw judgement data**, see *Grades and judgement data* subsection below.
 
 ### Column headings
@@ -55,8 +60,8 @@ At the bottom of the page are three buttons.
 * **Raw judgement data**: for advance users, download the comparisons made and calculate your own scores offline. For support processing comparative judgement decisions offline see this [user guide](https://www.notion.so/nmm/No-More-Marking-for-researchers-70cb4eec46d547cd91c65ff2066d415f).
 * **Copy grades to gradebook**: click once all comparisons are complete to copy the grades to the Moodle gradebook.
 
-## 6. Manage judgement request emails.
+## 7. Manage judgement request emails.
 Use this feature to send emails informaing or reminding judges to start or complete their comparisons.
 
-## 7. Do comparison.
+## 8. Do comparison.
 This button becomes available to judges once a comparative judgement assignment has been set up and there are at least 2 exemplars or submissions uploaded, and the number of comparisons required (see **Settings** above) is greater than 0.
