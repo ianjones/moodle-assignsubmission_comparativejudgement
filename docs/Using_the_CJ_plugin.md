@@ -12,7 +12,9 @@ Click on **Add an activity or resource** and select **Assignment**.
 Only settings specific to the comparative judgement plug-in are detailed here, which are found in **Submission types**.
 
 * Select **Comparative judgement**. You can decide whether students will upload **File submissions**, or submit **Online text**, or both.
-* You can specify the number of comparisons each judge will complete using **Minimum judgements per user** and **Maximum judgements per user**. For a summative assessment these numbers might be the same as each other, perhaps 10 comparisons per submission. For learning activities you might require a minimum of 10 comparisons per judge, but have no practical upper limit in mind, so set it to 999.
+* Select **Allow comparison of pairs of exemplars**. This means examples uploaded by the teacher can be compared with one another. This is particularly useful if, for example, you want students only to compare example submissions carefully selected by the teacher.
+* Select **Enable repeat comparisons** to ensure students can continue comparing even after all possible pairings of submissions have been judged.
+* You can specify the number of comparisons each student will complete using **Minimum judgements per user** and **Maximum judgements per user**. For a summative assessment these numbers might be the same as each other, perhaps 10 comparisons per submission. For learning activities you might require a minimum of 10 comparisons per judge, but have no practical upper limit in mind, so set it to 999.
 * For **Minimum judgements per submission** a value of 10 comparisons per submission or more is recommended in the [research literature](https://doi.org/10.1080/0969594X.2019.1602027). 
 * To allow judges to make written comments on submissions when doing comparisons, select **Enable comparison comments**.
 * You can set a **Start date for judgements**, or not if you wish judges to be able to start their comparisons immediately.
