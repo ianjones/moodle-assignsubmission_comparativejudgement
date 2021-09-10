@@ -56,8 +56,8 @@ class assign_submission_comparativejudgement extends assign_submission_plugin {
                 'enablecomments'             => true,
                 'judges'                     => self::FAKEROLE_ASSIGNMENT_SUBMITTED,
                 'introduction'               => '',
-                'allowrepeatcomparisons'    => false,
-                'allowcompareexemplars'    => false,
+                'allowrepeatcomparisons'    => true,
+                'allowcompareexemplars'    => true,
         ];
 
         $config = $this->get_config($key);
