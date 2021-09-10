@@ -24,6 +24,8 @@
 use assignsubmission_comparativejudgement\comparisonmanager;
 use assignsubmission_comparativejudgement\judgerequestemail;
 
+defined('MOODLE_INTERNAL') || die();
+
 global $CFG;
 require_once($CFG->dirroot . '/mod/assign/tests/generator.php');
 

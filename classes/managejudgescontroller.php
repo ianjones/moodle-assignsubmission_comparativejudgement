@@ -29,7 +29,8 @@ class managejudgescontroller extends basecontroller {
     public function summary() {
         global $OUTPUT;
 
-        return $OUTPUT->single_button($this->getinternallink('managejudges'), get_string('managejudges', 'assignsubmission_comparativejudgement'), 'get');
+        return $OUTPUT->single_button($this->getinternallink('managejudges'),
+                get_string('managejudges', 'assignsubmission_comparativejudgement'), 'get');
     }
 
     public function view() {

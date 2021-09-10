@@ -365,14 +365,15 @@ class provider implements metadataprovider,
     private static function judgementsmade($userid, $contextid): array {
         global $DB;
 
-        return $DB->get_records_sql("SELECT compsubs.id, timemodified, comments, commentsformat, winningsubmission, compsubs.submissionid as submissionid
-                        FROM {assignsubmission_comp} comp
-                        INNER JOIN {assignsubmission_compsubs} compsubs ON comp.id = compsubs.judgementid
-                        INNER JOIN {course_modules} cm ON comp.assignmentid = cm.instance
-                        INNER JOIN {modules} m ON m.name = 'assign' AND m.id = cm.module
-                        INNER JOIN {context} ctx ON ctx.instanceid = cm.id AND ctx.contextlevel = :cmcontextlevel
-                        WHERE comp.usermodified = :userid AND ctx.id = :contextid
-                        GROUP BY compsubs.id, timemodified, comments, commentsformat, winningsubmission, compsubs.submissionid",
+        return $DB->get_records_sql("SELECT compsubs.id, timemodified, comments, commentsformat, winningsubmission,
+                    compsubs.submissionid as submissionid
+                    FROM {assignsubmission_comp} comp
+                    INNER JOIN {assignsubmission_compsubs} compsubs ON comp.id = compsubs.judgementid
+                    INNER JOIN {course_modules} cm ON comp.assignmentid = cm.instance
+                    INNER JOIN {modules} m ON m.name = 'assign' AND m.id = cm.module
+                    INNER JOIN {context} ctx ON ctx.instanceid = cm.id AND ctx.contextlevel = :cmcontextlevel
+                    WHERE comp.usermodified = :userid AND ctx.id = :contextid
+                    GROUP BY compsubs.id, timemodified, comments, commentsformat, winningsubmission, compsubs.submissionid",
                 ['userid' => $userid, 'cmcontextlevel' => CONTEXT_MODULE, 'contextid' => $contextid]);
     }
 

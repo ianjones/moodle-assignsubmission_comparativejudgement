@@ -55,9 +55,12 @@ from {assignsubmission_comp} comp
              comp.winningsubmission <> compsubs.submissionid and comp.id = compsubs.judgementid
          inner join {assign_submission} asssubwin on asssubwin.id = comp.winningsubmission
          inner join {assign_submission} asssublose on asssublose.id = compsubs.submissionid
-         LEFT JOIN {assignsubmission_exclusion} exclusion_judge ON exclusion_judge.entityid = comp.usermodified AND exclusion_judge.type = :entitytypejudge
-         LEFT JOIN {assignsubmission_exclusion} exclusion_sub_win ON exclusion_sub_win.entityid = comp.winningsubmission AND exclusion_sub_win.type = :entitytypesubwin
-         LEFT JOIN {assignsubmission_exclusion} exclusion_sub_lose ON exclusion_sub_lose.entityid = compsubs.submissionid AND exclusion_sub_lose.type = :entitytypesublose
+         LEFT JOIN {assignsubmission_exclusion} exclusion_judge ON
+                exclusion_judge.entityid = comp.usermodified AND exclusion_judge.type = :entitytypejudge
+         LEFT JOIN {assignsubmission_exclusion} exclusion_sub_win ON
+                exclusion_sub_win.entityid = comp.winningsubmission AND exclusion_sub_win.type = :entitytypesubwin
+         LEFT JOIN {assignsubmission_exclusion} exclusion_sub_lose ON
+                exclusion_sub_lose.entityid = compsubs.submissionid AND exclusion_sub_lose.type = :entitytypesublose
 where comp.assignmentid = :assignmentid
   AND asssubwin.status = :status
   AND asssublose.status = :status2
@@ -99,7 +102,8 @@ where comp.assignmentid = :assignmentid
         $rawoutput = $rhandler->get('output');
 
         if (empty($rawoutput)) {
-            print_error('errorexecutingscript', 'assignsubmission_comparativejudgement', null, null, $rhandler->get('errors'));
+            print_error('errorexecutingscript', 'assignsubmission_comparativejudgement',
+                    null, null, $rhandler->get('errors'));
         }
 
         $output = array_map('str_getcsv', explode("\n", $rawoutput));
@@ -149,10 +153,10 @@ where comp.assignmentid = :assignmentid
         require_once($CFG->dirroot . '/mod/assign/gradeform.php');
 
         $submissiongrades = $DB->get_records_sql('SELECT asssub.id, asssub.groupid, asssub.userid, rank.score
-                                                            FROM {assign_submission} asssub
-                                                            INNER JOIN {assignsubmission_rankingsub} rank ON rank.submissionid = asssub.id
-                                                            LEFT JOIN {assignsubmission_exemplars} exemp ON exemp.submissionid = asssub.id
-                                                            WHERE exemp.id IS NULL AND rank.rankingid = :rankingid',
+                                FROM {assign_submission} asssub
+                                INNER JOIN {assignsubmission_rankingsub} rank ON rank.submissionid = asssub.id
+                                LEFT JOIN {assignsubmission_exemplars} exemp ON exemp.submissionid = asssub.id
+                                WHERE exemp.id IS NULL AND rank.rankingid = :rankingid',
                 ['rankingid' => $this->get('id')]
         );
 

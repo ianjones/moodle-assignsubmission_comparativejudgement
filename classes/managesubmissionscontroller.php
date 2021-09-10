@@ -47,7 +47,8 @@ class managesubmissionscontroller extends basecontroller {
             $ranking = ranking::docomparison($assignmentid);
 
             if ($ranking == false) {
-                redirect($this->getinternallink('managesubmissions'), get_string('nothingtocompare', 'assignsubmission_comparativejudgement'));
+                redirect($this->getinternallink('managesubmissions'), get_string('nothingtocompare',
+                        'assignsubmission_comparativejudgement'));
             }
 
             grades_calculated::create([
@@ -56,7 +57,8 @@ class managesubmissionscontroller extends basecontroller {
                     'context'       => $this->assignment->get_context()
             ])->trigger();
 
-            redirect($this->getinternallink('managesubmissions'), get_string('comparisondone', 'assignsubmission_comparativejudgement'));
+            redirect($this->getinternallink('managesubmissions'),
+                    get_string('comparisondone', 'assignsubmission_comparativejudgement'));
         }
 
         if (optional_param('downloadrawjudgedata', false, PARAM_BOOL)) {
