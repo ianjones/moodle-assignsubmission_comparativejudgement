@@ -32,10 +32,10 @@ require_once($CFG->dirroot . '/lib/tablelib.php');
 require_once($CFG->dirroot . '/user/profile/lib.php');
 
 class exemplartable extends \table_sql {
+
+    /** @var exemplarcontroller */
     private $exemplarcontroller;
     public function __construct(assign $assignment, $sortcolumn) {
-        global $DB, $PAGE, $USER;
-
         $this->exemplarcontroller = new exemplarcontroller($assignment);
 
         parent::__construct('manageexemplars_table');

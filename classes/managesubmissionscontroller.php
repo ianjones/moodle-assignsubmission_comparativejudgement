@@ -44,13 +44,19 @@ class managesubmissionscontroller extends basecontroller {
         $assignmentid = $this->assignment->get_instance()->id;
 
         if (optional_param('doranking', false, PARAM_BOOL)) {
-            ranking::docomparison($assignmentid);
+            $ranking = ranking::docomparison($assignmentid);
+
+            if ($ranking == false) {
+                redirect($this->getinternallink('managesubmissions'), get_string('nothingtocompare', 'assignsubmission_comparativejudgement'));
+            }
 
             grades_calculated::create([
                     'relateduserid' => $USER->id,
                     'objectid'      => $this->assignment->get_course_module()->id,
                     'context'       => $this->assignment->get_context()
             ])->trigger();
+
+            redirect($this->getinternallink('managesubmissions'), get_string('comparisondone', 'assignsubmission_comparativejudgement'));
         }
 
         if (optional_param('downloadrawjudgedata', false, PARAM_BOOL)) {

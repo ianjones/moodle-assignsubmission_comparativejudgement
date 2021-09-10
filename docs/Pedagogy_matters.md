@@ -47,6 +47,8 @@ Once the comparisons are complete the lecturer facilitates a whole class discuss
 
 The above activity is repeated three or four times over the duration of a module, with different open-ended prompts. As the summative test nears towards the end of the module the students are told that the best way to revise is to practise the questions, submit their responses, and to continue making comparisons of their peers' work (there is no limit on how many comparisons they can make and how many responses they can submit once an **Assignment** is set up on Moodle). It is common in revision sessions to see students choosing to revisit the comparative judgement activities in small groups to discuss and make notes on how to produce high-quality responses. 
 
+You can see a youtube video covering this example use case [here](https://www.youtube.com/watch?v=A_5UOXBlJ24&feature=emb_logo).
+
 # 3. How to criterion reference scores.
 A common misconception about comparative judgement is that it is inherently norm-referenced. This is an understandable assumption given the scores are generated solely from relative comparisons of students' work. However, as is the case for scores produced by any assessment method, the scores can be interpreted and cut based on quotas or criterion. In practice most comparative judgement assessments are interpreted and the grade-boundaries applied using criterion-referencing, not norm-referencing.
 

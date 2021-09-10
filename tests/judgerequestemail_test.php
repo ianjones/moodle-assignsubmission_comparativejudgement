@@ -35,7 +35,7 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
     // Use the generator helper.
     use mod_assign_test_generator;
 
-    public function setUp() {
+    public function setUp() :void {
         global $CFG;
 
         $CFG->enablecompletion = true;

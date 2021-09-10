@@ -44,7 +44,8 @@ class managecomparisoncommentsmanager {
 
         $transaction = $DB->start_delegated_transaction();
 
-        $commentssql = "SELECT comp.id as compsubid, sub.*, comp.comments, comp.commentsformat
+        $uniquecol = $DB->sql_concat('comp.id', '"_"', 'sub.id');
+        $commentssql = "SELECT $uniquecol, comp.id as compsubid, sub.*, comp.comments, comp.commentsformat
                         FROM {assignsubmission_compsubs} comp
                             INNER JOIN {assign_submission} sub ON sub.id = comp.submissionid
                             LEFT JOIN {assignsubmission_exclusion} exclusion ON exclusion.entityid = comp.id AND exclusion.type = :entitytype
@@ -56,12 +57,15 @@ class managecomparisoncommentsmanager {
         $commenthandler = new \assign_feedback_comments($this->assignment, 'comments');
 
         $formattedcommentsbysubmissionid = [];
+        $compsubids = [];
         foreach ($comments as $commentsubmission) {
             if (!isset($formattedcommentsbysubmissionid[$commentsubmission->id])) {
                 $formattedcommentsbysubmissionid[$commentsubmission->id] = ['submission' => $commentsubmission, 'comments' => ''];
             }
             $formattedcommentsbysubmissionid[$commentsubmission->id]['comments'] .=
                 format_text($commentsubmission->comments, $commentsubmission->commentsformat);
+
+            $compsubids[] = $commentsubmission->compsubid;
         }
 
         foreach ($formattedcommentsbysubmissionid as $info) {
@@ -92,7 +96,7 @@ class managecomparisoncommentsmanager {
         }
 
         if ($comments) {
-            list($insql, $params) = $DB->get_in_or_equal(array_keys($comments));
+            list($insql, $params) = $DB->get_in_or_equal(array_keys($compsubids));
             $DB->execute("UPDATE {assignsubmission_compsubs} SET commentpublished = 1 WHERE id $insql", $params);
         }
 
