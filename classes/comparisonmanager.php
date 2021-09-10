@@ -174,7 +174,7 @@ class comparisonmanager {
         }
 
         if (in_array(assign_submission_comparativejudgement::FAKEROLE_ASSIGNMENT_SUBMITTED, $judges)) {
-            // It doesn't look like it but this does cover group submissions as wel.
+            // It doesn't look like it but this does cover group submissions as well.
             // Each member of a group submission should have a personal submission record with no content as well.
             $users = array_merge($users, array_keys($DB->get_records_sql(
                     'SELECT userid FROM {assign_submission} WHERE assignment = :assignment AND status = :status AND groupid = 0 AND latest = 1 GROUP BY userid',
