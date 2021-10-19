@@ -12,7 +12,9 @@ Click on **Add an activity or resource** and select **Assignment**.
 Only settings specific to the comparative judgement plug-in are detailed here, which are found in **Submission types**.
 
 * Select **Comparative judgement**. You can decide whether students will upload **File submissions**, or submit **Online text**, or both.
-* You can specify the number of comparisons each judge will complete using **Minimum judgements per user** and **Maximum judgements per user**. For a summative assessment these numbers might be the same as each other, perhaps 10 comparisons per submission. For learning activities you might require a minimum of 10 comparisons per judge, but have no practical upper limit in mind, so set it to 999.
+* Select **Allow comparison of pairs of exemplars**. This means examples uploaded by the teacher can be compared with one another. This is particularly useful if, for example, you want students only to compare example submissions carefully selected by the teacher.
+* Select **Enable repeat comparisons** to ensure students can continue comparing even after all possible pairings of submissions have been judged.
+* You can specify the number of comparisons each student will complete using **Minimum judgements per user** and **Maximum judgements per user**. For a summative assessment these numbers might be the same as each other, perhaps 10 comparisons per submission. For learning activities you might require a minimum of 10 comparisons per judge, but have no practical upper limit in mind, so set it to 999.
 * For **Minimum judgements per submission** a value of 10 comparisons per submission or more is recommended in the [research literature](https://doi.org/10.1080/0969594X.2019.1602027). 
 * To allow judges to make written comments on submissions when doing comparisons, select **Enable comparison comments**.
 * You can set a **Start date for judgements**, or not if you wish judges to be able to start their comparisons immediately.
@@ -36,7 +38,12 @@ You can monitor the quantity and quality of the comparisons completed by each ju
 * **First/Last comparison**: the date and time of the first comparison and the most recent comparison made by the judge.
 * **Include in grading**: exclude a judge's comparisons from contributing to submission scores, for example if the judge seems not to have taken their comparisons seriously.
 
-## 5. Manage submissions.
+## 5. Comparison comments.
+This button appears if **Enable comparison comments** is selected in **Settings**. Here you can view comments submitted by judges. 
+
+To distribute the comments to students, click the **Import comments** button at the bottom of the screen. The comments will appear to the students in the "Feedback comments" when students visit their submission.  If there is already a comment against the submission then the copied comment gets appended to it.
+
+## 6. Manage submissions.
 You can monitor both your uploaded exemplars and the students' submissions, see *Column headings* subsection below. You can also **Calculate grades** and download **Raw judgement data**, see *Grades and judgement data* subsection below.
 
 ### Column headings
@@ -57,8 +64,8 @@ At the bottom of the page are three buttons.
 
 Note that if you set the option to **Enable comparison comments**, there is an extra step to distribute the comments to students. On the "Comparison comments" page, press the button at the bottom of the table, **Import comments**. This copies across all comments received on a student's attempt into the "Feedback comments" field.
 
-## 6. Manage judgement request emails.
+## 7. Manage judgement request emails.
 Use this feature to send emails informaing or reminding judges to start or complete their comparisons.
 
-## 7. Do comparison.
+## 8. Do comparison.
 This button becomes available to judges once a comparative judgement assignment has been set up and there are at least 2 exemplars or submissions uploaded, and the number of comparisons required (see **Settings** above) is greater than 0.
