@@ -48,7 +48,8 @@ class managecomparisoncommentsmanager {
         $commentssql = "SELECT $uniquecol, comp.id as compsubid, sub.*, comp.comments, comp.commentsformat
                         FROM {assignsubmission_compsubs} comp
                             INNER JOIN {assign_submission} sub ON sub.id = comp.submissionid
-                            LEFT JOIN {assignsubmission_exclusion} exclusion ON exclusion.entityid = comp.id AND exclusion.type = :entitytype
+                            LEFT JOIN {assignsubmission_exclusion} exclusion ON exclusion.entityid = comp.id AND
+                            exclusion.type = :entitytype
                         WHERE comp.comments is not null AND comp.comments <> '' AND sub.assignment = :assignmentid
                             AND commentpublished = 0 AND exclusion.id IS NULL";
         $comments = $DB->get_records_sql($commentssql,

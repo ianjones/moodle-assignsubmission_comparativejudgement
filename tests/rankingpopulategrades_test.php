@@ -24,10 +24,11 @@
 use assignsubmission_comparativejudgement\exemplar;
 use assignsubmission_comparativejudgement\ranking;
 
+defined('MOODLE_INTERNAL') || die();
+
 global $CFG;
 require_once($CFG->dirroot . '/mod/assign/tests/generator.php');
 
-defined('MOODLE_INTERNAL') || die();
 
 /**
  * @group assignsubmission_comparativejudgement

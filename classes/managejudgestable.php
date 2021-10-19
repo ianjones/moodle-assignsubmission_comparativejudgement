@@ -102,7 +102,8 @@ class managejudgestable extends \table_sql {
                             SUM(CASE WHEN winningsubmissionposition = $right THEN 1 ELSE 0 END) as rightchoices",
                 "{user} u
                         LEFT JOIN {assignsubmission_comp} comp ON comp.usermodified = u.id
-                        LEFT JOIN {assignsubmission_exclusion} exclusion ON exclusion.entityid = u.id AND exclusion.type = :entitytype",
+                        LEFT JOIN {assignsubmission_exclusion} exclusion ON
+                        exclusion.entityid = u.id AND exclusion.type = :entitytype",
                 "u.id $insql GROUP BY u.id, exclusion.id, $namefields",
                 $inparams);
     }

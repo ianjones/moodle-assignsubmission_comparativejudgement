@@ -26,6 +26,7 @@ namespace assignsubmission_comparativejudgement;
 defined('MOODLE_INTERNAL') || die();
 
 use assign;
+
 use assign_submission_comparativejudgement;
 
 class comparisonmanager {
@@ -88,7 +89,8 @@ class comparisonmanager {
         for ($i = 0; $i < 2; $i++) {
             if ($urgent) {
                 if (!empty($settings->minjudgementspersubmission)) {
-                    $threshold = "HAVING SUM(CASE WHEN comp.usermodified = $this->userid THEN 1 ELSE 0 END) < $settings->minjudgementspersubmission";
+                    $threshold = "HAVING SUM(CASE WHEN comp.usermodified = $this->userid THEN 1 ELSE 0 END) < " .
+                    $settings->minjudgementspersubmission;
                 } else {
                     $threshold = "HAVING SUM(CASE WHEN comp.usermodified = $this->userid THEN 1 ELSE 0 END) < 1";
                 }
@@ -96,9 +98,13 @@ class comparisonmanager {
                 $threshold = '';
             }
 
-            $sql[$i] = "SELECT  sub.id as id_$i, sub.assignment as assignment_$i, sub.userid as userid_$i, sub.timecreated as timecreated_$i, sub.timemodified as timemodified_$i,
-                        sub.status as status_$i, sub.groupid as groupid_$i, sub.attemptnumber as attemptnumber_$i, sub.latest as latest_$i,
-                        count(comp.id) AS totaljudgements_$i, SUM(CASE WHEN comp.usermodified = $this->userid THEN 1 ELSE 0 END) AS totaluserjudgements_$i, exemp.id as exemp_$i
+            $sql[$i] = "SELECT  sub.id as id_$i, sub.assignment as assignment_$i, sub.userid as userid_$i,
+                        sub.timecreated as timecreated_$i, sub.timemodified as timemodified_$i,
+                        sub.status as status_$i, sub.groupid as groupid_$i, sub.attemptnumber as attemptnumber_$i,
+                        sub.latest as latest_$i,
+                        count(comp.id) AS totaljudgements_$i,
+                        SUM(CASE WHEN comp.usermodified = $this->userid THEN 1 ELSE 0 END) AS totaluserjudgements_$i,
+                        exemp.id as exemp_$i
                 FROM {assign_submission} sub
                          LEFT JOIN {assignsubmission_compsubs} compsub ON compsub.submissionid = sub.id
                          LEFT JOIN {assignsubmission_comp} comp ON compsub.judgementid = comp.id
@@ -108,8 +114,8 @@ class comparisonmanager {
                   AND sub.latest = 1
                   AND sub.assignment = $assignmentid
                   AND $teamfrag
-                GROUP BY sub.id, sub.assignment, sub.userid, sub.timecreated, sub.timemodified, sub.status, sub.groupid, sub.attemptnumber, sub.latest, exemp.id
-                  $threshold";
+                GROUP BY sub.id, sub.assignment, sub.userid, sub.timecreated, sub.timemodified,
+                      sub.status, sub.groupid, sub.attemptnumber, sub.latest, exemp.id $threshold";
         }
 
         if (empty($settings->allowrepeatcomparisons)) {
@@ -131,13 +137,15 @@ class comparisonmanager {
             LEFT JOIN (
                 SELECT comp.winningsubmission as winning, compsub.submissionid as loosing
                 FROM {assignsubmission_comp} comp
-                INNER JOIN {assignsubmission_compsubs} compsub ON compsub.judgementid = comp.id and compsub.submissionid <> comp.winningsubmission
+                INNER JOIN {assignsubmission_compsubs} compsub ON
+                    compsub.judgementid = comp.id and compsub.submissionid <> comp.winningsubmission
                 WHERE comp.usermodified = $this->userid
-                )  as subs ON (subzero.id_0 = subs.winning and subone.id_1 = subs.loosing) OR (subone.id_1 = subs.winning and subzero.id_0 = subs.loosing
+                )  as subs ON (subzero.id_0 = subs.winning and subone.id_1 = subs.loosing) OR
+                    (subone.id_1 = subs.winning and subzero.id_0 = subs.loosing
             )
-             WHERE $preventrepeats AND $preventcompareexemplars
-            ORDER BY subzero.totaluserjudgements_0 asc, subone.totaluserjudgements_1 asc, subzero.totaljudgements_0 asc, subone.totaljudgements_1
-             ";
+            WHERE $preventrepeats AND $preventcompareexemplars
+            ORDER BY subzero.totaluserjudgements_0 asc, subone.totaluserjudgements_1 asc,
+                subzero.totaljudgements_0 asc, subone.totaljudgements_1";
 
         $submissions = $DB->get_records_sql($sql, null, 0, 1);
 
@@ -174,10 +182,11 @@ class comparisonmanager {
         }
 
         if (in_array(assign_submission_comparativejudgement::FAKEROLE_ASSIGNMENT_SUBMITTED, $judges)) {
-            // It doesn't look like it but this does cover group submissions as wel.
+            // It doesn't look like it but this does cover group submissions as well.
             // Each member of a group submission should have a personal submission record with no content as well.
             $users = array_merge($users, array_keys($DB->get_records_sql(
-                    'SELECT userid FROM {assign_submission} WHERE assignment = :assignment AND status = :status AND groupid = 0 AND latest = 1 GROUP BY userid',
+                    'SELECT userid FROM {assign_submission} WHERE assignment = :assignment AND
+                    status = :status AND groupid = 0 AND latest = 1 GROUP BY userid',
                     ['status' => ASSIGN_SUBMISSION_STATUS_SUBMITTED, 'assignment' => $this->assignmentinstance->id]
             )));
         }

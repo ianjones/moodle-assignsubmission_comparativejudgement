@@ -38,7 +38,8 @@ class comments_imported extends base {
      * @return string
      */
     public function get_description() {
-        return "The user with id '$this->relateduserid' imported judgement comments into submission feedback comments on assignment $this->objectid.";
+        return "The user with id '$this->relateduserid' imported judgement comments " .
+            "into submission feedback comments on assignment $this->objectid.";
     }
 
     /**
