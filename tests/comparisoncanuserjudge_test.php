@@ -29,6 +29,7 @@ require_once($CFG->dirroot . '/mod/assign/locallib.php');
 require_once($CFG->dirroot . '/mod/assign/tests/generator.php');
 require_once($CFG->dirroot . '/mod/assign/submission/comparativejudgement/locallib.php');
 
+use assignsubmission_comparativejudgement\comparison;
 use assignsubmission_comparativejudgement\comparisonmanager;
 use \core_calendar\local\api as calendar_local_api;
 use \core_calendar\local\event\container as calendar_event_container;
@@ -239,9 +240,34 @@ class assignsubmission_comparativejudgement_comparisoncanuserjudge_testcase exte
     }
 
     public function test_canuserjudge_maxjudgements() {
-        list($teacher, $editingteacher, $student, $secondassign, $plugin) = $this->setupstandardscenario();
+        global $DB;
 
-        // TO DO!
+        list($teacher, $editingteacher, $student, $secondassign, $plugin) = $this->setupstandardscenario();
+        $this->setUser($teacher);
+
+        $plugin->set_config('judges', $DB->get_field('role', 'id', ['shortname' => 'teacher' ]));
+
+        for ($i = 0; $i < 4; $i++) {
+            $students[$i] = $this->getDataGenerator()->create_and_enrol($secondassign->get_course(), 'student');
+            $this->add_submission($students[$i], $secondassign);
+            $this->submit_for_grading($students[$i], $secondassign);
+        }
+
+        $comparisonmanager = new comparisonmanager($teacher->id, $secondassign);
+
+        $plugin->set_config('maxjudgementsperuser', 1);
+
+        $this->assertTrue($comparisonmanager->canuserjudge());
+
+        $getpairtojudge1 = $comparisonmanager->getpairtojudge();
+        comparison::recordcomparison($secondassign->get_instance()->id, 50, current($getpairtojudge1)->id,
+                comparison::POSITION_RIGHT, next($getpairtojudge1)->id);
+
+        $this->assertFalse($comparisonmanager->canuserjudge());
+
+        $plugin->set_config('maxjudgementsperuser', 2);
+
+        $this->assertTrue($comparisonmanager->canuserjudge());
     }
 
     /**
