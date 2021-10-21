@@ -118,10 +118,6 @@ function assignsubmission_comparativejudgement_pluginfile($course,
                 $converter->poll_conversion($conversion);
                 $status = $conversion->get('status');
             } while ($status !== conversion::STATUS_COMPLETE && $status !== conversion::STATUS_FAILED);
-
-            if ($conversion->get('status') !== conversion::STATUS_COMPLETE) {
-                // Return HTML for a link as a fallback?
-            }
         }
 
         if ($conversion->get('status') == conversion::STATUS_COMPLETE) {
