@@ -34,6 +34,9 @@ class comparisonmanager {
     private $assignment;
     private $assignmentinstance;
 
+    /**
+     * Function comment.
+     */
     public function __construct($userid, assign $assignment) {
         $this->userid = $userid;
         $this->assignment = $assignment;
