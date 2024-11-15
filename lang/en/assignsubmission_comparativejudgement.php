@@ -58,6 +58,7 @@ $string['delaydetailnever'] = 'never';
 $string['deleteemail'] = 'Delete email';
 $string['deleteexemplar'] = 'Delete exemplar';
 $string['docomparison'] = 'Do comparison';
+$string['dofakecomparison'] = 'Do fake comparisons (only for testing';
 $string['downloadrawjudgedata'] = 'Raw comparison data';
 $string['editemail'] = 'Edit email';
 $string['editexemplar'] = 'Edit exemplar';

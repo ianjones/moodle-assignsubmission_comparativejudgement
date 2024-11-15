@@ -109,11 +109,6 @@ where comp.assignmentid = :assignmentid
         $output = array_map('str_getcsv', explode("\n", $rawoutput));
         array_shift($output); // Ditch header.
 
-        $ranking = self::get_record(['assignmentid' => $assignmentid]);
-        if (!$ranking) {
-            $ranking = new ranking();
-        }
-
         $scores = [];
         foreach ($output as $row) {
             if (!isset($row) || count($row) < 2 || !(int)($row[1])) {
@@ -127,7 +122,33 @@ where comp.assignmentid = :assignmentid
         } else {
             $reliability = 0;
         }
+
+        $ranking = self::get_record(['assignmentid' => $assignmentid]);
+        if (!$ranking) {
+            $ranking = new ranking();
+        }
         $ranking->saverankings($reliability, $assignmentid, $scores);
+
+        return $ranking;
+    }
+
+    public static function dofakecomparison($assignmentid) {
+        global $DB;
+
+        $ranking = self::get_record(['assignmentid' => $assignmentid]);
+        if (!$ranking) {
+            $ranking = new ranking();
+        }
+
+        $scores = $DB->get_records_sql_menu(
+            "SELECT winningsubmission, count(id)
+                    FROM {assignsubmission_comp}
+                    WHERE assignmentid = :assignmentid
+                    GROUP BY winningsubmission",
+            ['assignmentid' => $assignmentid]
+        );
+
+        $ranking->saverankings(10, $assignmentid, $scores);
 
         return $ranking;
     }

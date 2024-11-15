@@ -44,7 +44,11 @@ class managesubmissionscontroller extends basecontroller {
         $assignmentid = $this->assignment->get_instance()->id;
 
         if (optional_param('doranking', false, PARAM_BOOL)) {
-            $ranking = ranking::docomparison($assignmentid);
+            if (empty(get_config('assignsubmission_comparativejudgement', 'dofakecomparison'))) {
+                $ranking = ranking::docomparison($assignmentid);
+            } else {
+                $ranking = ranking::dofakecomparison($assignmentid);
+            }
 
             if ($ranking == false) {
                 redirect($this->getinternallink('managesubmissions'), get_string('nothingtocompare',
