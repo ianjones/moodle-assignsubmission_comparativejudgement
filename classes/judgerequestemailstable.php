@@ -44,7 +44,7 @@ class judgerequestemailstable extends \table_sql {
         $this->define_headers([
                 get_string('delay', 'assignsubmission_comparativejudgement'),
                 get_string('subject', 'assignsubmission_comparativejudgement'),
-                ''
+                '',
         ]);
         $this->collapsible(false);
         $this->sortable(true);
@@ -73,7 +73,7 @@ class judgerequestemailstable extends \table_sql {
         }
 
         return get_string('delaydetail', 'assignsubmission_comparativejudgement', (object) [
-                'delay' => $delay, 'current' => $lasttime
+                'delay' => $delay, 'current' => $lasttime,
         ]);
     }
 

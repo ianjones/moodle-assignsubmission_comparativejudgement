@@ -36,7 +36,7 @@ use assignsubmission_comparativejudgement\ranking;
 /**
  * @group assignsubmission_comparativejudgement
  */
-class assignsubmission_comparativejudgement_comparison_testcase extends advanced_testcase {
+class comparisoncocomparison_test extends advanced_testcase {
 
     // Use the generator helper.
     use mod_assign_test_generator;

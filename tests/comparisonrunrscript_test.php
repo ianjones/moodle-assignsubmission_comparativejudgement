@@ -28,7 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * @group assignsubmission_comparativejudgement
  */
-class assignsubmission_comparativejudgement_comparisonrunrscript_testcase extends advanced_testcase {
+class comparisonrunrscript_test extends advanced_testcase {
 
     public function test_runrscript_exampledate() {
         global $CFG;

@@ -14,25 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * This file contains the class for restore of this submission plugin
- *
- * @package assignsubmission_comparativejudgement
- * @copyright 2012 NetSpot {@link http://www.netspot.com.au}
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Restore subplugin class.
- *
- * Provides the necessary information needed to restore
- * one assign_submission subplugin.
- *
- * @package assignsubmission_comparativejudgement
- * @copyright 2012 NetSpot {@link http://www.netspot.com.au}
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    assignsubmission_comparativejudgement
+ * @copyright 2020 Andrew Hancox at Open Source Learning <andrewdchancox@googlemail.com>
+ * @copyright 2020 Ian Jones at Loughborough University <I.Jones@lboro.ac.uk>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class restore_assignsubmission_comparativejudgement_subplugin extends restore_subplugin {
 
@@ -43,7 +31,7 @@ class restore_assignsubmission_comparativejudgement_subplugin extends restore_su
      */
     protected function define_submission_subplugin_structure() {
 
-        $paths = array();
+        $paths = [];
 
         $root = '/activity/assign/assignsubmission_activity_settings/';
 

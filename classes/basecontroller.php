@@ -61,7 +61,7 @@ abstract class basecontroller {
                    'action'        => 'viewpluginpage',
                    'plugin'        => 'comparativejudgement',
                    'pluginsubtype' => 'assignsubmission',
-                   'pluginaction'  => $pluginaction
+                   'pluginaction'  => $pluginaction,
         ];
 
         $params += $extraparams;

@@ -194,7 +194,7 @@ class judgerequestemails extends scheduled_task {
         judgerequestemail_sent::create([
                 'relateduserid' => $user->id,
                 'objectid'      => $cmid,
-                'context'       => $assign->get_context()
+                'context'       => $assign->get_context(),
         ])->trigger();
     }
 

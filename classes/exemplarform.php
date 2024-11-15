@@ -55,7 +55,7 @@ class exemplarform extends moodleform {
                 'action'        => 'viewpluginpage',
                 'plugin'        => 'comparativejudgement',
                 'pluginsubtype' => 'assignsubmission',
-                'pluginaction'  => 'addexemplar'
+                'pluginaction'  => 'addexemplar',
         ];
 
         foreach ($elems as $key => $val) {
@@ -63,10 +63,10 @@ class exemplarform extends moodleform {
             $mform->setType($key, PARAM_ALPHA);
         }
 
-        $buttonarray = array();
+        $buttonarray = [];
         $buttonarray[] = &$mform->createElement('submit', 'submitbutton', get_string('savechanges', 'assign'));
         $buttonarray[] = &$mform->createElement('cancel');
-        $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
+        $mform->addGroup($buttonarray, 'buttonar', '', [' '], false);
         $mform->closeHeaderBefore('buttonar');
 
         if ($submission) {

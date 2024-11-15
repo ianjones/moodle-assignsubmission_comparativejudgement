@@ -83,7 +83,7 @@ class managecomparisoncommentstable extends \table_sql {
 
         $inparams = [
                 'entitytype'   => exclusion::EXCLUSION_TYPE_COMPARISONCOMMENT,
-                'assignmentid' => $assignment->get_instance()->id
+                'assignmentid' => $assignment->get_instance()->id,
         ];
 
         $uniquecol = $DB->sql_concat('compsub.id', '"_"', 'asssub.id', '"_"', 'asssubother.id');
@@ -144,7 +144,7 @@ class managecomparisoncommentstable extends \table_sql {
                     'id'     => $this->cmid,
                     'rownum' => 0,
                     'action' => 'grader',
-                    'userid' => $row->$subuseridcol
+                    'userid' => $row->$subuseridcol,
             ]),
                     get_string('viewassignment', 'assignsubmission_comparativejudgement'));
         } else {

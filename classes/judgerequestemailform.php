@@ -42,7 +42,7 @@ class judgerequestemailform extends moodleform {
                 'action'        => 'viewpluginpage',
                 'plugin'        => 'comparativejudgement',
                 'pluginsubtype' => 'assignsubmission',
-                'pluginaction'  => 'judgerequestemailcreate'
+                'pluginaction'  => 'judgerequestemailcreate',
         ];
 
         foreach ($elems as $key => $val) {
@@ -53,7 +53,7 @@ class judgerequestemailform extends moodleform {
         $elems = [
                 'id'            => $assign->get_course_module()->id,
                 'emailid'        => $emailid,
-                'assignmentid'        => $assign->get_instance()->id
+                'assignmentid'        => $assign->get_instance()->id,
         ];
 
         foreach ($elems as $key => $val) {
@@ -62,7 +62,7 @@ class judgerequestemailform extends moodleform {
         }
 
         $mform->addElement('duration', 'delay', get_string('delay', 'assignsubmission_comparativejudgement'),
-                array('defaultunit' => WEEKSECS, 'optional' => false));
+                ['defaultunit' => WEEKSECS, 'optional' => false]);
         $mform->setDefault('delay', 1 * DAYSECS);
 
         $mform->addElement('text', 'subject', get_string('subject', 'assignsubmission_comparativejudgement'), 'maxlength="100"');
@@ -70,8 +70,8 @@ class judgerequestemailform extends moodleform {
         $mform->setDefault('subject', get_string('subjectdefault', 'assignsubmission_comparativejudgement'));
 
         $mform->addElement('textarea', 'body', get_string('body', 'assignsubmission_comparativejudgement'),
-                array('rows' => 10,
-                      'cols' => 57));
+                ['rows' => 10,
+                      'cols' => 57]);
         $mform->setType('body', PARAM_TEXT);
         $mform->addHelpButton('body', 'body', 'assignsubmission_comparativejudgement');
         $mform->setDefault('body', get_string('bodydefault', 'assignsubmission_comparativejudgement'));

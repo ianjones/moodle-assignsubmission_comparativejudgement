@@ -81,7 +81,7 @@ class judgerequestemailcontroller extends basecontroller {
             judgerequestemail_modified::create([
                     'relateduserid' => $USER->id,
                     'objectid'      => $this->assignment->get_course_module()->id,
-                    'context'       => $this->assignment->get_context()
+                    'context'       => $this->assignment->get_context(),
             ])->trigger();
 
             redirect($this->getinternallink('judgerequestemail'));
@@ -121,7 +121,7 @@ class judgerequestemailcontroller extends basecontroller {
             judgerequestemail_deleted::create([
                     'relateduserid' => $USER->id,
                     'objectid'      => $this->assignment->get_course_module()->id,
-                    'context'       => $this->assignment->get_context()
+                    'context'       => $this->assignment->get_context(),
             ])->trigger();
 
             redirect($this->getinternallink('judgerequestemail'));

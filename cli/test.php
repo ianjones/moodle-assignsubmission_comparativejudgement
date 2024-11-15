@@ -15,15 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This hack is intended for clustered sites that do not want
- * to use shared cachedir for component cache.
- *
- * This file needs to be called after any change in PHP files in dataroot,
- * that is before upgrade and install.
- *
- * @package   core
- * @copyright 2013 Petr Skoda (skodak)  {@link http://skodak.org}
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    assignsubmission_comparativejudgement
+ * @copyright 2020 Andrew Hancox at Open Source Learning <andrewdchancox@googlemail.com>
+ * @copyright 2020 Ian Jones at Loughborough University <I.Jones@lboro.ac.uk>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 

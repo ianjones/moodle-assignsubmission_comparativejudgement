@@ -30,6 +30,6 @@ $plugin->cron      = 0;
 $plugin->maturity  = MATURITY_BETA;
 $plugin->release   = '1.0 for Moodle 3.8+';
 
-$plugin->dependencies = array(
-        'local_rhandler' => 2018051418
-);
+$plugin->dependencies = [
+        'local_rhandler' => 2018051418,
+];

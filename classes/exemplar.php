@@ -56,8 +56,8 @@ class exemplar extends persistent {
                 ],
                 'title'        => [
                         'type'    => PARAM_TEXT,
-                        'default' => ''
-                ]
+                        'default' => '',
+                ],
         ];
     }
 
@@ -117,7 +117,7 @@ class exemplar extends persistent {
                                             from {assignsubmission_exemplars} asex
                                             inner join {assign_submission} subs on asex.submissionid = subs.id
                                             where subs.assignment = :assignmentid', ['assignmentid' => $assignmentid]);
-        $instances = array();
+        $instances = [];
 
         foreach ($records as $record) {
             $newrecord = new static(0, $record);

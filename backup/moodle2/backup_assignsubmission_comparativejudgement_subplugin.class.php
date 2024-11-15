@@ -14,26 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * This file contains the class for backup of this submission plugin
- *
- * @package assignsubmission_comparativejudgement
- * @copyright 2012 NetSpot {@link http://www.netspot.com.au}
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
 use assignsubmission_comparativejudgement\exclusion;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Provides the information to backup onlinetext submissions
- *
- * This just adds its filearea to the annotations and records the submissiontext and format
- *
- * @package assignsubmission_comparativejudgement
- * @copyright 2012 NetSpot {@link http://www.netspot.com.au}
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    assignsubmission_comparativejudgement
+ * @copyright 2020 Andrew Hancox at Open Source Learning <andrewdchancox@googlemail.com>
+ * @copyright 2020 Ian Jones at Loughborough University <I.Jones@lboro.ac.uk>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class backup_assignsubmission_comparativejudgement_subplugin extends backup_subplugin {
     private static $parentinforadded = false;
@@ -57,7 +46,7 @@ class backup_assignsubmission_comparativejudgement_subplugin extends backup_subp
 
             $asrankingelement = new backup_nested_element('assignsubmission_ranking',
                     ['id'],
-                    array('reliability', 'usermodified', 'timecreated', 'timemodified'));
+                    ['reliability', 'usermodified', 'timecreated', 'timemodified']);
             $asrankingelement->annotate_ids('user', 'usermodified');
 
             // Connect XML elements into the tree.
@@ -67,23 +56,23 @@ class backup_assignsubmission_comparativejudgement_subplugin extends backup_subp
 
             // Set source to populate the data.
             $asrankingelement->set_source_table('assignsubmission_ranking',
-                    array('assignmentid' => backup::VAR_ACTIVITYID));
+                    ['assignmentid' => backup::VAR_ACTIVITYID]);
 
             $subpluginelement = new backup_nested_element('assignsubmission_rankingsub',
                     null,
-                    array('submissionid', 'score'));
+                    ['submissionid', 'score']);
 
             // Connect XML elements into the tree.
             $subs->add_child($subpluginelement);
 
             // Set source to populate the data.
             $subpluginelement->set_source_table('assignsubmission_rankingsub',
-                    array('rankingid' => backup::VAR_PARENTID));
+                    ['rankingid' => backup::VAR_PARENTID]);
 
             $ascompelement = new backup_nested_element('assignsubmission_comp',
                     ['id'],
-                    array('winningsubmission', 'winningsubmissionposition', 'timetaken', 'usermodified', 'timecreated',
-                            'timemodified'));
+                    ['winningsubmission', 'winningsubmissionposition', 'timetaken', 'usermodified', 'timecreated',
+                            'timemodified']);
             $ascompelement->annotate_ids('user', 'usermodified');
 
             // Connect XML elements into the tree.
@@ -93,23 +82,23 @@ class backup_assignsubmission_comparativejudgement_subplugin extends backup_subp
 
             // Set source to populate the data.
             $ascompelement->set_source_table('assignsubmission_comp',
-                    array('assignmentid' => backup::VAR_ACTIVITYID));
+                    ['assignmentid' => backup::VAR_ACTIVITYID]);
 
             $subpluginelement = new backup_nested_element('assignsubmission_compsubs',
                     ['id'],
-                    array('submissionid', 'comments', 'commentsformat', 'commentpublished'));
+                    ['submissionid', 'comments', 'commentsformat', 'commentpublished']);
 
             // Connect XML elements into the tree.
             $subs->add_child($subpluginelement);
 
             // Set source to populate the data.
             $subpluginelement->set_source_table('assignsubmission_compsubs',
-                    array('judgementid' => backup::VAR_PARENTID));
+                    ['judgementid' => backup::VAR_PARENTID]);
 
             $subpluginelement = new backup_nested_element('assignsubmission_email',
                     null,
-                    array('assignmentid', 'delay', 'subject', 'body', 'usermodified', 'timecreated',
-                            'timemodified'));
+                    ['assignmentid', 'delay', 'subject', 'body', 'usermodified', 'timecreated',
+                            'timemodified']);
             $subpluginelement->annotate_ids('user', 'usermodified');
 
             // Connect XML elements into the tree.
@@ -117,11 +106,11 @@ class backup_assignsubmission_comparativejudgement_subplugin extends backup_subp
 
             // Set source to populate the data.
             $subpluginelement->set_source_table('assignsubmission_email',
-                    array('assignmentid' => backup::VAR_ACTIVITYID));
+                    ['assignmentid' => backup::VAR_ACTIVITYID]);
 
             $subpluginelement = new backup_nested_element('assignsubmission_exclusion_submission',
                     null,
-                    array('type', 'entityid'));
+                    ['type', 'entityid']);
 
             // Connect XML elements into the tree.
             $parent->add_child($subpluginelement);
@@ -135,12 +124,12 @@ class backup_assignsubmission_comparativejudgement_subplugin extends backup_subp
             ',
                     [
                             'submissiontype' => ['sqlparam' => exclusion::EXCLUSION_TYPE_SUBMISSION],
-                            'assignmentid'   => backup::VAR_ACTIVITYID
+                            'assignmentid'   => backup::VAR_ACTIVITYID,
                     ]);
 
             $subpluginelement = new backup_nested_element('assignsubmission_exclusion_judge',
                     null,
-                    array('type', 'entityid'));
+                    ['type', 'entityid']);
 
             // Connect XML elements into the tree.
             $parent->add_child($subpluginelement);
@@ -151,12 +140,12 @@ class backup_assignsubmission_comparativejudgement_subplugin extends backup_subp
             type = :judgetype
             ',
                     [
-                            'judgetype'      => ['sqlparam' => exclusion::EXCLUSION_TYPE_JUDGE]
+                            'judgetype'      => ['sqlparam' => exclusion::EXCLUSION_TYPE_JUDGE],
                     ]);
 
             $subpluginelement = new backup_nested_element('assignsubmission_exclusion_comment',
                     null,
-                    array('type', 'entityid'));
+                    ['type', 'entityid']);
 
             // Connect XML elements into the tree.
             $parent->add_child($subpluginelement);
@@ -173,12 +162,12 @@ class backup_assignsubmission_comparativejudgement_subplugin extends backup_subp
             ',
                     [
                             'comparisoncommenttype' => ['sqlparam' => exclusion::EXCLUSION_TYPE_COMPARISONCOMMENT],
-                            'assignmentid'          => backup::VAR_ACTIVITYID
+                            'assignmentid'          => backup::VAR_ACTIVITYID,
                     ]);
 
             $subpluginelement = new backup_nested_element('assignsubmission_exemplars',
                     null,
-                    array('submissionid', 'title'));
+                    ['submissionid', 'title']);
 
             // Connect XML elements into the tree.
             $parent->add_child($subpluginelement);
@@ -189,7 +178,7 @@ class backup_assignsubmission_comparativejudgement_subplugin extends backup_subp
                 where ass.assignment = :assignmentid
             ',
                     [
-                            'assignmentid'          => backup::VAR_ACTIVITYID
+                            'assignmentid'          => backup::VAR_ACTIVITYID,
                     ]);
 
             self::$parentinforadded = true;

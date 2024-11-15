@@ -32,12 +32,12 @@ require_once($CFG->dirroot . '/mod/assign/tests/generator.php');
 /**
  * @group assignsubmission_comparativejudgement
  */
-class assignsubmission_comparativejudgement_judgerequestemail_testcase extends advanced_testcase {
+class judgerequestemail_test extends advanced_testcase {
 
     // Use the generator helper.
     use mod_assign_test_generator;
 
-    public function setUp() :void {
+    public function setUp(): void {
         global $CFG;
 
         $CFG->enablecompletion = true;
@@ -226,7 +226,7 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
                 'sortorder'                => 1,
                 'allowsubmissionsfromdate' => 100,
                 'duedate'                  => 200,
-                'cutoffdate'               => $now + 100
+                'cutoffdate'               => $now + 100,
         ];
         $DB->insert_record('assign_overrides', $override);
 
@@ -310,7 +310,7 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
                 'sortorder'                => 1,
                 'allowsubmissionsfromdate' => 100,
                 'duedate'                  => 200,
-                'cutoffdate'               => $now + 100
+                'cutoffdate'               => $now + 100,
         ];
         $DB->insert_record('assign_overrides', $override);
 
@@ -437,7 +437,7 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
     private function getmessagedusers($messages) {
         $userids = [];
         foreach ($messages as $message) {
-           $userids[] = $message->useridto;
+            $userids[] = $message->useridto;
         }
         sort($userids);
         return $userids;
@@ -470,6 +470,6 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
         $arr = array_merge($arr, $assignops);
         $secondassign = $this->create_instance($course, $arr);
         $plugin = \assign_submission_comparativejudgement::getplugin($secondassign);
-        return array($teacher, $editingteacher, $student, $secondassign, $plugin, $course);
+        return [$teacher, $editingteacher, $student, $secondassign, $plugin, $course];
     }
 }

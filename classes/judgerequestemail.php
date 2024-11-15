@@ -37,16 +37,16 @@ class judgerequestemail extends \core\persistent {
                 ],
                 'delay'        => [
                         'type'    => PARAM_INT,
-                        'default' => WEEKSECS * 6
+                        'default' => WEEKSECS * 6,
                 ],
                 'subject'      => [
                         'type'    => PARAM_TEXT,
-                        'default' => get_string('subjectdefault', 'assignsubmission_comparativejudgement')
+                        'default' => get_string('subjectdefault', 'assignsubmission_comparativejudgement'),
                 ],
                 'body'         => [
                         'type'    => PARAM_TEXT,
-                        'default' => get_string('bodydefault', 'assignsubmission_comparativejudgement')
-                ]
+                        'default' => get_string('bodydefault', 'assignsubmission_comparativejudgement'),
+                ],
         ];
     }
 

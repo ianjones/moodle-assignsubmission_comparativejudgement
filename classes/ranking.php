@@ -39,7 +39,7 @@ class ranking extends persistent {
                 ],
                 'reliability'  => [
                         'type' => PARAM_FLOAT,
-                ]
+                ],
         ];
     }
 

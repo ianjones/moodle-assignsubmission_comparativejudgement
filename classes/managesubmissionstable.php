@@ -196,7 +196,7 @@ class managesubmissionstable extends \table_sql {
                     'id'     => $this->cmid,
                     'rownum' => 0,
                     'action' => 'grader',
-                    'userid' => $row->userid
+                    'userid' => $row->userid,
             ]),
                     get_string('viewassignment', 'assignsubmission_comparativejudgement'));
         } else {

@@ -45,7 +45,7 @@ class comparison extends persistent {
                 ],
                 'timetaken'                 => [
                         'type' => PARAM_INT,
-                ]
+                ],
         ];
     }
 

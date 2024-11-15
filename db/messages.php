@@ -28,5 +28,5 @@ $messageproviders = [
                 'defaults' => [
                         'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_LOGGEDIN + MESSAGE_DEFAULT_LOGGEDOFF,
                 ],
-        ]
+        ],
 ];

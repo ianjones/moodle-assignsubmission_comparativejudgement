@@ -31,6 +31,6 @@ $functions = [
                 'description'   => 'Toggle exclusion of a judge or submission.',
                 'type'          => 'write',
                 'ajax'          => true,
-                'capabilities'  => 'mod/assign:grade'
-        ]
+                'capabilities'  => 'mod/assign:grade',
+        ],
 ];

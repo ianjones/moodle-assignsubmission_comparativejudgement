@@ -27,16 +27,16 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/mod/assign/locallib.php');
 
-use \core_privacy\local\metadata\collection;
-use \core_privacy\local\metadata\provider as metadataprovider;
+use core_privacy\local\metadata\collection;
+use core_privacy\local\metadata\provider as metadataprovider;
 use core_privacy\local\request\approved_contextlist;
 use core_privacy\local\request\approved_userlist;
 use core_privacy\local\request\context;
-use \core_privacy\local\request\contextlist;
+use core_privacy\local\request\contextlist;
 use core_privacy\local\request\core_user_data_provider;
 use core_privacy\local\request\userlist;
 use core_privacy\local\request\writer;
-use \mod_assign\privacy\assign_plugin_request_data;
+use mod_assign\privacy\assign_plugin_request_data;
 
 class provider implements metadataprovider,
         \mod_assign\privacy\assignsubmission_provider,
@@ -207,7 +207,7 @@ class provider implements metadataprovider,
             $context = \context::instance_by_id($contextid);
 
             $path = [
-                    get_string('privacy:judgementmade', 'assignsubmission_comparativejudgement')
+                    get_string('privacy:judgementmade', 'assignsubmission_comparativejudgement'),
             ];
 
             $judgements = [];
@@ -217,12 +217,12 @@ class provider implements metadataprovider,
                         'submissionid' => $judgement->submissionid,
                         'winner'       => $judgement->winningsubmission == $judgement->submissionid,
                         'time'         => userdate($judgement->timemodified),
-                        'comments'     => format_text($judgement->comments, $judgement->commentsformat)
+                        'comments'     => format_text($judgement->comments, $judgement->commentsformat),
                 ];
             }
 
             $data[] = (object) [
-                    'judgements' => $judgements
+                    'judgements' => $judgements,
             ];
             writer::with_context($context)->export_related_data(
                     $path,
@@ -323,7 +323,7 @@ class provider implements metadataprovider,
                     'winner'   => $judgement->winningsubmission == $submission->id,
                     'time'     => userdate($judgement->timemodified),
                     'comments' => format_text($judgement->comments, $judgement->commentsformat,
-                            ['context' => $exportdata->get_context()])
+                            ['context' => $exportdata->get_context()]),
             ];
         }
         writer::with_context($exportdata->get_context())->export_data($currentpath, (object) ['judgements' => $items]);
@@ -349,7 +349,7 @@ class provider implements metadataprovider,
         if ($ranking) {
             $data = (object)
             [
-                    'score' => $ranking->score
+                    'score' => $ranking->score,
             ];
             writer::with_context($exportdata->get_context())->export_data($currentpath, $data);
         }

@@ -45,7 +45,7 @@ function assignsubmission_comparativejudgement_pluginfile($course,
         $filearea,
         $args,
         $forcedownload,
-        array $options = array()) {
+        array $options = []) {
     global $DB, $CFG, $USER, $SESSION;
 
     if ($context->contextlevel != CONTEXT_MODULE) {
@@ -61,7 +61,7 @@ function assignsubmission_comparativejudgement_pluginfile($course,
     require_login($course, false, $cm);
     $itemid = (int) array_shift($args);
     $record = $DB->get_record('assign_submission',
-            array('id' => $itemid),
+            ['id' => $itemid],
             'id, userid, assignment, groupid',
             MUST_EXIST);
     $userid = $record->userid;

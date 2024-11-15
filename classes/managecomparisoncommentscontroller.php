@@ -51,7 +51,7 @@ class managecomparisoncommentscontroller extends basecontroller {
             comments_imported::create([
                     'relateduserid' => $USER->id,
                     'objectid'      => $this->assignment->get_course_module()->id,
-                    'context'       => $this->assignment->get_context()
+                    'context'       => $this->assignment->get_context(),
             ])->trigger();
 
             redirect($this->getinternallink('managecomparisoncomments'),

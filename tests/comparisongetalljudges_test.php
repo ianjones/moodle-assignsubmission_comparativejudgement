@@ -35,7 +35,7 @@ use assignsubmission_comparativejudgement\comparisonmanager;
 /**
  * @group assignsubmission_comparativejudgement
  */
-class assignsubmission_comparativejudgement_comparisongetalljudges_testcase extends advanced_testcase {
+class comparisongetalljudges_test extends advanced_testcase {
 
     // Use the generator helper.
     use mod_assign_test_generator;

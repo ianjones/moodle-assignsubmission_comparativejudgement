@@ -31,15 +31,15 @@ $capabilities = [
         'archetypes' => [
             'editingteacher' => CAP_ALLOW,
             'teacher' => CAP_ALLOW,
-        ]
+        ],
     ],
 
     'assignsubmission/comparativejudgement:manageemails' => [
             'captype' => 'write',
             'contextlevel' => CONTEXT_MODULE,
             'archetypes' => [
-                    'editingteacher' => CAP_ALLOW
-            ]
+                    'editingteacher' => CAP_ALLOW,
+            ],
     ],
 ];
 

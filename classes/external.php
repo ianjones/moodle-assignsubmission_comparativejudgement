@@ -39,7 +39,7 @@ class external extends external_api {
                 [
                         'entityid'   => new external_value(PARAM_INT, 'The id of the entity being toggled'),
                         'state'      => new external_value(PARAM_BOOL, 'State to set to'),
-                        'entitytype' => new external_value(PARAM_INT, 'Type of entity')
+                        'entitytype' => new external_value(PARAM_INT, 'Type of entity'),
                 ]
         );
     }

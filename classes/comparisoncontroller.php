@@ -164,12 +164,12 @@ class comparisoncontroller extends basecontroller {
 
         $leftform = new comparisonform($this->getinternallink('comparison'), [
                 'position'     => comparison::POSITION_LEFT,
-                'showcomments' => $showcomments
+                'showcomments' => $showcomments,
         ], 'post', '', ['class' => 'comparisonformleft']);
 
         $rightform = new comparisonform($this->getinternallink('comparison'), [
                 'position'     => comparison::POSITION_RIGHT,
-                'showcomments' => $showcomments
+                'showcomments' => $showcomments,
         ], 'post', '', ['class' => 'comparisonformright']);
 
         $winnersubmitted = optional_param('position', false, PARAM_INT);
@@ -209,7 +209,7 @@ class comparisoncontroller extends basecontroller {
             comparison_made::create([
                     'relateduserid' => $USER->id,
                     'objectid'      => $this->assignment->get_course_module()->id,
-                    'context'       => $this->assignment->get_context()
+                    'context'       => $this->assignment->get_context(),
             ])->trigger();
 
             redirect($this->getinternallink('comparison'));
@@ -296,7 +296,7 @@ class comparisoncontroller extends basecontroller {
                 'winner'    => $submissionsunkeyed[0]->id,
                 'loser'     => $submissionsunkeyed[1]->id,
                 'starttime' => $now,
-                'position'  => comparison::POSITION_LEFT
+                'position'  => comparison::POSITION_LEFT,
         ];
         $leftform->set_data($defaultvalues);
 
@@ -304,7 +304,7 @@ class comparisoncontroller extends basecontroller {
                 'winner'    => $submissionsunkeyed[1]->id,
                 'loser'     => $submissionsunkeyed[0]->id,
                 'starttime' => $now,
-                'position'  => comparison::POSITION_RIGHT
+                'position'  => comparison::POSITION_RIGHT,
         ];
         $rightform->set_data($defaultvalues);
 

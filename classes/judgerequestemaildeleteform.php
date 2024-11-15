@@ -39,7 +39,7 @@ class judgerequestemaildeleteform extends moodleform {
                 'action'        => 'viewpluginpage',
                 'plugin'        => 'comparativejudgement',
                 'pluginsubtype' => 'assignsubmission',
-                'pluginaction'  => 'deletejudgerequestemail'
+                'pluginaction'  => 'deletejudgerequestemail',
         ];
 
         foreach ($elems as $key => $val) {
@@ -50,7 +50,7 @@ class judgerequestemaildeleteform extends moodleform {
         $elems = [
                 'id'            => $assign->get_course_module()->id,
                 'emailid'        => $emailid,
-                'assignmentid'        => $assign->get_instance()->id
+                'assignmentid'        => $assign->get_instance()->id,
         ];
 
         foreach ($elems as $key => $val) {

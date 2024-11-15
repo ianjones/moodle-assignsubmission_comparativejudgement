@@ -54,7 +54,7 @@ class managesubmissionscontroller extends basecontroller {
             grades_calculated::create([
                     'relateduserid' => $USER->id,
                     'objectid'      => $this->assignment->get_course_module()->id,
-                    'context'       => $this->assignment->get_context()
+                    'context'       => $this->assignment->get_context(),
             ])->trigger();
 
             redirect($this->getinternallink('managesubmissions'),
@@ -77,7 +77,7 @@ class managesubmissionscontroller extends basecontroller {
             grades_imported::create([
                     'relateduserid' => $USER->id,
                     'objectid'      => $this->assignment->get_course_module()->id,
-                    'context'       => $this->assignment->get_context()
+                    'context'       => $this->assignment->get_context(),
             ])->trigger();
         }
 

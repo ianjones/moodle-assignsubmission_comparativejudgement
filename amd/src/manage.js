@@ -1,5 +1,4 @@
 /**
- * @package    assignsubmission_comparativejudgement
  * @copyright 2020 Andrew Hancox at Open Source Learning <andrewdchancox@googlemail.com>
  * @copyright 2020 Ian Jones at Loughborough University <I.Jones@lboro.ac.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later

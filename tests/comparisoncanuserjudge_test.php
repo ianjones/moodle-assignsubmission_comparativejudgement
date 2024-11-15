@@ -31,13 +31,13 @@ require_once($CFG->dirroot . '/mod/assign/submission/comparativejudgement/locall
 
 use assignsubmission_comparativejudgement\comparison;
 use assignsubmission_comparativejudgement\comparisonmanager;
-use \core_calendar\local\api as calendar_local_api;
-use \core_calendar\local\event\container as calendar_event_container;
+use core_calendar\local\api as calendar_local_api;
+use core_calendar\local\event\container as calendar_event_container;
 
 /**
  * @group assignsubmission_comparativejudgement
  */
-class assignsubmission_comparativejudgement_comparisoncanuserjudge_testcase extends advanced_testcase {
+class comparisoncanuserjudge_test extends advanced_testcase {
 
     // Use the generator helper.
     use mod_assign_test_generator;
@@ -296,6 +296,6 @@ class assignsubmission_comparativejudgement_comparisoncanuserjudge_testcase exte
         $arr = array_merge($arr, $assignops);
         $secondassign = $this->create_instance($course, $arr);
         $plugin = \assign_submission_comparativejudgement::getplugin($secondassign);
-        return array($teacher, $editingteacher, $student, $secondassign, $plugin);
+        return [$teacher, $editingteacher, $student, $secondassign, $plugin];
     }
 }
