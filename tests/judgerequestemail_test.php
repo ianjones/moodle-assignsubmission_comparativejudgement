@@ -360,14 +360,17 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
         $plugin->set_config('judges', \assign_submission_comparativejudgement::FAKEROLE_GRADABLE_USERS);
         $sink = $this->redirectEmails();
 
+        $studentids = [];
         for ($i = 0; $i < 5; $i++) {
             $students[$i] = $this->getDataGenerator()->create_and_enrol($course, 'student');
             $this->add_submission($students[$i], $secondassign);
             $this->submit_for_grading($students[$i], $secondassign);
+            $studentids[] = $students[$i]->id;
         }
 
         $students[5] = $this->getDataGenerator()->create_and_enrol($course, 'student');
         $this->add_submission($students[5], $secondassign); // Don't submit.
+        $studentids[] = $students[5]->id;
 
         $this->setUser($teacher);
 
@@ -376,13 +379,15 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
         $sink->clear();
         ob_start();
         $sink = $this->redirectMessages();
+
+        while (time() < $now + 3) { // Wait until after the cutoffdate as some core methods use time().
+            sleep(1);
+        }
         $task->get_emails_to_send(0, $now + 3); // After cut off and delay.
         $output = ob_get_contents();
         ob_end_clean();
-
-        $messages = $sink->get_messages();
-        // Students in the array and the one created at the end without submitting.
-        $this->assertCount(6, $messages); // Everyone except the user with the extension.
+        // Students in the array including the one created at the end without submitting students[5].
+        $this->assertEquals($studentids, $this->getmessagedusers($sink->get_messages()));
 
         $sink->clear();
         ob_start();
@@ -397,8 +402,7 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
         $output = ob_get_contents();
         ob_end_clean();
 
-        $messages = $sink->get_messages();
-        $this->assertCount(1, $messages); // Just the user with the extension.
+        $this->assertEquals([$student->id], $this->getmessagedusers($sink->get_messages())); // Just the user with the extension.
 
         $sink->clear();
         ob_start();
@@ -427,7 +431,16 @@ class assignsubmission_comparativejudgement_judgerequestemail_testcase extends a
 
         $body = $task->get_message_body($student, $email->to_record(), $secondassign);
 
-        $this->assertContains(fullname($student), $body);
+        $this->assertStringContainsString(fullname($student), $body);
+    }
+
+    private function getmessagedusers($messages) {
+        $userids = [];
+        foreach ($messages as $message) {
+           $userids[] = $message->useridto;
+        }
+        sort($userids);
+        return $userids;
     }
 
     /**

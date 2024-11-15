@@ -243,8 +243,6 @@ class assignsubmission_comparativejudgement_comparisoncanuserjudge_testcase exte
         global $DB;
 
         list($teacher, $editingteacher, $student, $secondassign, $plugin) = $this->setupstandardscenario();
-        $this->setUser($teacher);
-
         $plugin->set_config('judges', $DB->get_field('role', 'id', ['shortname' => 'teacher' ]));
 
         for ($i = 0; $i < 4; $i++) {
@@ -253,6 +251,7 @@ class assignsubmission_comparativejudgement_comparisoncanuserjudge_testcase exte
             $this->submit_for_grading($students[$i], $secondassign);
         }
 
+        $this->setUser($teacher);
         $comparisonmanager = new comparisonmanager($teacher->id, $secondassign);
 
         $plugin->set_config('maxjudgementsperuser', 1);
