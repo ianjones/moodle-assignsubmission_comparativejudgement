@@ -33,11 +33,13 @@ class comparisonrunrscript_test extends advanced_testcase {
     public function test_runrscript_exampledate() {
         global $CFG;
 
+        if (empty(get_config('pathtorscript', 'local_rhandler'))) {
+            $this->markTestSkipped('pathtorscript is not defined');
+        }
+
         $this->resetAfterTest();
 
         $exampledecisions = file_get_contents("$CFG->dirroot/mod/assign/submission/comparativejudgement/docs/exampledecisions.csv");
-
-        set_config('pathtorscript', '/usr/local/bin/Rscript', 'local_rhandler');
 
         $rhandler = new rhandler("$CFG->dirroot/mod/assign/submission/comparativejudgement/lib/pipeablescript.R");
         $rhandler->setinput($exampledecisions);
@@ -53,7 +55,7 @@ class comparisonrunrscript_test extends advanced_testcase {
         global $CFG;
 
         if (!file_exists("$CFG->dirroot/mod/assign/submission/comparativejudgement/tests/sshproxy.php")) {
-            mtrace('No sshproxy details');
+            $this->markTestSkipped('No sshproxy details');
             return false;
         }
 

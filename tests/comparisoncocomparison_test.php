@@ -44,8 +44,9 @@ class comparisoncocomparison_test extends advanced_testcase {
     public function test_canuserjudge_fakerole_assignment_do_comparisons() {
         $this->resetAfterTest();
 
-        set_config('pathtorscript', '/usr/local/bin/Rscript', 'local_rhandler');
-        set_config('sshproxy', '', 'local_rhandler');
+        if (empty(get_config('pathtorscript', 'local_rhandler'))) {
+            $this->markTestSkipped('pathtorscript is not defined');
+        }
 
         $course = $this->getDataGenerator()->create_course();
 
