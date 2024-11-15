@@ -26,7 +26,6 @@ namespace assignsubmission_comparativejudgement;
 defined('MOODLE_INTERNAL') || die();
 
 use assign;
-
 use assign_submission_comparativejudgement;
 
 class comparisonmanager {
@@ -93,7 +92,7 @@ class comparisonmanager {
             if ($urgent) {
                 if (!empty($settings->minjudgementspersubmission)) {
                     $threshold = "HAVING SUM(CASE WHEN comp.usermodified = $this->userid THEN 1 ELSE 0 END) < " .
-                    $settings->minjudgementspersubmission;
+                        $settings->minjudgementspersubmission;
                 } else {
                     $threshold = "HAVING SUM(CASE WHEN comp.usermodified = $this->userid THEN 1 ELSE 0 END) < 1";
                 }
@@ -160,7 +159,7 @@ class comparisonmanager {
         $subone = new \stdClass();
         $subtwo = new \stdClass();
 
-        foreach ((array) $submissionpair as $key => $value) {
+        foreach ((array)$submissionpair as $key => $value) {
             list($key, $index) = explode('_', $key);
             if ($index == 0) {
                 $subone->{$key} = $value;
@@ -178,6 +177,10 @@ class comparisonmanager {
         $users = [];
         $settings = $this->getsettings();
 
+        if (empty($settings->judges)) {
+            return $users;
+        }
+
         $judges = $settings->judges;
 
         if (in_array(assign_submission_comparativejudgement::FAKEROLE_GRADABLE_USERS, $judges)) {
@@ -188,9 +191,9 @@ class comparisonmanager {
             // It doesn't look like it but this does cover group submissions as well.
             // Each member of a group submission should have a personal submission record with no content as well.
             $users = array_merge($users, array_keys($DB->get_records_sql(
-                    'SELECT userid FROM {assign_submission} WHERE assignment = :assignment AND
+                'SELECT userid FROM {assign_submission} WHERE assignment = :assignment AND
                     status = :status AND groupid = 0 AND latest = 1 GROUP BY userid',
-                    ['status' => ASSIGN_SUBMISSION_STATUS_SUBMITTED, 'assignment' => $this->assignmentinstance->id]
+                ['status' => ASSIGN_SUBMISSION_STATUS_SUBMITTED, 'assignment' => $this->assignmentinstance->id]
             )));
         }
 
@@ -214,7 +217,7 @@ class comparisonmanager {
 
         $settings = $this->getsettings();
         // Are they over the minimum number of judgements or is minjudgements empty.
-        $comparisoncount = $this->countjudgementsmade($this->userid, $this->assignmentinstance->id);
+        $comparisoncount = static::countjudgementsmade($this->userid, $this->assignmentinstance->id);
         if (empty($settings->minjudgementsperuser) || $comparisoncount >= $settings->minjudgementsperuser) {
             return false;
         }
@@ -250,11 +253,9 @@ class comparisonmanager {
     }
 
     public function isuserajudge() {
-        global $CFG;
-
         $settings = $this->getsettings();
         $plugin = assign_submission_comparativejudgement::getplugin($this->assignment);
-        if (!$plugin->is_enabled()) {
+        if (!$plugin->is_enabled() || empty($settings->judges)) {
             return false;
         }
 
@@ -306,13 +307,13 @@ class comparisonmanager {
 
         // Not have exceeded max judgements per user.
         $comparisoncount =
-                comparison::count_records(['usermodified' => $this->userid, 'assignmentid' => $this->assignmentinstance->id]);
+            comparison::count_records(['usermodified' => $this->userid, 'assignmentid' => $this->assignmentinstance->id]);
         if (!empty($settings->maxjudgementsperuser) && $comparisoncount >= $settings->maxjudgementsperuser) {
             return false;
         }
 
         if ($this->isusergradable() && empty($settings->judgementswhileeditable) &&
-                $this->assignment->submissions_open($this->userid)) {
+            $this->assignment->submissions_open($this->userid)) {
             return false;
         }
 

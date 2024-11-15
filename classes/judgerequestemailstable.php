@@ -24,7 +24,6 @@
 namespace assignsubmission_comparativejudgement;
 
 use assign;
-use moodle_url;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -33,7 +32,8 @@ require_once($CFG->dirroot . '/lib/tablelib.php');
 require_once($CFG->dirroot . '/user/profile/lib.php');
 
 class judgerequestemailstable extends \table_sql {
-    private $controller;
+    private judgerequestemailcontroller $controller;
+    private comparisonmanager $manager;
 
     public function __construct(assign $assignment, $sortcolumn) {
         global $USER;

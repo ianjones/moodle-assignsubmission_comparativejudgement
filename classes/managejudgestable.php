@@ -24,6 +24,7 @@
 namespace assignsubmission_comparativejudgement;
 
 use assign;
+use core_user\fields;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -79,7 +80,7 @@ class managejudgestable extends \table_sql {
             $insql = " <> u.id ";
             $inparams = [];
         }
-        $namefields = get_all_user_name_fields(true, 'u');
+        $namefields = fields::for_name()->get_sql('u')->selects;
 
         $inparams['entitytype'] = exclusion::EXCLUSION_TYPE_JUDGE;
 
@@ -88,7 +89,7 @@ class managejudgestable extends \table_sql {
 
         $this->set_count_sql("select count(id) from {user} u where u.id $insql", $inparams);
         $this->set_sql("u.id,
-                            u.id as judgeid,
+                            u.id as judgeid
                             $namefields,
                             COUNT(comp.id) as comparisons,
                             SUM(comp.timetaken) as timetaken,
@@ -104,7 +105,7 @@ class managejudgestable extends \table_sql {
                         LEFT JOIN {assignsubmission_comp} comp ON comp.usermodified = u.id
                         LEFT JOIN {assignsubmission_exclusion} exclusion ON
                         exclusion.entityid = u.id AND exclusion.type = :entitytype",
-                "u.id $insql GROUP BY u.id, exclusion.id, $namefields",
+                "u.id $insql GROUP BY u.id, exclusion.id $namefields",
                 $inparams);
     }
 

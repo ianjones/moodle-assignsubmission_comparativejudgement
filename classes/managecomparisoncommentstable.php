@@ -24,6 +24,7 @@
 namespace assignsubmission_comparativejudgement;
 
 use assign;
+use core_user\fields;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -79,7 +80,7 @@ class managecomparisoncommentstable extends \table_sql {
         $this->is_downloadable(true);
         $this->sort_default_column = $sortcolumn;
 
-        $namefields = get_all_user_name_fields(true, 'u');
+        $namefields = fields::for_name()->get_sql('u')->selects;
 
         $inparams = [
                 'entitytype'   => exclusion::EXCLUSION_TYPE_COMPARISONCOMMENT,
@@ -89,7 +90,7 @@ class managecomparisoncommentstable extends \table_sql {
         $uniquecol = $DB->sql_concat('compsub.id', '"_"', 'asssub.id', '"_"', 'asssubother.id');
         $this->set_sql("$uniquecol,
             compsub.id,
-            u.id as judgeid,
+            u.id as judgeid
             $namefields,
             compsub.comments,
             compsub.commentsformat,

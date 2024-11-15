@@ -25,7 +25,7 @@ namespace assignsubmission_comparativejudgement;
 
 defined('MOODLE_INTERNAL') || die();
 
-use assign_header;
+use mod_assign\output\assign_header;
 use moodle_url;
 
 abstract class basecontroller {
@@ -35,6 +35,10 @@ abstract class basecontroller {
     protected $assignment;
     protected $renderer;
     protected $assignmentsettings;
+
+    abstract public function summary();
+
+    abstract public function view();
 
     public function __construct(\assign $assignment) {
         $this->assignment = $assignment;

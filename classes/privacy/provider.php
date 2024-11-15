@@ -27,11 +27,11 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/mod/assign/locallib.php');
 
+use context;
 use core_privacy\local\metadata\collection;
 use core_privacy\local\metadata\provider as metadataprovider;
 use core_privacy\local\request\approved_contextlist;
 use core_privacy\local\request\approved_userlist;
-use core_privacy\local\request\context;
 use core_privacy\local\request\contextlist;
 use core_privacy\local\request\core_user_data_provider;
 use core_privacy\local\request\userlist;
@@ -233,10 +233,10 @@ class provider implements metadataprovider,
     }
 
     /**
-     * @param \context|context $context
+     * @param context $context
      * @return mixed
      */
-    public static function delete_data_for_all_users_in_context(\context $context) {
+    public static function delete_data_for_all_users_in_context(context $context) {
         self::deleteallonassignid($context->instanceid->id);
     }
 

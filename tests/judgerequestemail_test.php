@@ -21,7 +21,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use assignsubmission_comparativejudgement\comparisonmanager;
 use assignsubmission_comparativejudgement\judgerequestemail;
 
 defined('MOODLE_INTERNAL') || die();
@@ -279,6 +278,7 @@ class judgerequestemail_test extends advanced_testcase {
 
         $plugin->set_config('judges', \assign_submission_comparativejudgement::FAKEROLE_GRADABLE_USERS);
 
+        $students = [];
         for ($j = 0; $j < 3; $j++) {
             $group = $this->getDataGenerator()->create_group(['courseid' => $course->id]);
             $groupstudents = [];
@@ -296,7 +296,6 @@ class judgerequestemail_test extends advanced_testcase {
             $this->add_submission($firststudent, $secondassign);
             foreach ($groupstudents as $studentid) {
                 $this->submit_for_grading($students[$studentid], $secondassign);
-                $students[$studentid] = $students[$studentid];
             }
             $groupsubmissions[$groupid] = $secondassign->get_group_submission($firststudent->id, 0, false)->id;
         }

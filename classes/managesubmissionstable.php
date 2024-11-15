@@ -24,6 +24,7 @@
 namespace assignsubmission_comparativejudgement;
 
 use assign;
+use core_user\fields;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -129,8 +130,8 @@ class managesubmissionstable extends \table_sql {
                     ['status' => ASSIGN_SUBMISSION_STATUS_SUBMITTED, 'assignment' => $assignment->get_instance()->id]
             );
 
-            $namefields = get_all_user_name_fields(true, 'u');
-            $this->set_sql("asssub.id, u.id as userid, asssub.id as entityid, $namefields, asssub.id as submissionid, " .
+            $namefields = fields::for_name()->get_sql('u')->selects;
+            $this->set_sql("asssub.id, u.id as userid, asssub.id as entityid $namefields, asssub.id as submissionid, " .
                            "exemp.title as exemplartitle,
                                 exemp.id as exemplarid, COUNT(comp.id) as comparisons, SUM(comp.timetaken) as timetaken,
                                 AVG(comp.timetaken) as avgtimetaken,
@@ -148,7 +149,7 @@ class managesubmissionstable extends \table_sql {
                             LEFT JOIN {assignsubmission_exclusion} exclusion ON
                             exclusion.entityid = asssub.id AND exclusion.type = :entitytype',
                     "asssub.assignment = :assignmentid AND asssub.status = :status AND asssub.userid <> 0 GROUP BY u.id,
-                    exemp.title, exemp.id, exclusion.id, rsub.score, asssub.id, $namefields",
+                    exemp.title, exemp.id, exclusion.id, rsub.score, asssub.id $namefields",
                     ['assignmentid' => $assignment->get_instance()->id, 'status' => ASSIGN_SUBMISSION_STATUS_SUBMITTED,
                      'entitytype'   => exclusion::EXCLUSION_TYPE_SUBMISSION]);
         }

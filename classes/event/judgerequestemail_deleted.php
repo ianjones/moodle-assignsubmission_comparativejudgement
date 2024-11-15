@@ -24,7 +24,6 @@
 namespace assignsubmission_comparativejudgement\event;
 
 use core\event\base;
-use moodle_url;
 
 defined('MOODLE_INTERNAL') || die();
 

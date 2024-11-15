@@ -30,7 +30,7 @@ defined('MOODLE_INTERNAL') || die();
  * @return bool
  */
 function xmldb_assignsubmission_comparativejudgement_upgrade($oldversion) {
-    global $CFG, $DB;
+    global $DB;
 
     $dbman = $DB->get_manager();
 

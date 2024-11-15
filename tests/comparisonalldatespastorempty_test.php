@@ -30,8 +30,6 @@ require_once($CFG->dirroot . '/mod/assign/tests/generator.php');
 require_once($CFG->dirroot . '/mod/assign/submission/comparativejudgement/locallib.php');
 
 use assignsubmission_comparativejudgement\comparisonmanager;
-use core_calendar\local\api as calendar_local_api;
-use core_calendar\local\event\container as calendar_event_container;
 
 /**
  * @group assignsubmission_comparativejudgement

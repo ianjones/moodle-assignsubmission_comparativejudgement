@@ -73,7 +73,6 @@ class comparisoncontroller extends basecontroller {
     /**
      * @param $plugin
      * @param $submission
-     * @param \assign_renderer $assignrenderer
      * @return string
      */
     private function getsubmissionplugincontents(assign_submission_plugin $plugin, stdClass $submission): string {
@@ -112,7 +111,7 @@ class comparisoncontroller extends basecontroller {
                 $files = $plugin->get_files($submission, $user);
                 $converter = new converter();
 
-                foreach ($files as $key => $file) {
+                foreach ($files as $file) {
                     if (!is_a($file, 'stored_file')) {
                         continue;
                     }
@@ -135,6 +134,8 @@ class comparisoncontroller extends basecontroller {
                         $mimetype = $file->get_mimetype();
                     } else if ($convertable) {
                         $mimetype = 'application/pdf';
+                    } else {
+                        continue;
                     }
 
                     if (strpos($mimetype, 'image/') === 0) {

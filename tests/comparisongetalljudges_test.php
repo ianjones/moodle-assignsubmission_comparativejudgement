@@ -29,7 +29,6 @@ require_once($CFG->dirroot . '/mod/assign/locallib.php');
 require_once($CFG->dirroot . '/mod/assign/tests/generator.php');
 require_once($CFG->dirroot . '/mod/assign/submission/comparativejudgement/locallib.php');
 
-use assignsubmission_comparativejudgement\comparison;
 use assignsubmission_comparativejudgement\comparisonmanager;
 
 /**

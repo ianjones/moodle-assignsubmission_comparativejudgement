@@ -25,8 +25,6 @@ namespace assignsubmission_comparativejudgement;
 
 defined('MOODLE_INTERNAL') || die();
 
-use local_certification\event\judgerequestemail_sent;
-
 class judgerequestemail extends \core\persistent {
     const TABLE = 'assignsubmission_email';
 
@@ -48,20 +46,5 @@ class judgerequestemail extends \core\persistent {
                         'default' => get_string('bodydefault', 'assignsubmission_comparativejudgement'),
                 ],
         ];
-    }
-
-    /**
-     * @return judgerequestemail[]
-     * @throws \dml_exception
-     */
-    public static function get_all_judgerequestemails_by_id() {
-        $certs = self::get_records();
-        $retval = [];
-
-        foreach ($certs as $cert) {
-            $retval[$cert->get('id')] = $cert;
-        }
-
-        return $retval;
     }
 }
