@@ -35,6 +35,7 @@ $string['body_help'] = 'Body of message to send to judges, available placeholder
        [judgeurl]
        [assignname]';
 $string['calculategrades'] = 'Calculate scores';
+$string['calculategradesfirst'] = 'Please calculate scores before copying grades to the gradebook.';
 $string['comments'] = 'Comments';
 $string['comment'] = 'Comment';
 $string['commentsimported'] = 'Comments imported';
@@ -69,6 +70,7 @@ $string['exemplartitle'] = 'Title';
 $string['fakerole_assignment_submitted'] = 'Users with completed submissions';
 $string['fakerole_gradable_users'] = 'Gradable users';
 $string['firstcomparison'] = 'First comparison';
+$string['gradescopied'] = 'Grades copied to gradebook';
 $string['importcomments'] = 'Import comments';
 $string['include'] = 'Include in grading';
 $string['judgeid'] = 'Judge id';

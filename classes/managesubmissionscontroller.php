@@ -76,13 +76,22 @@ class managesubmissionscontroller extends basecontroller {
                 optional_param('copytogradebook', false, PARAM_BOOL)
         ) {
             $ranking = ranking::get_record(['assignmentid' => $assignmentid]);
-            $ranking->populategrades($this->assignment);
 
-            grades_imported::create([
+            if (empty($ranking)) {
+                redirect($this->getinternallink('managesubmissions'), get_string('calculategradesfirst',
+                    'assignsubmission_comparativejudgement'));
+            } else {
+                $ranking->populategrades($this->assignment);
+
+                grades_imported::create([
                     'relateduserid' => $USER->id,
-                    'objectid'      => $this->assignment->get_course_module()->id,
-                    'context'       => $this->assignment->get_context(),
-            ])->trigger();
+                    'objectid' => $this->assignment->get_course_module()->id,
+                    'context' => $this->assignment->get_context(),
+                ])->trigger();
+
+                redirect($this->getinternallink('managesubmissions'),
+                    get_string('gradescopied', 'assignsubmission_comparativejudgement'));
+            }
         }
 
         $sort = optional_param('tsort', 'lastname, firstname', PARAM_ALPHA);
