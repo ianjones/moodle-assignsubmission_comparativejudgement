@@ -102,7 +102,7 @@ where comp.assignmentid = :assignmentid
         $rawoutput = $rhandler->get('output');
 
         if (empty($rawoutput)) {
-            print_error('errorexecutingscript', 'assignsubmission_comparativejudgement',
+            throw new \moodle_exception('errorexecutingscript', 'assignsubmission_comparativejudgement',
                     null, null, $rhandler->get('errors'));
         }
 
