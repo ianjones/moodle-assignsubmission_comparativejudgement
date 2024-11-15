@@ -152,11 +152,11 @@ where comp.assignmentid = :assignmentid
         global $DB, $CFG;
         require_once($CFG->dirroot . '/mod/assign/gradeform.php');
 
-        $submissiongrades = $DB->get_records_sql('SELECT asssub.id, asssub.groupid, asssub.userid, rank.score
+        $submissiongrades = $DB->get_records_sql('SELECT asssub.id, asssub.groupid, asssub.userid, ranksub.score
                                 FROM {assign_submission} asssub
-                                INNER JOIN {assignsubmission_rankingsub} rank ON rank.submissionid = asssub.id
+                                INNER JOIN {assignsubmission_rankingsub} ranksub ON ranksub.submissionid = asssub.id
                                 LEFT JOIN {assignsubmission_exemplars} exemp ON exemp.submissionid = asssub.id
-                                WHERE exemp.id IS NULL AND rank.rankingid = :rankingid',
+                                WHERE exemp.id IS NULL AND ranksub.rankingid = :rankingid',
                 ['rankingid' => $this->get('id')]
         );
 
