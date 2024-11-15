@@ -148,7 +148,7 @@ class comparisonmanager {
             )
             WHERE $preventrepeats AND $preventcompareexemplars
             ORDER BY subzero.totaluserjudgements_0 asc, subone.totaluserjudgements_1 asc,
-                subzero.totaljudgements_0 asc, subone.totaljudgements_1";
+                subzero.totaljudgements_0 asc, subone.totaljudgements_1, subone.userid_1, subzero.userid_0";
 
         $submissions = $DB->get_records_sql($sql, null, 0, 1);
 
