@@ -48,4 +48,5 @@ scores$Reliability <- round(mod1$mle.rel,2)
 sink()
 
 #output as csv
+scores$Score <- as.vector(scores$Score) #format scores to stop format_csv crashing
 cat(format_csv(scores))
