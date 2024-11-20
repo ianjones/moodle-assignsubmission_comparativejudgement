@@ -26,6 +26,21 @@ You need the following three components.
 
 ### Install R 
 
+#### OS X with Homebrew
+Install xcode tools:
+
+`xcode-select --install`
+
+Download the latest version of R from (R-4.4.2-arm64.pkg)
+` https://cran.r-project.org/bin/macosx/`
+
+Install the dependencies:
+
+`cd MOODLEROOT/mod/assign/submission/comparativejudgement/lib`
+
+`sudo Rscript prereqs.R`
+
+
 #### Ubuntu 18
 
 `sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9`

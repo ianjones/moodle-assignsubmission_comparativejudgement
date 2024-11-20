@@ -22,6 +22,8 @@
  */
 
 
+use local_rhandler\rhandler;
+
 define('CLI_SCRIPT', true);
 define('CACHE_DISABLE_ALL', true); // This prevents reading of existing caches.
 define('IGNORE_COMPONENT_CACHE', true);
@@ -31,7 +33,7 @@ require_once($CFG->libdir.'/clilib.php');
 
 $exampledecisions = file_get_contents("$CFG->dirroot/mod/assign/submission/comparativejudgement/docs/exampledecisions.csv");
 
-$rhandler = new \local_rhandler\rhandler("/mod/assign/submission/comparativejudgement/lib/pipeablescript.R");
+$rhandler = new rhandler("$CFG->dirroot/mod/assign/submission/comparativejudgement/lib/pipeablescript.R");
 $rhandler->setinput($exampledecisions);
 $rhandler->execute();
 

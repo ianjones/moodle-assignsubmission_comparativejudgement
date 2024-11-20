@@ -19,9 +19,9 @@ dp <- 0 #number of decimal places
 
 
 #get the decision data from the Moodle PlugIn
-#assume columns (1) submissionid (2) Won (3) Lost 
+#assume columns (1) submissionid (2) Won (3) Lost
 decisions <- read.csv(file("stdin"), header=T, stringsAsFactors=F) #this line will read the data passed from PHP
-#Create a unique factor level for each submission 
+#Create a unique factor level for each submission
 players <- unique(c(decisions$Won,decisions$Lost))
 #Fit decisions to Bradley-Terry Model to get a score for each candidate
 df <- data.frame(id1=decisions$Won, id2=decisions$Lost, result=1)

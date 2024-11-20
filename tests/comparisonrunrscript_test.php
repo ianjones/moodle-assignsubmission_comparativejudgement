@@ -29,11 +29,14 @@ defined('MOODLE_INTERNAL') || die();
  * @group assignsubmission_comparativejudgement
  */
 class comparisonrunrscript_test extends advanced_testcase {
+    public function setUp(): void {
+        \local_rhandler\rhandler::init_for_phpunit();
+    }
 
     public function test_runrscript_exampledate() {
         global $CFG;
 
-        if (empty(get_config('pathtorscript', 'local_rhandler'))) {
+        if (empty(get_config('local_rhandler', 'pathtorscript'))) {
             $this->markTestSkipped('pathtorscript is not defined');
         }
 
