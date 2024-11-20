@@ -49,4 +49,4 @@ sink()
 
 #output as csv
 scores$Score <- as.vector(scores$Score) #format scores to stop format_csv crashing
-cat(format_csv(scores))
+cat(format_csv(arrange(scores, submissionid)))
