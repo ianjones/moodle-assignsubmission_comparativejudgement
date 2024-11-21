@@ -134,18 +134,21 @@ class restore_assignsubmission_comparativejudgement_subplugin extends restore_su
 
     public function process_assignsubmission_exclusion_submission($data) {
         global $DB;
+        $data->assignmentid = $this->get_new_parentid('assign');
         $data->submissionid = $this->get_mappingid('submission', $data->submissionid);
         $DB->insert_record('assignsubmission_exclusion', $data);
     }
 
     public function process_assignsubmission_exclusion_comment($data) {
         global $DB;
+        $data->assignmentid = $this->get_new_parentid('assign');
         $data->entityid = $this->get_mappingid('assignsubmission_compsubs', $data->entityid);
         $DB->insert_record('assignsubmission_exclusion', $data);
     }
 
     public function process_assignsubmission_exclusion_judge($data) {
         global $DB;
+        $data->assignmentid = $this->get_new_parentid('assign');
         $data->entityid = $this->get_mappingid('user', $data->entityid);
         $DB->insert_record('assignsubmission_exclusion', $data);
     }

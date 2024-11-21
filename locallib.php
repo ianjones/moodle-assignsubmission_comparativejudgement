@@ -182,6 +182,8 @@ class assign_submission_comparativejudgement extends assign_submission_plugin {
                 ['assignmentid' => $this->assignment->get_instance()->id]);
         $DB->delete_records('assignsubmission_email',
                 ['assignmentid' => $this->assignment->get_instance()->id]);
+        $DB->delete_records('assignsubmission_exclusion',
+                ['assignmentid' => $this->assignment->get_instance()->id]);
 
         $DB->delete_records_subquery('assignsubmission_compsubs', 'submissionid', 'id',
                 "select id from {assign_submission} where assignment = :assignmentid",
@@ -194,11 +196,6 @@ class assign_submission_comparativejudgement extends assign_submission_plugin {
         $DB->delete_records_subquery('assignsubmission_exemplars', 'submissionid', 'id',
                 "select id from {assign_submission} where assignment = :assignmentid",
                 ['assignmentid' => $this->assignment->get_instance()->id]);
-
-        $DB->execute('delete from {assignsubmission_exclusion} where type = :type and ' .
-                    'id in (select id from {assign_submission} where assignment = :assignmentid)',
-                    ['assignmentid' => $this->assignment->get_instance()->id,
-                    'type' => \assignsubmission_comparativejudgement\exclusion::EXCLUSION_TYPE_SUBMISSION]);
 
         return true;
     }

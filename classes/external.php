@@ -36,26 +36,33 @@ class external extends external_api {
 
     public static function toggle_exclusion_parameters() {
         return new external_function_parameters(
-                [
-                        'entityid'   => new external_value(PARAM_INT, 'The id of the entity being toggled'),
-                        'state'      => new external_value(PARAM_BOOL, 'State to set to'),
-                        'entitytype' => new external_value(PARAM_INT, 'Type of entity'),
-                ]
+            [
+                'assignmentid' => new external_value(PARAM_INT, 'The id of the entity being toggled'),
+                'entityid' => new external_value(PARAM_INT, 'The id of the entity being toggled'),
+                'state' => new external_value(PARAM_BOOL, 'State to set to'),
+                'entitytype' => new external_value(PARAM_INT, 'Type of entity'),
+            ]
         );
     }
 
-    public static function toggle_exclusion($entityid, $state, $entitytype) {
-        self::validate_parameters(self::toggle_exclusion_parameters(),
-                ['entityid'   => $entityid,
-                 'state'      => $state,
-                 'entitytype' => $entitytype]);
+    public static function toggle_exclusion($assignmentid, $entityid, $state, $entitytype) {
+        self::validate_parameters(self::toggle_exclusion_parameters(), [
+            'assignmentid' => $assignmentid,
+            'entityid' => $entityid,
+            'state' => $state,
+            'entitytype' => $entitytype
+        ]);
 
-        $exclusion = exclusion::get_record(['entityid'   => $entityid,
-                                            'type' => $entitytype]);
+        $exclusion = exclusion::get_record([
+            'assignmentid' => $assignmentid,
+            'entityid' => $entityid,
+            'type' => $entitytype,
+        ]);
         if ($state && $exclusion) {
             $exclusion->delete();
         } else if (!$state && !$exclusion) {
             $exclusion = new exclusion();
+            $exclusion->set('assignmentid', $assignmentid);
             $exclusion->set('entityid', $entityid);
             $exclusion->set('type', $entitytype);
             $exclusion->save();

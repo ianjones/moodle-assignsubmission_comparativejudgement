@@ -37,7 +37,7 @@ class managejudgestable extends \table_sql {
         global $DB, $PAGE, $USER;
 
         $PAGE->requires->js_call_amd('assignsubmission_comparativejudgement/manage', 'init',
-                ['entitytype' => exclusion::EXCLUSION_TYPE_JUDGE]);
+                ['assignmentid' => $assignment->get_instance()->id, 'entitytype' => exclusion::EXCLUSION_TYPE_JUDGE]);
 
         parent::__construct('managejudges_table');
 
@@ -83,6 +83,7 @@ class managejudgestable extends \table_sql {
         $namefields = fields::for_name()->get_sql('u')->selects;
 
         $inparams['entitytype'] = exclusion::EXCLUSION_TYPE_JUDGE;
+        $inparams['assignmentid'] = $assignment->get_instance()->id;
 
         $left = comparison::POSITION_LEFT;
         $right = comparison::POSITION_RIGHT;
@@ -103,8 +104,10 @@ class managejudgestable extends \table_sql {
                             SUM(CASE WHEN winningsubmissionposition = $right THEN 1 ELSE 0 END) as rightchoices",
                 "{user} u
                         LEFT JOIN {assignsubmission_comp} comp ON comp.usermodified = u.id
-                        LEFT JOIN {assignsubmission_exclusion} exclusion ON
-                        exclusion.entityid = u.id AND exclusion.type = :entitytype",
+                        LEFT JOIN {assignsubmission_exclusion} exclusion
+                            ON exclusion.entityid = u.id
+                            AND exclusion.type = :entitytype
+                            AND exclusion.assignmentid = :assignmentid",
                 "u.id $insql GROUP BY u.id, exclusion.id $namefields",
                 $inparams);
     }

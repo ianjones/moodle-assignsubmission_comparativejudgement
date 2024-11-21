@@ -47,7 +47,7 @@ class managecomparisoncommentstable extends \table_sql {
                 has_capability('assignsubmission/comparativejudgement:manageexemplars', $assignment->get_context());
 
         $PAGE->requires->js_call_amd('assignsubmission_comparativejudgement/manage', 'init',
-                ['entitytype' => exclusion::EXCLUSION_TYPE_COMPARISONCOMMENT]);
+                ['assignmentid' => $assignment->get_instance()->id, 'entitytype' => exclusion::EXCLUSION_TYPE_COMPARISONCOMMENT]);
 
         parent::__construct('managecomparisoncomments_table');
 

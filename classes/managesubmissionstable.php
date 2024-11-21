@@ -42,7 +42,7 @@ class managesubmissionstable extends \table_sql {
     public function __construct(assign $assignment, $sortcolumn) {
         global $PAGE;
         $PAGE->requires->js_call_amd('assignsubmission_comparativejudgement/manage', 'init',
-                ['entitytype' => exclusion::EXCLUSION_TYPE_SUBMISSION]);
+                ['assignmentid' => $assignment->get_instance()->id, 'entitytype' => exclusion::EXCLUSION_TYPE_SUBMISSION]);
 
         parent::__construct('managesubmissions_table');
 

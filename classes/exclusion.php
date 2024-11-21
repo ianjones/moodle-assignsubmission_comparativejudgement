@@ -36,6 +36,9 @@ class exclusion extends persistent {
 
     protected static function define_properties() {
         return [
+                'assignmentid' => [
+                        'type' => PARAM_INT,
+                ],
                 'type' => [
                         'type' => PARAM_INT,
                 ],

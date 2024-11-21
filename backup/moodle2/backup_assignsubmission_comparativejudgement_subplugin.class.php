@@ -118,10 +118,7 @@ class backup_assignsubmission_comparativejudgement_subplugin extends backup_subp
             // Set source to populate the data.
             $subpluginelement->set_source_sql('
             SELECT type, entityid FROM {assignsubmission_exclusion}
-            WHERE type = :submissiontype AND entityid IN (
-                SELECT id FROM {assign_submission} WHERE assignment = :assignmentid
-            )
-            ',
+            WHERE type = :submissiontype AND assignmentid = :assignmentid',
                     [
                             'submissiontype' => ['sqlparam' => exclusion::EXCLUSION_TYPE_SUBMISSION],
                             'assignmentid'   => backup::VAR_ACTIVITYID,
@@ -137,10 +134,10 @@ class backup_assignsubmission_comparativejudgement_subplugin extends backup_subp
             // Set source to populate the data.
             $subpluginelement->set_source_sql('
             select type, entityid from {assignsubmission_exclusion} WHERE
-            type = :judgetype
-            ',
+            type = :judgetype AND assignmentid = :assignmentid',
                     [
                             'judgetype'      => ['sqlparam' => exclusion::EXCLUSION_TYPE_JUDGE],
+                            'assignmentid'   => backup::VAR_ACTIVITYID,
                     ]);
 
             $subpluginelement = new backup_nested_element('assignsubmission_exclusion_comment',
@@ -153,13 +150,7 @@ class backup_assignsubmission_comparativejudgement_subplugin extends backup_subp
             // Set source to populate the data.
             $subpluginelement->set_source_sql('
             select type, entityid from {assignsubmission_exclusion} WHERE
-            type = :comparisoncommenttype AND entityid in (
-                SELECT compsub.id
-                FROM {assignsubmission_compsubs} compsub
-                INNER JOIN {assign_submission} ass on ass.id = compsub.submissionid
-                WHERE ass.assignment = :assignmentid
-                )
-            ',
+            type = :comparisoncommenttype AND assignmentid = :assignmentid',
                     [
                             'comparisoncommenttype' => ['sqlparam' => exclusion::EXCLUSION_TYPE_COMPARISONCOMMENT],
                             'assignmentid'          => backup::VAR_ACTIVITYID,

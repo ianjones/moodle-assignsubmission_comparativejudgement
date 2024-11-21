@@ -7,7 +7,7 @@
 define(['jquery', 'core/ajax', 'core/notification'],
     function($, ajax, notification) {
         return {
-            init: function(entitytype) {
+            init: function(assignmentid, entitytype) {
                 $(document).on('change', 'input.excludeentity', function () {
                     var chkbox = $(this);
                     var entityid = chkbox.data('entityid');
@@ -16,7 +16,12 @@ define(['jquery', 'core/ajax', 'core/notification'],
 
                     ajax.call([{
                         methodname: 'assignsubmission_comparativejudgement_toggle_exclusion',
-                        args: {entityid: entityid, state: state, entitytype: entitytype}
+                        args: {
+                            assignmentid: assignmentid,
+                            entityid: entityid,
+                            state: state,
+                            entitytype: entitytype
+                        }
                     }])[0].then(function() {
                         chkbox.removeAttr('disabled', 'disabled');
                         return true;

@@ -55,8 +55,10 @@ from {assignsubmission_comp} comp
              comp.winningsubmission <> compsubs.submissionid and comp.id = compsubs.judgementid
          inner join {assign_submission} asssubwin on asssubwin.id = comp.winningsubmission
          inner join {assign_submission} asssublose on asssublose.id = compsubs.submissionid
-         LEFT JOIN {assignsubmission_exclusion} exclusion_judge ON
-                exclusion_judge.entityid = comp.usermodified AND exclusion_judge.type = :entitytypejudge
+         LEFT JOIN {assignsubmission_exclusion} exclusion_judge
+             ON exclusion_judge.entityid = comp.usermodified
+             AND exclusion_judge.type = :entitytypejudge
+             AND exclusion_judge.assignmentid = comp.assignmentid
          LEFT JOIN {assignsubmission_exclusion} exclusion_sub_win ON
                 exclusion_sub_win.entityid = comp.winningsubmission AND exclusion_sub_win.type = :entitytypesubwin
          LEFT JOIN {assignsubmission_exclusion} exclusion_sub_lose ON
@@ -139,14 +141,22 @@ where comp.assignmentid = :assignmentid
         if (!$ranking) {
             $ranking = new ranking();
         }
+        $csv = self::getrawjudgedatacsv($assignmentid);
 
-        $scores = $DB->get_records_sql_menu(
-            "SELECT winningsubmission, count(id)
-                    FROM {assignsubmission_comp}
-                    WHERE assignmentid = :assignmentid
-                    GROUP BY winningsubmission",
-            ['assignmentid' => $assignmentid]
-        );
+        $scores = [];
+        foreach (explode("\n", $csv) as $line) {
+            $cells = explode(",", $line);
+            if (!is_numeric($cells[1])) {
+                continue;
+            }
+            if (!isset($scores[$cells[1]])) {
+                $scores[$cells[1]] = 0;
+            }
+            if (!isset($scores[$cells[2]])) {
+                $scores[$cells[2]] = 0;
+            }
+            $scores[$cells[1]] = +1;
+        }
 
         $ranking->saverankings(-1.4, $assignmentid, $scores);
 
