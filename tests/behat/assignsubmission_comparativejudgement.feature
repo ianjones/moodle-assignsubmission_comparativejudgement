@@ -141,7 +141,7 @@ Feature: In an assignment, teacher can submit blind feedback during grading
 
     And I press "Calculate scores"
     And I should see "Comparison done"
-    And I should see "Last reliability: 10"
+    And I should see "Last reliability: 0"
 
     And I press "Copy grades to gradebook"
     And I should see "Grades copied to gradebook"

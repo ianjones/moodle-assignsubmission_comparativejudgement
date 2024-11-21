@@ -148,7 +148,7 @@ where comp.assignmentid = :assignmentid
             ['assignmentid' => $assignmentid]
         );
 
-        $ranking->saverankings(10, $assignmentid, $scores);
+        $ranking->saverankings(-1.4, $assignmentid, $scores);
 
         return $ranking;
     }

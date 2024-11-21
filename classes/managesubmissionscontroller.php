@@ -117,8 +117,14 @@ class managesubmissionscontroller extends basecontroller {
         if ($ranking) {
             $o .= html_writer::div(get_string('lastcalculation', 'assignsubmission_comparativejudgement',
                     userdate($ranking->get('timemodified'))));
-            $o .= html_writer::div(get_string('lastreliability', 'assignsubmission_comparativejudgement',
-                    $ranking->get('reliability')));
+
+            $reliability = $ranking->get('reliability');
+            if ($reliability < 0) {
+                $reliability = 0;
+            }
+            $o .= html_writer::div(
+                get_string('lastreliability', 'assignsubmission_comparativejudgement', $reliability)
+            );
         }
 
         $link = $this->getinternallink('managesubmissions', ['doranking' => true]);
