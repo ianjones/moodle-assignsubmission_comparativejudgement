@@ -106,6 +106,7 @@ $string['privacy:metadata:assignmentid'] = 'Assignment ID';
 $string['privacy:metadata:submissionpurpose'] = 'The submission ID that links to submissions for the user.';
 $string['right'] = 'Choose Right';
 $string['score'] = 'Score';
+$string['savechangesandaddanother'] = 'Save changes and add another';
 $string['sendjudgerequestemails'] = 'Send comparison request emails';
 $string['sidespicked'] = 'Ratio of sides chosen';
 $string['stopjudging'] = 'Finish judging';

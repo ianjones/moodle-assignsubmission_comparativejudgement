@@ -65,6 +65,8 @@ class exemplarform extends moodleform {
 
         $buttonarray = [];
         $buttonarray[] = &$mform->createElement('submit', 'submitbutton', get_string('savechanges', 'assign'));
+        $buttonarray[] = &$mform->createElement('submit', 'submitandaddanother',
+            get_string('savechangesandaddanother', 'assignsubmission_comparativejudgement'));
         $buttonarray[] = &$mform->createElement('cancel');
         $mform->addGroup($buttonarray, 'buttonar', '', [' '], false);
         $mform->closeHeaderBefore('buttonar');

@@ -107,7 +107,11 @@ class exemplarcontroller extends basecontroller {
         } else if ($data = $mform->get_data()) {
             exemplar::save_exemplar_submission($data, $this->assignment, $submission, $notices);
             // Do something with notices.
-            redirect($this->getinternallink('manageexemplars'));
+            if (empty($data->submitandaddanother)) {
+                redirect($this->getinternallink('manageexemplars'));
+            } else {
+                redirect($this->getinternallink('addexemplar'));
+            }
         }
 
         $o = $this->getheader(get_string('editexemplar', 'assignsubmission_comparativejudgement'));
