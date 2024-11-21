@@ -64,8 +64,13 @@ class exemplarcontroller extends basecontroller {
         $o = $this->getheader(get_string('manageexemplars', 'assignsubmission_comparativejudgement'));
         ob_start();
         $table->out(25, false);
-        $o .= ob_get_contents();
+        $contents = ob_get_contents();
         ob_end_clean();
+        $o .= \html_writer::tag(
+            'h2',
+            get_string('manageexemplarswithcount', 'assignsubmission_comparativejudgement', $table->totalrows)
+        );
+        $o .= $contents;
 
         $o .= $OUTPUT->single_button($this->getinternallink('addexemplar'),
                 get_string('addexemplar', 'assignsubmission_comparativejudgement'));

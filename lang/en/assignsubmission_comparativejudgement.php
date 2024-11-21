@@ -84,11 +84,14 @@ $string['left'] = 'Choose Left';
 $string['losses'] = 'Losses';
 $string['managecomparisoncomments'] = 'Comparison comments';
 $string['manageexemplars'] = 'Manage exemplars';
+$string['manageexemplarswithcount'] = 'Manage exemplars ({$a})';
 $string['managejudgerequestemail'] = 'Manage comparison request emails';
 $string['managejudgerequestemailintro'] =
         'Reminder emails will be sent to all elligible judges, they will be sent out on a schedule starting from the comparison start date if set, otherwise the submission cut off date or due date. If cut off date or due date are used then any extensions applied to users will impact on the date they receive the reminder.';
 $string['managejudges'] = 'Manage judges';
+$string['managejudgeswithcount'] = 'Manage judges ({$a})';
 $string['managesubmissions'] = 'Manage submissions';
+$string['managesubmissionswithcount'] = 'Manage submissions ({$a})';
 $string['maxjudgementsperuser'] = 'Maximum comparisons per judge';
 $string['maxtimetakencomparing'] = 'Max. time spent';
 $string['minjudgementspersubmission'] = 'Minimum comparisons per submission';

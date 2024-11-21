@@ -110,8 +110,13 @@ class managesubmissionscontroller extends basecontroller {
         $o = $this->getheader(get_string('managesubmissions', 'assignsubmission_comparativejudgement'));
         ob_start();
         $table->out(25, false);
-        $o .= ob_get_contents();
+        $contents = ob_get_contents();
         ob_end_clean();
+        $o .= \html_writer::tag(
+            'h2',
+            get_string('managesubmissionswithcount', 'assignsubmission_comparativejudgement', $table->totalrows)
+        );
+        $o .= $contents;
 
         $ranking = ranking::get_record(['assignmentid' => $assignmentid]);
         if ($ranking) {
