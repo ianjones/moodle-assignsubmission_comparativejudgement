@@ -207,6 +207,9 @@ class comparisonmanager {
             $users = array_merge($users, array_keys(get_role_users($roleid, $this->assignment->get_context(), true)));
         }
 
+        $info = new \core_availability\info_module($this->assignment->get_course_module());
+        $users = array_keys($info->filter_user_list(array_combine($users, $users)));
+
         return $users;
     }
 
