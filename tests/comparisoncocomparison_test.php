@@ -85,6 +85,6 @@ class comparisoncocomparison_test extends advanced_testcase {
             }
         }
 
-        ranking::docomparison($secondassign->get_instance()->id);
+        ranking::docomparison($secondassign);
     }
 }

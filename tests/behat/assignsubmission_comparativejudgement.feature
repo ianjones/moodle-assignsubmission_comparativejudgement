@@ -125,7 +125,7 @@ Feature: In an assignment, teacher can submit blind feedback during grading
     And I should see "3 : 0" in the "Nonediting 2" "table_row"
     And I should see "3" in the "Nonediting 2" "table_row"
     And I should see "1 : 0" in the "Nonediting 3" "table_row"
-    And I should see "1" in the "Nonediting 2" "table_row"
+    And I should see "1" in the "Nonediting 3" "table_row"
 
     And I am on the "Test assignment name" Activity page
     And I press "Manage submissions"
@@ -157,11 +157,13 @@ Feature: In an assignment, teacher can submit blind feedback during grading
     And I click on "#managejudges_table_r0_c10 .excludeentity" "css_element"
     And I click on "#managejudges_table_r2_c10 .excludeentity" "css_element"
 
+    And I am on the "Test assignment name" Activity page
+    And I press "Manage submissions"
     And I press "Calculate scores"
     And I press "Copy grades to gradebook"
 
     And I am on the "Course 1" Course page
     And I navigate to "Grades" in current page administration
-    And I should see "1.00" in the "Student 1" "table_row"
+    And I should see "0.00" in the "Student 1" "table_row"
     And I should see "1.00" in the "Student 2" "table_row"
-    And I should see "0.00" in the "Student 3" "table_row"
+    And I should see "2.00" in the "Student 3" "table_row"

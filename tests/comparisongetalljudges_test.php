@@ -30,6 +30,7 @@ require_once($CFG->dirroot . '/mod/assign/tests/generator.php');
 require_once($CFG->dirroot . '/mod/assign/submission/comparativejudgement/locallib.php');
 
 use assignsubmission_comparativejudgement\comparisonmanager;
+use availability_profile\condition;
 
 /**
  * @group assignsubmission_comparativejudgement
@@ -108,6 +109,44 @@ class comparisongetalljudges_test extends advanced_testcase {
 
         $this->assertCount(0, $comparisonmanager->getalljudges());
     }
+
+    public function test_getjudgesavailabilityrestriction() {
+        global $DB;
+
+        $this->resetAfterTest();
+
+        $course = $this->getDataGenerator()->create_course();
+        $teacher = $this->getDataGenerator()->create_and_enrol($course, 'teacher');
+        $editingteacher = $this->getDataGenerator()->create_and_enrol($course, 'editingteacher');
+        $student = $this->getDataGenerator()->create_and_enrol($course, 'student');
+        $submittedstudent = $this->getDataGenerator()->create_and_enrol($course, 'student');
+
+        $this->setAdminUser();
+
+        // Assignment with submissions.
+        $secondassign = $this->create_instance($course, [
+            'name'                                          => 'Assignment with submissions',
+            'duedate'                                       => time(),
+            'attemptreopenmethod'                           => ASSIGN_ATTEMPT_REOPEN_METHOD_MANUAL,
+            'maxattempts'                                   => 3,
+            'submissiondrafts'                              => 1,
+            'assignsubmission_onlinetext_enabled'           => 1,
+            'assignsubmission_comparativejudgement_enabled' => 1,
+            'availability' => json_encode(
+                \core_availability\tree::get_root_json(array(
+                    condition::get_json(false, 'department', condition::OP_IS_EQUAL_TO, 'psychology')),
+                    \core_availability\tree::OP_AND, false))
+        ]);
+        $plugin = \assign_submission_comparativejudgement::getplugin($secondassign);
+        $plugin->set_config('judges', \assign_submission_comparativejudgement::FAKEROLE_GRADABLE_USERS);
+
+        $comparisonmanager = new comparisonmanager($editingteacher->id, $secondassign);
+        $this->assertCount(0, $comparisonmanager->getalljudges());
+
+        $student->department = 'psychology';
+        user_update_user($student, false);
+        $this->assertCount(1, $comparisonmanager->getalljudges());
+}
 
     public function test_canuserjudge_fakerole_assignment_submitted_team() {
         $this->resetAfterTest();

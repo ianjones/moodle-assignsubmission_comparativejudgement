@@ -45,9 +45,9 @@ class managesubmissionscontroller extends basecontroller {
 
         if (optional_param('doranking', false, PARAM_BOOL)) {
             if (empty(get_config('assignsubmission_comparativejudgement', 'dofakecomparison'))) {
-                $ranking = ranking::docomparison($assignmentid);
+                $ranking = ranking::docomparison($this->assignment);
             } else {
-                $ranking = ranking::dofakecomparison($assignmentid);
+                $ranking = ranking::dofakecomparison($this->assignment);
             }
 
             if ($ranking == false) {
@@ -66,7 +66,7 @@ class managesubmissionscontroller extends basecontroller {
         }
 
         if (optional_param('downloadrawjudgedata', false, PARAM_BOOL)) {
-            $csv = ranking::getrawjudgedatacsv($assignmentid);
+            $csv = ranking::getrawjudgedatacsv($this->assignment);
             send_file($csv, "rawjudgedata_$assignmentid.csv", 0, 0, true, true);
         }
 

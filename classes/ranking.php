@@ -25,6 +25,7 @@ namespace assignsubmission_comparativejudgement;
 
 defined('MOODLE_INTERNAL') || die();
 
+use assign;
 use core\persistent;
 use local_rhandler\rhandler;
 use stdClass;
@@ -43,8 +44,24 @@ class ranking extends persistent {
         ];
     }
 
-    public static function getrawjudgedatacsv($assignmentid) {
-        global $DB;
+    public static function getrawjudgedatacsv(assign $assign) {
+        global $DB, $USER;
+
+        $params = ['assignmentid' => $assign->get_instance()->id,
+            'status' => ASSIGN_SUBMISSION_STATUS_SUBMITTED,
+            'status2' => ASSIGN_SUBMISSION_STATUS_SUBMITTED,
+            'entitytypejudge' => exclusion::EXCLUSION_TYPE_JUDGE,
+            'entitytypesubwin' => exclusion::EXCLUSION_TYPE_SUBMISSION,
+            'entitytypesublose' => exclusion::EXCLUSION_TYPE_SUBMISSION];
+
+        $comparisonmanager = new comparisonmanager($USER->id, $assign);
+        $userids = $comparisonmanager->getalljudges();
+        if ($userids) {
+            list($insql, $inparams) = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED);
+            $params = array_merge($params, $inparams);
+        } else {
+            $insql = " <> -1 ";
+        }
 
         $sql = "select comp.id as id, comp.usermodified as judgeid,
        comp.winningsubmission as won,
@@ -64,17 +81,12 @@ from {assignsubmission_comp} comp
          LEFT JOIN {assignsubmission_exclusion} exclusion_sub_lose ON
                 exclusion_sub_lose.entityid = compsubs.submissionid AND exclusion_sub_lose.type = :entitytypesublose
 where comp.assignmentid = :assignmentid
+  AND comp.usermodified $insql
   AND asssubwin.status = :status
   AND asssublose.status = :status2
   AND exclusion_judge.id IS NULL AND exclusion_sub_win.id IS NULL AND exclusion_sub_lose.id IS NULL";
 
-        $inputraw = $DB->get_records_sql($sql,
-                ['assignmentid' => $assignmentid,
-                 'status' => ASSIGN_SUBMISSION_STATUS_SUBMITTED,
-                 'status2'      => ASSIGN_SUBMISSION_STATUS_SUBMITTED,
-                 'entitytypejudge'      => exclusion::EXCLUSION_TYPE_JUDGE,
-                 'entitytypesubwin'      => exclusion::EXCLUSION_TYPE_SUBMISSION,
-                 'entitytypesublose'      => exclusion::EXCLUSION_TYPE_SUBMISSION]);
+        $inputraw = $DB->get_records_sql($sql, $params);
 
         if (empty($inputraw)) {
             return '';
@@ -90,8 +102,8 @@ where comp.assignmentid = :assignmentid
         return $csv;
     }
 
-    public static function docomparison($assignmentid) {
-        $csv = self::getrawjudgedatacsv($assignmentid);
+    public static function docomparison(assign $assign) {
+        $csv = self::getrawjudgedatacsv($assign);
 
         if (empty($csv)) {
             return false;
@@ -125,6 +137,7 @@ where comp.assignmentid = :assignmentid
             $reliability = 0;
         }
 
+        $assignmentid = $assign->get_instance()->id;
         $ranking = self::get_record(['assignmentid' => $assignmentid]);
         if (!$ranking) {
             $ranking = new ranking();
@@ -134,14 +147,14 @@ where comp.assignmentid = :assignmentid
         return $ranking;
     }
 
-    public static function dofakecomparison($assignmentid) {
-        global $DB;
+    public static function dofakecomparison(assign $assign) {
+        $assignmentid = $assign->get_instance()->id;
 
         $ranking = self::get_record(['assignmentid' => $assignmentid]);
         if (!$ranking) {
             $ranking = new ranking();
         }
-        $csv = self::getrawjudgedatacsv($assignmentid);
+        $csv = self::getrawjudgedatacsv($assign);
 
         $scores = [];
         foreach (explode("\n", $csv) as $line) {
@@ -155,7 +168,7 @@ where comp.assignmentid = :assignmentid
             if (!isset($scores[$cells[2]])) {
                 $scores[$cells[2]] = 0;
             }
-            $scores[$cells[1]] = +1;
+            $scores[$cells[1]] += 1;
         }
 
         $ranking->saverankings(-1.4, $assignmentid, $scores);
