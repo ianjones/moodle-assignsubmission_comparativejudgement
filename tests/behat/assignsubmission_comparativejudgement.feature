@@ -167,3 +167,14 @@ Feature: In an assignment, teacher can submit blind feedback during grading
     And I should see "0.00" in the "Student 1" "table_row"
     And I should see "1.00" in the "Student 2" "table_row"
     And I should see "2.00" in the "Student 3" "table_row"
+
+    And I am on the "Test assignment name" Activity page
+    And I press "Manage comparisons"
+    And I should see "Manage comparisons (7)"
+    And I should see "Student 2" in the "#managecomparisons_table_r0_c1" "css_element"
+    And I should see "Student 1" in the "#managecomparisons_table_r0_c3" "css_element"
+    And I should see "Left" in the "#managecomparisons_table_r0_c6" "css_element"
+    And I click on "#managecomparisons_table_r0_c7 .icon" "css_element"
+    And I press "Delete"
+    And I should see "Manage comparisons (6)"
+    Then I should see "Student 1" in the "#managecomparisons_table_r0_c1" "css_element"

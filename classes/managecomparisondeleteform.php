@@ -25,30 +25,39 @@ namespace assignsubmission_comparativejudgement;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->libdir . '/formslib.php');
+require_once($CFG->libdir.'/formslib.php');
 
 use moodleform;
 
-class comparisonform extends moodleform {
+class managecomparisondeleteform extends moodleform {
     protected function definition() {
+        list($assign, $comparisonid) = $this->_customdata;
+
         $mform = $this->_form;
 
-        $hidden = ['winner', 'loser', 'position', 'starttime'];
-        foreach ($hidden as $fieldname) {
-            $mform->addElement('hidden', $fieldname);
-            $mform->setType($fieldname, PARAM_INT);
+        $elems = [
+                'action'        => 'viewpluginpage',
+                'plugin'        => 'comparativejudgement',
+                'pluginsubtype' => 'assignsubmission',
+                'pluginaction'  => 'deletecomparison',
+        ];
+
+        foreach ($elems as $key => $val) {
+            $mform->addElement('hidden', $key, $val);
+            $mform->setType($key, PARAM_ALPHA);
         }
 
-        $mform->addElement('editor', 'comments_winner_' . $this->_customdata['position'],
-                get_string('comments', 'assignsubmission_comparativejudgement'), null, ['autosave' => false]);
+        $elems = [
+                'id'            => $assign->get_course_module()->id,
+                'comparisonid'        => $comparisonid,
+                'assignmentid'        => $assign->get_instance()->id,
+        ];
 
-        $mform->addElement('editor', 'comments_loser_' . $this->_customdata['position'],
-                get_string('comments', 'assignsubmission_comparativejudgement'), null, ['autosave' => false]);
-
-        if ($this->_customdata['position'] == comparison::POSITION_LEFT) {
-            $mform->addElement('submit', 'buttonleft', get_string('chooseleft', 'assignsubmission_comparativejudgement'));
-        } else if ($this->_customdata['position'] == comparison::POSITION_RIGHT) {
-            $mform->addElement('submit', 'buttonright', get_string('chooseright', 'assignsubmission_comparativejudgement'));
+        foreach ($elems as $key => $val) {
+            $mform->addElement('hidden', $key, $val);
+            $mform->setType($key, PARAM_INT);
         }
+
+        $this->add_action_buttons(true, get_string('delete', 'moodle'));
     }
 }

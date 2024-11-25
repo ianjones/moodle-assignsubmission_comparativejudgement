@@ -133,9 +133,9 @@ class comparisongetalljudges_test extends advanced_testcase {
             'assignsubmission_onlinetext_enabled'           => 1,
             'assignsubmission_comparativejudgement_enabled' => 1,
             'availability' => json_encode(
-                \core_availability\tree::get_root_json(array(
-                    condition::get_json(false, 'department', condition::OP_IS_EQUAL_TO, 'psychology')),
-                    \core_availability\tree::OP_AND, false))
+                \core_availability\tree::get_root_json([
+                    condition::get_json(false, 'department', condition::OP_IS_EQUAL_TO, 'psychology')],
+                    \core_availability\tree::OP_AND, false)),
         ]);
         $plugin = \assign_submission_comparativejudgement::getplugin($secondassign);
         $plugin->set_config('judges', \assign_submission_comparativejudgement::FAKEROLE_GRADABLE_USERS);
@@ -146,7 +146,7 @@ class comparisongetalljudges_test extends advanced_testcase {
         $student->department = 'psychology';
         user_update_user($student, false);
         $this->assertCount(1, $comparisonmanager->getalljudges());
-}
+    }
 
     public function test_canuserjudge_fakerole_assignment_submitted_team() {
         $this->resetAfterTest();

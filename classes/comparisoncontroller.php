@@ -311,11 +311,11 @@ class comparisoncontroller extends basecontroller {
 
         $PAGE->requires->js_call_amd('assignsubmission_comparativejudgement/judge', 'init');
 
-        $renderable['buttonleft'] = \html_writer::tag('button', get_string('left', 'assignsubmission_comparativejudgement'),
+        $renderable['buttonleft'] = \html_writer::tag('button', get_string('chooseleft', 'assignsubmission_comparativejudgement'),
                 ['class' => 'btn btn-primary comparisonbuttonleft']);
         $renderable['buttonleftbottom'] = $leftform->render();
 
-        $renderable['buttonright'] = \html_writer::tag('button', get_string('right', 'assignsubmission_comparativejudgement'),
+        $renderable['buttonright'] = \html_writer::tag('button', get_string('chooseright', 'assignsubmission_comparativejudgement'),
                 ['class' => 'btn btn-primary comparisonbuttonright']);
         $renderable['buttonrightbottom'] = $rightform->render();
 

@@ -36,7 +36,7 @@
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="The unique id for this comparativejudgement submission."/>
-                <KEY NAME="judgementid" TYPE="foreign" FIELDS="judgementid" REFTABLE="assignsubmission_compjudge" REFFIELDS="id"
+                <KEY NAME="judgementid" TYPE="foreign" FIELDS="judgementid" REFTABLE="assignsubmission_comp" REFFIELDS="id"
                      COMMENT="The assignment instance this online text submission relates to."/>
                 <KEY NAME="submissionid" TYPE="foreign" FIELDS="submissionid" REFTABLE="assign_submission" REFFIELDS="id"
                      COMMENT="The submission this online text submission relates to."/>

@@ -50,7 +50,7 @@ class external extends external_api {
             'assignmentid' => $assignmentid,
             'entityid' => $entityid,
             'state' => $state,
-            'entitytype' => $entitytype
+            'entitytype' => $entitytype,
         ]);
 
         $exclusion = exclusion::get_record([

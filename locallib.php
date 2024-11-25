@@ -28,6 +28,7 @@ use assignsubmission_comparativejudgement\comparisonmanager;
 use assignsubmission_comparativejudgement\exemplarcontroller;
 use assignsubmission_comparativejudgement\judgerequestemailcontroller;
 use assignsubmission_comparativejudgement\managecomparisoncommentscontroller;
+use assignsubmission_comparativejudgement\managecomparisonscontroller;
 use assignsubmission_comparativejudgement\managejudgescontroller;
 use assignsubmission_comparativejudgement\managesubmissionscontroller;
 
@@ -244,6 +245,9 @@ class assign_submission_comparativejudgement extends assign_submission_plugin {
 
             $controller = new managesubmissionscontroller($this->assignment);
             $o .= $controller->summary();
+
+            $controller = new managecomparisonscontroller($this->assignment);
+            $o .= $controller->summary();
         }
 
         if (has_capability('assignsubmission/comparativejudgement:manageemails', $this->assignment->get_context())) {
@@ -289,6 +293,16 @@ class assign_submission_comparativejudgement extends assign_submission_plugin {
             require_capability('mod/assign:grade', $this->assignment->get_context());
             $controller = new managejudgescontroller($this->assignment);
             return $controller->view();
+        }
+        if ($action == 'managecomparisons') {
+            require_capability('mod/assign:grade', $this->assignment->get_context());
+            $controller = new managecomparisonscontroller($this->assignment);
+            return $controller->view();
+        }
+        if ($action == 'deletecomparison') {
+            require_capability('mod/assign:grade', $this->assignment->get_context());
+            $controller = new managecomparisonscontroller($this->assignment);
+            return $controller->viewdelete();
         }
         if ($action == 'managecomparisoncomments') {
             require_capability('mod/assign:grade', $this->assignment->get_context());
