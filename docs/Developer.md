@@ -6,8 +6,6 @@ This project extends the the Moodle Assignment module.
 
 The code is in `mod/assign/submission/comparativejudgement`.
 
-The plugin also depends on [rhandler](https://github.com/andrewhancox/local_rhandler)  which needs to be cloned into `local/rhandler`.
-
 ## PHP Unit tests
 
 Moodle uses PHPUnit for its unit tests. Setting this up and getting it working

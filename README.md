@@ -21,7 +21,6 @@ If you are interested in using comparative judgement for assessment, learning or
 You need the following three components.
 
 1. Clone this module into `mod/assign/submission/comparativejudgement`
-2. Clone the [rhandler](https://github.com/andrewhancox/local_rhandler)  into `local/rhandler`
 3. Make sure the command line `R` is available on your server.  Instructions for Ubuntu 18 are below.
 
 ### Install R 

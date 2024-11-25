@@ -22,7 +22,7 @@
  */
 
 
-use local_rhandler\rhandler;
+use assignsubmission_comparativejudgement\rhandler;
 
 define('CLI_SCRIPT', true);
 define('CACHE_DISABLE_ALL', true); // This prevents reading of existing caches.

@@ -159,3 +159,7 @@ $string['event:gradesimported'] = 'Grades imported';
 $string['event:judgerequestemail_deleted'] = 'Judge request email deleted';
 $string['event:judgerequestemail_modified'] = 'Judge request email modified';
 $string['event:judgerequestemail_sent'] = 'Judge request email sent';
+
+$string['pathtorscript'] = 'Path to Rscript';
+$string['sshproxy'] = 'Rscript SSH proxy';
+$string['sshproxy_help'] = 'SSH command to connect to a remote server with R installed e.g. ssh myusername@serverwithrinstalled.orgname.com';

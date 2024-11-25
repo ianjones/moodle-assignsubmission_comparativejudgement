@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 use assign;
 use core\persistent;
-use local_rhandler\rhandler;
+use assignsubmission_comparativejudgement\rhandler;
 use stdClass;
 
 class ranking extends persistent {

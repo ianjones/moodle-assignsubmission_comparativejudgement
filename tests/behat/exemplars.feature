@@ -52,7 +52,7 @@ Feature: In an assignment, teacher can submit blind feedback during grading
     And I press "Submit assignment"
     And I press "Continue"
 
-  @javascript @oslwip
+  @javascript
   Scenario: A teacher can provide a feedback file when grading an assignment.
     And I am on the "Test assignment name" Activity page logged in as teacher1
     And I navigate to "Settings" in current page administration

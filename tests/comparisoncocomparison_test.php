@@ -42,13 +42,13 @@ class comparisoncocomparison_test extends advanced_testcase {
     use mod_assign_test_generator;
 
     public function setUp(): void {
-        \local_rhandler\rhandler::init_for_phpunit();
+        \assignsubmission_comparativejudgement\rhandler::init_for_phpunit();
     }
 
     public function test_canuserjudge_fakerole_assignment_do_comparisons() {
         $this->resetAfterTest();
 
-        if (empty(get_config('local_rhandler', 'pathtorscript'))) {
+        if (empty(get_config('assignsubmission_comparativejudgement', 'pathtorscript'))) {
             $this->markTestSkipped('pathtorscript is not defined');
         }
 

@@ -21,7 +21,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use local_rhandler\rhandler;
+use assignsubmission_comparativejudgement\rhandler;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -30,13 +30,13 @@ defined('MOODLE_INTERNAL') || die();
  */
 class comparisonrunrscript_test extends advanced_testcase {
     public function setUp(): void {
-        \local_rhandler\rhandler::init_for_phpunit();
+        \assignsubmission_comparativejudgement\rhandler::init_for_phpunit();
     }
 
     public function test_runrscript_exampledate() {
         global $CFG;
 
-        if (empty(get_config('local_rhandler', 'pathtorscript'))) {
+        if (empty(get_config('assignsubmission_comparativejudgement', 'pathtorscript'))) {
             $this->markTestSkipped('pathtorscript is not defined');
         }
 
@@ -69,8 +69,8 @@ class comparisonrunrscript_test extends advanced_testcase {
 
         $exampledecisions = file_get_contents("$CFG->dirroot/mod/assign/submission/comparativejudgement/docs/exampledecisions.csv");
 
-        set_config('pathtorscript', '/usr/bin/Rscript', 'local_rhandler');
-        set_config('sshproxy', $sshproxy, 'local_rhandler');
+        set_config('pathtorscript', '/usr/bin/Rscript', 'assignsubmission_comparativejudgement');
+        set_config('sshproxy', $sshproxy, 'assignsubmission_comparativejudgement');
 
         $rhandler = new rhandler("pipeablescript.R");
         $rhandler->setinput($exampledecisions);

@@ -23,13 +23,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2024112101;
+$plugin->version   = 2024112500;
 $plugin->requires  = 2018120300;
 $plugin->component = 'assignsubmission_comparativejudgement';
 $plugin->cron      = 0;
 $plugin->maturity  = MATURITY_BETA;
-$plugin->release   = '1.0 for Moodle 3.8+';
-
-$plugin->dependencies = [
-        'local_rhandler' => 2018051418,
-];
+$plugin->release   = '2.0 for Moodle 4.1+';
