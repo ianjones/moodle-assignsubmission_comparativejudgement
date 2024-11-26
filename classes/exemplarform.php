@@ -35,7 +35,7 @@ class exemplarform extends moodleform {
     /**
      * Define this form - called by the parent constructor
      */
-    function definition() {
+    protected function definition() {
         $mform = $this->_form;
         list($assign, $data, $submission) = $this->_customdata;
 

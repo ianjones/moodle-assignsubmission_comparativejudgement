@@ -34,7 +34,7 @@ class judgerequestemailform extends moodleform {
     /** @var string Persistent class name. */
     protected static $persistentclass = 'assignsubmission_comparativejudgement\\judgerequestemail';
 
-    function definition() {
+    protected function definition() {
         list($assign, $emailid) = $this->_customdata;
 
         $mform = $this->_form;
