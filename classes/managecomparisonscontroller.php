@@ -38,7 +38,7 @@ class managecomparisonscontroller extends basecontroller {
     public function view() {
         $downloadformat = optional_param('download', false, PARAM_ALPHA);
 
-        $sort = optional_param('tsort', 'lastname, firstname', PARAM_ALPHA);
+        $sort = optional_param('tsort', 'submissionid', PARAM_ALPHA);
         $table = new managecomparisonstable($this->assignment, $sort);
         $table->define_baseurl($this->getinternallink('managecomparisons'));
 

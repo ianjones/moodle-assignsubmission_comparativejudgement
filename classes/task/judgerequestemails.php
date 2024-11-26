@@ -48,10 +48,12 @@ class judgerequestemails extends scheduled_task {
     public function get_emails_to_send($lastrun, $thisrun) {
         global $DB, $USER;
 
+        $cvalue = $DB->sql_cast_char2int('c.value');
+
         $enddatefrag = "(CASE
-           WHEN c.value IS NOT NULL AND c.value > 0 THEN c.value
-           WHEN a.cutoffdate IS NOT NULL AND a.cutoffdate > 0 THEN a.cutoffdate
-           WHEN a.duedate IS NOT NULL AND a.duedate > 0 THEN a.duedate
+           WHEN (c.value IS NOT NULL AND $cvalue > 0) THEN $cvalue
+           WHEN (a.cutoffdate IS NOT NULL AND a.cutoffdate > 0) THEN a.cutoffdate
+           WHEN (a.duedate IS NOT NULL AND a.duedate > 0) THEN a.duedate
            ELSE 0
            END
             ) + delay";
@@ -104,7 +106,7 @@ class judgerequestemails extends scheduled_task {
         }
 
         $enddatefrag = "(CASE
-           WHEN c.value IS NOT NULL AND c.value > 0 THEN c.value
+           WHEN c.value IS NOT NULL AND $cvalue > 0 THEN $cvalue
            WHEN ao.cutoffdate IS NOT NULL AND ao.cutoffdate > 0 THEN ao.cutoffdate
            WHEN ao.duedate IS NOT NULL AND ao.duedate > 0 THEN ao.duedate
            ELSE 0

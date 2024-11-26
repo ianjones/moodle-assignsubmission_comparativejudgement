@@ -92,7 +92,7 @@ class managesubmissionscontroller extends basecontroller {
             }
         }
 
-        $sort = optional_param('tsort', 'lastname, firstname', PARAM_ALPHA);
+        $sort = optional_param('tsort', 'submissionid', PARAM_ALPHA);
         $table = new managesubmissionstable($this->assignment, $sort);
         $table->define_baseurl($url);
 
