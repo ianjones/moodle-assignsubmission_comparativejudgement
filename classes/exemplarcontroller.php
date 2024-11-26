@@ -23,7 +23,9 @@
 
 namespace assignsubmission_comparativejudgement;
 
-defined('MOODLE_INTERNAL') || die();
+use assign_form;
+use html_writer;
+use stdClass;
 
 class exemplarcontroller extends basecontroller {
     public function summary() {
@@ -48,7 +50,7 @@ class exemplarcontroller extends basecontroller {
         }
 
         $o = $this->getheader(get_string('deleteexemplar', 'assignsubmission_comparativejudgement'));
-        $o .= $this->renderer->render(new \assign_form('editsubmissionform', $mform));
+        $o .= $this->renderer->render(new assign_form('editsubmissionform', $mform));
         $o .= $this->getfooter();
 
         return $o;
@@ -66,7 +68,7 @@ class exemplarcontroller extends basecontroller {
         $table->out(25, false);
         $contents = ob_get_contents();
         ob_end_clean();
-        $o .= \html_writer::tag(
+        $o .= html_writer::tag(
             'h2',
             get_string('manageexemplarswithcount', 'assignsubmission_comparativejudgement', $table->totalrows)
         );
@@ -88,12 +90,12 @@ class exemplarcontroller extends basecontroller {
             $exemplar = exemplar::get_record(['id' => $exemplarid]);
             $submission = $DB->get_record('assign_submission', ['id' => $exemplar->get('submissionid'), 'latest' => 1]);
 
-            $data = new \stdClass();
+            $data = new stdClass();
             $data->userid = $submission->userid;
         } else {
             $submission = null;
 
-            $data = new \stdClass();
+            $data = new stdClass();
             $data->userid = exemplar::getnextuserid($this->assignment);
         }
         $url = $this->getinternallink('addexemplar');
@@ -115,7 +117,7 @@ class exemplarcontroller extends basecontroller {
         }
 
         $o = $this->getheader(get_string('editexemplar', 'assignsubmission_comparativejudgement'));
-        $o .= $this->renderer->render(new \assign_form('editsubmissionform', $mform));
+        $o .= $this->renderer->render(new assign_form('editsubmissionform', $mform));
         $o .= $this->getfooter();
 
         return $o;

@@ -89,23 +89,22 @@ class assign_submission_comparativejudgement extends assign_submission_plugin {
                 get_string('minjudgementsperuser', 'assignsubmission_comparativejudgement'));
         $mform->setDefault('comparativejudgement_minjudgementsperuser', $this->get_config_or_default('minjudgementsperuser'));
         $mform->setType('comparativejudgement_minjudgementsperuser', PARAM_INT);
-        $mform->hideIf('comparativejudgement_minjudgementsperuser', 'assignsubmission_comparativejudgement_enabled', 'notchecked');
+        $mform->hideIf('comparativejudgement_minjudgementsperuser', 'assignsubmission_comparativejudgement_enabled');
 
         $mform->addElement('text', 'comparativejudgement_maxjudgementsperuser',
                 get_string('maxjudgementsperuser', 'assignsubmission_comparativejudgement'));
         $mform->setDefault('comparativejudgement_maxjudgementsperuser', $this->get_config_or_default('maxjudgementsperuser'));
         $mform->setType('comparativejudgement_maxjudgementsperuser', PARAM_INT);
-        $mform->hideIf('comparativejudgement_maxjudgementsperuser', 'assignsubmission_comparativejudgement_enabled', 'notchecked');
+        $mform->hideIf('comparativejudgement_maxjudgementsperuser', 'assignsubmission_comparativejudgement_enabled');
 
         $mform->addElement('text', 'comparativejudgement_minjudgementspersubmission',
                 get_string('minjudgementspersubmission', 'assignsubmission_comparativejudgement'));
         $mform->setDefault('comparativejudgement_minjudgementspersubmission',
                 $this->get_config_or_default('minjudgementspersubmission'));
         $mform->setType('comparativejudgement_minjudgementspersubmission', PARAM_INT);
-        $mform->hideIf('comparativejudgement_minjudgementspersubmission', 'assignsubmission_comparativejudgement_enabled',
-                'notchecked');
+        $mform->hideIf('comparativejudgement_minjudgementspersubmission', 'assignsubmission_comparativejudgement_enabled');
 
-        $commenthandler = new \assign_feedback_comments($this->assignment, 'comments');
+        $commenthandler = new assign_feedback_comments($this->assignment, 'comments');
         if ($commenthandler->is_enabled()) {
             $mform->addElement('advcheckbox', 'comparativejudgement_enablecomments',
                     '', get_string('comparativejudgement_enablecomments', 'assignsubmission_comparativejudgement'));
@@ -117,16 +116,14 @@ class assign_submission_comparativejudgement extends assign_submission_plugin {
                 get_string('judgementstartdate', 'assignsubmission_comparativejudgement'),
                 ['optional' => true]);
         $mform->setDefault('comparativejudgement_judgementstartdate', $this->get_config_or_default('judgementstartdate'));
-        $mform->hideIf('comparativejudgement_judgementstartdate', 'assignsubmission_comparativejudgement_enabled',
-                'notchecked');
+        $mform->hideIf('comparativejudgement_judgementstartdate', 'assignsubmission_comparativejudgement_enabled');
 
         $mform->addElement('advcheckbox', 'comparativejudgement_judgementswhileeditable',
                 get_string('comparativejudgement_judgementswhileeditable', 'assignsubmission_comparativejudgement'));
         $mform->addHelpButton('comparativejudgement_judgementswhileeditable', 'quickgrading', 'assign');
         $mform->setDefault('comparativejudgement_judgementswhileeditable',
                 $this->get_config_or_default('judgementswhileeditable'));
-        $mform->hideIf('comparativejudgement_judgementswhileeditable', 'assignsubmission_comparativejudgement_enabled',
-                'notchecked');
+        $mform->hideIf('comparativejudgement_judgementswhileeditable', 'assignsubmission_comparativejudgement_enabled');
 
         $mform->addElement('textarea', 'comparativejudgement_introduction',
                 get_string('comparativejudgement_introduction', 'assignsubmission_comparativejudgement'),
@@ -134,8 +131,7 @@ class assign_submission_comparativejudgement extends assign_submission_plugin {
                  'cols' => 57]);
         $mform->setType('comparativejudgement_introduction', PARAM_TEXT);
         $mform->setDefault('comparativejudgement_introduction', $this->get_config_or_default('introduction'));
-        $mform->hideIf('comparativejudgement_introduction', 'assignsubmission_comparativejudgement_enabled',
-                'notchecked');
+        $mform->hideIf('comparativejudgement_introduction', 'assignsubmission_comparativejudgement_enabled');
 
         $options = [];
         $options[self::FAKEROLE_GRADABLE_USERS] = get_string('fakerole_gradable_users', 'assignsubmission_comparativejudgement');
@@ -152,9 +148,7 @@ class assign_submission_comparativejudgement extends assign_submission_plugin {
                 get_string('judges', 'assignsubmission_comparativejudgement'), $options, ['multiple' => true]);
         $mform->setType('comparativejudgement_judges', PARAM_INT);
         $mform->setDefault('comparativejudgement_judges', $this->get_config_or_default('judges'));
-        $mform->hideIf('comparativejudgement_judges', 'assignsubmission_comparativejudgement_enabled', 'notchecked');
-
-        return;
+        $mform->hideIf('comparativejudgement_judges', 'assignsubmission_comparativejudgement_enabled');
     }
 
     public function save_settings(stdClass $formdata) {
@@ -240,7 +234,7 @@ class assign_submission_comparativejudgement extends assign_submission_plugin {
             $controller = new managejudgescontroller($this->assignment);
             $o .= $controller->summary();
 
-            $controller = new \assignsubmission_comparativejudgement\managecomparisoncommentscontroller($this->assignment);
+            $controller = new managecomparisoncommentscontroller($this->assignment);
             $o .= $controller->summary();
 
             $controller = new managesubmissionscontroller($this->assignment);
@@ -340,9 +334,9 @@ class assign_submission_comparativejudgement extends assign_submission_plugin {
      * return subtype name of the plugin
      *
      * @return assign_submission_comparativejudgement
-     * @var \assign $assignment
+     * @var assign $assignment
      */
-    public static function getplugin(\assign $assignment) {
+    public static function getplugin(assign $assignment) {
         if (PHPUNIT_TEST) {
             self::$submissionplugins = [];
         }
@@ -365,9 +359,9 @@ class assign_submission_comparativejudgement extends assign_submission_plugin {
      * return subtype name of the plugin
      *
      * @return stdClass
-     * @var \assign $assignment
+     * @var assign $assignment
      */
-    public static function getpluginsettings(\assign $assignment) {
+    public static function getpluginsettings(assign $assignment) {
         if (PHPUNIT_TEST) {
             self::$submissionpluginsettings = [];
         }

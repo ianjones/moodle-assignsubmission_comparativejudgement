@@ -23,11 +23,9 @@
 
 namespace assignsubmission_comparativejudgement;
 
-defined('MOODLE_INTERNAL') || die();
-
 use assign;
 use core\persistent;
-use assignsubmission_comparativejudgement\rhandler;
+use moodle_exception;
 use stdClass;
 
 class ranking extends persistent {
@@ -97,9 +95,7 @@ where comp.assignmentid = :assignmentid
             unset($row->id);
             $csv[] = implode(',', (array) $row);
         }
-        $csv = implode("\n", $csv);
-
-        return $csv;
+        return implode("\n", $csv);
     }
 
     public static function docomparison(assign $assign) {
@@ -116,7 +112,7 @@ where comp.assignmentid = :assignmentid
         $rawoutput = $rhandler->get('output');
 
         if (empty($rawoutput)) {
-            throw new \moodle_exception('errorexecutingscript', 'assignsubmission_comparativejudgement',
+            throw new moodle_exception('errorexecutingscript', 'assignsubmission_comparativejudgement',
                     null, null, $rhandler->get('errors'));
         }
 
@@ -192,7 +188,7 @@ where comp.assignmentid = :assignmentid
         }
     }
 
-    public function populategrades(\assign $assignment) {
+    public function populategrades(assign $assignment) {
         global $DB, $CFG;
         require_once($CFG->dirroot . '/mod/assign/gradeform.php');
 

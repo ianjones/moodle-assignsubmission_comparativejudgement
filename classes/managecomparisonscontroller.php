@@ -23,9 +23,9 @@
 
 namespace assignsubmission_comparativejudgement;
 
+use assign_form;
 use assignsubmission_comparativejudgement\event\comparison_deleted;
-
-defined('MOODLE_INTERNAL') || die();
+use html_writer;
 
 class managecomparisonscontroller extends basecontroller {
     public function summary() {
@@ -53,7 +53,7 @@ class managecomparisonscontroller extends basecontroller {
         $table->out(25, false);
         $contents = ob_get_contents();
         ob_end_clean();
-        $o .= \html_writer::tag(
+        $o .= html_writer::tag(
             'h2',
             get_string('managecomparisonswithcount', 'assignsubmission_comparativejudgement', $table->totalrows)
         );
@@ -89,7 +89,7 @@ class managecomparisonscontroller extends basecontroller {
         }
 
         $o = $this->getheader(get_string('deletecomparison', 'assignsubmission_comparativejudgement'));
-        $o .= $this->renderer->render(new \assign_form('editsubmissionform', $mform));
+        $o .= $this->renderer->render(new assign_form('editsubmissionform', $mform));
         $o .= $this->getfooter();
 
         return $o;

@@ -23,13 +23,13 @@
 
 namespace assignsubmission_comparativejudgement;
 
-defined('MOODLE_INTERNAL') || die();
-
+use assign;
+use assign_submission_comparativejudgement;
 use mod_assign\output\assign_header;
 use moodle_url;
 
 abstract class basecontroller {
-    /** @var \assign $assignment the assignment record that contains the global
+    /** @var assign $assignment the assignment record that contains the global
      *              settings for this assign instance
      */
     protected $assignment;
@@ -40,10 +40,10 @@ abstract class basecontroller {
 
     abstract public function view();
 
-    public function __construct(\assign $assignment) {
+    public function __construct(assign $assignment) {
         $this->assignment = $assignment;
         $this->renderer = $this->assignment->get_renderer();
-        $this->assignmentsettings = \assign_submission_comparativejudgement::getpluginsettings($this->assignment);
+        $this->assignmentsettings = assign_submission_comparativejudgement::getpluginsettings($this->assignment);
     }
 
     protected function getheader($title, $judgeinst = '') {
@@ -70,7 +70,6 @@ abstract class basecontroller {
 
         $params += $extraparams;
 
-        $url = new moodle_url('/mod/assign/view.php', $params);
-        return $url;
+        return new moodle_url('/mod/assign/view.php', $params);
     }
 }

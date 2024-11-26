@@ -16,8 +16,6 @@
 
 use assignsubmission_comparativejudgement\exclusion;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * @package    assignsubmission_comparativejudgement
  * @copyright 2020 Andrew Hancox at Open Source Learning <andrewdchancox@googlemail.com>

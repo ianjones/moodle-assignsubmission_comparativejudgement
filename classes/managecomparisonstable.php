@@ -24,9 +24,13 @@
 namespace assignsubmission_comparativejudgement;
 
 use assign;
+use coding_exception;
 use core_user\fields;
 use html_writer;
+use moodle_exception;
+use moodle_url;
 use stdClass;
+use table_sql;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -34,7 +38,7 @@ global $CFG;
 require_once($CFG->dirroot . '/lib/tablelib.php');
 require_once($CFG->dirroot . '/user/profile/lib.php');
 
-class managecomparisonstable extends \table_sql {
+class managecomparisonstable extends table_sql {
     private $cangrade;
     private $canmanageexemplars;
     private $cmid;
@@ -158,8 +162,8 @@ class managecomparisonstable extends \table_sql {
      * @param $exemplarid
      * @param $userid
      * @return string
-     * @throws \coding_exception
-     * @throws \moodle_exception
+     * @throws coding_exception
+     * @throws moodle_exception
      */
     public function submissioncolumn($rawrow, $type): string {
         $row = new stdClass();
@@ -190,7 +194,7 @@ class managecomparisonstable extends \table_sql {
         }
 
         if ($this->cangrade) {
-            return html_writer::link(new \moodle_url('/mod/assign/view.php', [
+            return html_writer::link(new moodle_url('/mod/assign/view.php', [
                 'id' => $this->cmid,
                 'rownum' => 0,
                 'action' => 'grader',

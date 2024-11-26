@@ -23,10 +23,10 @@
 
 namespace assignsubmission_comparativejudgement;
 
-defined('MOODLE_INTERNAL') || die();
-
 use assign;
 use core\persistent;
+use dml_exception;
+use stdClass;
 
 class exemplar extends persistent {
     const TABLE = 'assignsubmission_exemplars';
@@ -34,9 +34,9 @@ class exemplar extends persistent {
     /**
      * @param assign $assignment
      * @return int|mixed
-     * @throws \dml_exception
+     * @throws dml_exception
      */
-    public static function getnextuserid(\assign $assignment) {
+    public static function getnextuserid(assign $assignment) {
         global $DB;
 
         $nextuserid = $DB->get_field_sql('select min(userid) from {assign_submission} where assignment = :assignment',
@@ -61,7 +61,7 @@ class exemplar extends persistent {
         ];
     }
 
-    public static function save_exemplar_submission(\stdClass $data, \assign $assignment, $submission, &$notices) {
+    public static function save_exemplar_submission(stdClass $data, assign $assignment, $submission, &$notices) {
         global $DB;
 
         $trans = $DB->start_delegated_transaction();
@@ -121,13 +121,13 @@ class exemplar extends persistent {
 
         foreach ($records as $record) {
             $newrecord = new static(0, $record);
-            array_push($instances, $newrecord);
+            $instances[] = $newrecord;
         }
         return $instances;
 
     }
 
-    public function delete_exemplar_submission(\assign $assignment) {
+    public function delete_exemplar_submission(assign $assignment) {
         global $DB;
 
         $exemplar = self::get_record(['id' => $this->get('id')]);

@@ -23,8 +23,7 @@
 
 namespace assignsubmission_comparativejudgement;
 
-defined('MOODLE_INTERNAL') || die();
-
+use assign_form;
 use assignsubmission_comparativejudgement\event\judgerequestemail_deleted;
 use assignsubmission_comparativejudgement\event\judgerequestemail_modified;
 use html_writer;
@@ -51,7 +50,7 @@ class judgerequestemailcontroller extends basecontroller {
         $o .= ob_get_contents();
         ob_end_clean();
 
-        $o .= \html_writer::link($this->getinternallink('judgerequestemailcreate'),
+        $o .= html_writer::link($this->getinternallink('judgerequestemailcreate'),
                 get_string('newreminderemail', 'assignsubmission_comparativejudgement'), ['class' => 'btn btn-primary']);
 
         $o .= $this->getfooter();
@@ -130,7 +129,7 @@ class judgerequestemailcontroller extends basecontroller {
         }
 
         $o = $this->getheader(get_string('deleteemail', 'assignsubmission_comparativejudgement'));
-        $o .= $this->renderer->render(new \assign_form('editsubmissionform', $mform));
+        $o .= $this->renderer->render(new assign_form('editsubmissionform', $mform));
         $o .= $this->getfooter();
 
         return $o;

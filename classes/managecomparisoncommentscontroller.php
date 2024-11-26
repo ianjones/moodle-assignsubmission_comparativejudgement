@@ -23,15 +23,14 @@
 
 namespace assignsubmission_comparativejudgement;
 
-defined('MOODLE_INTERNAL') || die();
-
+use assign_feedback_comments;
 use assignsubmission_comparativejudgement\event\comments_imported;
 
 class managecomparisoncommentscontroller extends basecontroller {
     public function summary() {
         global $OUTPUT;
 
-        $commenthandler = new \assign_feedback_comments($this->assignment, 'comments');
+        $commenthandler = new assign_feedback_comments($this->assignment, 'comments');
         if (!$commenthandler->is_enabled() || empty($this->assignmentsettings->enablecomments)) {
             return '';
         }

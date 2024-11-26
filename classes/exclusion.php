@@ -23,8 +23,6 @@
 
 namespace assignsubmission_comparativejudgement;
 
-defined('MOODLE_INTERNAL') || die();
-
 use core\persistent;
 
 class exclusion extends persistent {

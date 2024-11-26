@@ -24,8 +24,7 @@
 use assignsubmission_comparativejudgement\comparison;
 use assignsubmission_comparativejudgement\comparisonmanager;
 use core_files\conversion;
-
-defined('MOODLE_INTERNAL') || die();
+use core_files\converter;
 
 /**
  * Serves assignment submissions and other files.
@@ -99,7 +98,7 @@ function assignsubmission_comparativejudgement_pluginfile($course,
 
     $relativepath = implode('/', $args);
 
-    $fullpath = "/{$context->id}/$component/$filearea/$itemid/$relativepath";
+    $fullpath = "/$context->id/$component/$filearea/$itemid/$relativepath";
 
     $fs = get_file_storage();
     if (!($file = $fs->get_file_by_hash(sha1($fullpath))) || $file->is_directory()) {
@@ -108,7 +107,7 @@ function assignsubmission_comparativejudgement_pluginfile($course,
 
     if (!in_array($file->get_mimetype(), comparison::$skipconversion)) {
         // In a perfect world this would have an adhoc task and js polling.
-        $converter = new \core_files\converter();
+        $converter = new converter();
         $conversion = $converter->start_conversion($file, 'pdf');
 
         $status = $conversion->get('status');

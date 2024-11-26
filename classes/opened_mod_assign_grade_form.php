@@ -23,9 +23,9 @@
 
 namespace assignsubmission_comparativejudgement;
 
-defined('MOODLE_INTERNAL') || die();
+use mod_assign_grade_form;
 
-class opened_mod_assign_grade_form extends \mod_assign_grade_form {
+class opened_mod_assign_grade_form extends mod_assign_grade_form {
     public function get_defaultdata() {
         return $this->_form->_defaultValues;
     }

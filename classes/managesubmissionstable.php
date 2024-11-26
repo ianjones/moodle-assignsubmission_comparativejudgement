@@ -25,6 +25,9 @@ namespace assignsubmission_comparativejudgement;
 
 use assign;
 use core_user\fields;
+use html_writer;
+use moodle_url;
+use table_sql;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -32,7 +35,7 @@ global $CFG;
 require_once($CFG->dirroot . '/lib/tablelib.php');
 require_once($CFG->dirroot . '/user/profile/lib.php');
 
-class managesubmissionstable extends \table_sql {
+class managesubmissionstable extends table_sql {
     private $cangrade;
     private $canmanageexemplars;
     private $cmid;
@@ -161,7 +164,7 @@ class managesubmissionstable extends \table_sql {
 
         $attributes['title'] = get_string('include', 'assignsubmission_comparativejudgement');
 
-        return \html_writer::span(\html_writer::checkbox($chkname, $chkname, empty($row->excluded), '',
+        return html_writer::span(html_writer::checkbox($chkname, $chkname, empty($row->excluded), '',
                 $attributes));
     }
 
@@ -172,9 +175,8 @@ class managesubmissionstable extends \table_sql {
         if (!empty($row->groupname)) {
             return $row->groupname;
         }
-        if (empty($row->groupname)) {
-            return get_string('defaultteam', 'mod_assign');
-        }
+
+        return get_string('defaultteam', 'mod_assign');
     }
 
     public function col_fullname($row) {
@@ -190,10 +192,10 @@ class managesubmissionstable extends \table_sql {
 
             $url = $this->exemplarcontroller->getinternallink('addexemplar');
             $url->param('exemplarid', $row->exemplarid);
-            return \html_writer::link($url,
+            return html_writer::link($url,
                     get_string('viewexemplar', 'assignsubmission_comparativejudgement'));
         } else if ($this->cangrade) {
-            return \html_writer::link(new \moodle_url('/mod/assign/view.php', [
+            return html_writer::link(new moodle_url('/mod/assign/view.php', [
                     'id'     => $this->cmid,
                     'rownum' => 0,
                     'action' => 'grader',

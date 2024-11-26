@@ -23,9 +23,9 @@
 
 namespace assignsubmission_comparativejudgement;
 
-defined('MOODLE_INTERNAL') || die();
+use core\persistent;
 
-class judgerequestemail extends \core\persistent {
+class judgerequestemail extends persistent {
     const TABLE = 'assignsubmission_email';
 
     protected static function define_properties() {

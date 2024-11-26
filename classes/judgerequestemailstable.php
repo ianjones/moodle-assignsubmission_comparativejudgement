@@ -24,6 +24,7 @@
 namespace assignsubmission_comparativejudgement;
 
 use assign;
+use table_sql;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -31,7 +32,7 @@ global $CFG;
 require_once($CFG->dirroot . '/lib/tablelib.php');
 require_once($CFG->dirroot . '/user/profile/lib.php');
 
-class judgerequestemailstable extends \table_sql {
+class judgerequestemailstable extends table_sql {
     private judgerequestemailcontroller $controller;
     private comparisonmanager $manager;
 
@@ -66,7 +67,7 @@ class judgerequestemailstable extends \table_sql {
         $delay = format_time($row->delay);
         $lasttime = $this->manager->getlastdate();
 
-        if ($lasttime == false) {
+        if (!$lasttime) {
             $lasttime = get_string('never', 'assignsubmission_comparativejudgement');
         } else {
             $lasttime = userdate($lasttime + $row->delay);

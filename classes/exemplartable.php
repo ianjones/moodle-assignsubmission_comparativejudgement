@@ -24,6 +24,7 @@
 namespace assignsubmission_comparativejudgement;
 
 use assign;
+use table_sql;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -31,7 +32,7 @@ global $CFG;
 require_once($CFG->dirroot . '/lib/tablelib.php');
 require_once($CFG->dirroot . '/user/profile/lib.php');
 
-class exemplartable extends \table_sql {
+class exemplartable extends table_sql {
 
     /** @var exemplarcontroller */
     private $exemplarcontroller;

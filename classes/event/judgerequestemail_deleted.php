@@ -24,8 +24,7 @@
 namespace assignsubmission_comparativejudgement\event;
 
 use core\event\base;
-
-defined('MOODLE_INTERNAL') || die();
+use moodle_url;
 
 /**
  * The local_amberroad user_validated event class.
@@ -52,12 +51,12 @@ class judgerequestemail_deleted extends base {
     /**
      * Get URL related to the action.
      *
-     * @return \moodle_url
+     * @return moodle_url
      */
     public function get_url() {
         global $CFG;
 
-        return new \moodle_url("$CFG->wwwroot/mod/assign/view.php", ['id' => $this->objectid]);
+        return new moodle_url("$CFG->wwwroot/mod/assign/view.php", ['id' => $this->objectid]);
     }
 
     /**

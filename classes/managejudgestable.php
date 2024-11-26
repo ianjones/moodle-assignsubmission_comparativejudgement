@@ -25,6 +25,8 @@ namespace assignsubmission_comparativejudgement;
 
 use assign;
 use core_user\fields;
+use html_writer;
+use table_sql;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -32,7 +34,7 @@ global $CFG;
 require_once($CFG->dirroot . '/lib/tablelib.php');
 require_once($CFG->dirroot . '/user/profile/lib.php');
 
-class managejudgestable extends \table_sql {
+class managejudgestable extends table_sql {
     public function __construct(assign $assignment, $sortcolumn) {
         global $DB, $PAGE, $USER;
 
@@ -118,7 +120,7 @@ class managejudgestable extends \table_sql {
 
         $attributes['title'] = get_string('include', 'assignsubmission_comparativejudgement');
 
-        return \html_writer::span(\html_writer::checkbox($chkname, $chkname, empty($row->excluded), '',
+        return html_writer::span(html_writer::checkbox($chkname, $chkname, empty($row->excluded), '',
                 $attributes));
     }
 

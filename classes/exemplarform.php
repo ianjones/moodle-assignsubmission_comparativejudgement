@@ -35,12 +35,12 @@ class exemplarform extends moodleform {
     /**
      * Define this form - called by the parent constructor
      */
-    public function definition() {
+    function definition() {
         $mform = $this->_form;
         list($assign, $data, $submission) = $this->_customdata;
 
         $mform->addElement('text', 'title', get_string('exemplartitle', 'assignsubmission_comparativejudgement'));
-        $mform->addRule('title', null, 'required', null, 'server');
+        $mform->addRule('title', null, 'required');
         $mform->setType('title', PARAM_TEXT);
 
         foreach ($assign->get_submission_plugins() as $plugin) {

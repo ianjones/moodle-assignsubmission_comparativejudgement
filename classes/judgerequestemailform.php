@@ -26,6 +26,7 @@ namespace assignsubmission_comparativejudgement;
 defined('MOODLE_INTERNAL') || die();
 
 use moodleform;
+
 require_once($CFG->libdir . '/formslib.php');
 
 class judgerequestemailform extends moodleform {
@@ -33,7 +34,7 @@ class judgerequestemailform extends moodleform {
     /** @var string Persistent class name. */
     protected static $persistentclass = 'assignsubmission_comparativejudgement\\judgerequestemail';
 
-    public function definition() {
+    function definition() {
         list($assign, $emailid) = $this->_customdata;
 
         $mform = $this->_form;
@@ -63,7 +64,7 @@ class judgerequestemailform extends moodleform {
 
         $mform->addElement('duration', 'delay', get_string('delay', 'assignsubmission_comparativejudgement'),
                 ['defaultunit' => WEEKSECS, 'optional' => false]);
-        $mform->setDefault('delay', 1 * DAYSECS);
+        $mform->setDefault('delay', DAYSECS);
 
         $mform->addElement('text', 'subject', get_string('subject', 'assignsubmission_comparativejudgement'), 'maxlength="100"');
         $mform->setType('subject', PARAM_TEXT);

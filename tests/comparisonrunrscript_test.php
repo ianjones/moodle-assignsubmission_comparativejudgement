@@ -21,9 +21,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use assignsubmission_comparativejudgement\rhandler;
+namespace assignsubmission_comparativejudgement;
 
-defined('MOODLE_INTERNAL') || die();
+use advanced_testcase;
 
 /**
  * @group assignsubmission_comparativejudgement
@@ -59,7 +59,6 @@ class comparisonrunrscript_test extends advanced_testcase {
 
         if (!file_exists("$CFG->dirroot/mod/assign/submission/comparativejudgement/tests/sshproxy.php")) {
             $this->markTestSkipped('No sshproxy details');
-            return false;
         }
 
         $sshproxy = '';

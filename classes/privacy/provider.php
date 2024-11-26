@@ -27,6 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/mod/assign/locallib.php');
 
+use coding_exception;
 use context;
 use core_privacy\local\metadata\collection;
 use core_privacy\local\metadata\provider as metadataprovider;
@@ -34,14 +35,19 @@ use core_privacy\local\request\approved_contextlist;
 use core_privacy\local\request\approved_userlist;
 use core_privacy\local\request\contextlist;
 use core_privacy\local\request\core_user_data_provider;
+use core_privacy\local\request\core_userlist_provider;
 use core_privacy\local\request\userlist;
 use core_privacy\local\request\writer;
+use dml_exception;
 use mod_assign\privacy\assign_plugin_request_data;
+use mod_assign\privacy\assignsubmission_provider;
+use mod_assign\privacy\assignsubmission_user_provider;
+use mod_assign\privacy\useridlist;
 
 class provider implements metadataprovider,
-        \mod_assign\privacy\assignsubmission_provider,
-        \mod_assign\privacy\assignsubmission_user_provider,
-        \core_privacy\local\request\core_userlist_provider,
+        assignsubmission_provider,
+        assignsubmission_user_provider,
+        core_userlist_provider,
         core_user_data_provider {
 
     /**
@@ -94,18 +100,18 @@ class provider implements metadataprovider,
      * This is also covered by the mod_assign provider and it's queries.
      * We worry about judgements submitted under the core_user_data_provider interface related methods
      *
-     * @param \mod_assign\privacy\useridlist $useridlist An object for obtaining user IDs of students.
+     * @param useridlist $useridlist An object for obtaining user IDs of students.
      */
-    public static function get_student_user_ids(\mod_assign\privacy\useridlist $useridlist) {
+    public static function get_student_user_ids(useridlist $useridlist) {
     }
 
     /**
      * If you have tables that contain userids and you can generate entries in your tables without creating an
      * entry in the assign_submission table then please fill in this method.
      *
-     * @param \core_privacy\local\request\userlist $userlist The userlist object
+     * @param userlist $userlist The userlist object
      */
-    public static function get_userids_from_context(\core_privacy\local\request\userlist $userlist) {
+    public static function get_userids_from_context(userlist $userlist) {
         $context = $userlist->get_context();
         $userlist->add_from_sql(
                 'usermodified',
@@ -137,17 +143,17 @@ class provider implements metadataprovider,
     /**
      * A call to this method should delete user data (where practicle) from the userid and context.
      *
-     * @param assign_plugin_request_data $deletedata Details about the user and context to focus the deletion.
+     * @param assign_plugin_request_data $exportdata Details about the user and context to focus the deletion.
      */
-    public static function delete_submission_for_userid(assign_plugin_request_data $deletedata) {
+    public static function delete_submission_for_userid(assign_plugin_request_data $exportdata) {
         global $DB;
 
         // Delete comparisons received.
-        $DB->delete_records('assignsubmission_compsubs', ['submissionid' => $deletedata->get_pluginobject()->id]);
-        $DB->delete_records('assignsubmission_comp', ['winningsubmission' => $deletedata->get_pluginobject()->id]);
+        $DB->delete_records('assignsubmission_compsubs', ['submissionid' => $exportdata->get_pluginobject()->id]);
+        $DB->delete_records('assignsubmission_comp', ['winningsubmission' => $exportdata->get_pluginobject()->id]);
 
         // Delete rankings.
-        $DB->delete_records('assignsubmission_rankingsub', ['submissionid' => $deletedata->get_pluginobject()->id]);
+        $DB->delete_records('assignsubmission_rankingsub', ['submissionid' => $exportdata->get_pluginobject()->id]);
     }
 
     /**
@@ -204,7 +210,7 @@ class provider implements metadataprovider,
         $contextids = $contextlist->get_contextids();
 
         foreach ($contextids as $contextid) {
-            $context = \context::instance_by_id($contextid);
+            $context = context::instance_by_id($contextid);
 
             $path = [
                     get_string('privacy:judgementmade', 'assignsubmission_comparativejudgement'),
@@ -227,7 +233,7 @@ class provider implements metadataprovider,
             writer::with_context($context)->export_related_data(
                     $path,
                     $DB->get_field('assign', 'name', ['id' => $context->instanceid]),
-                    $data
+                    (object)$data
             );
         }
     }
@@ -237,7 +243,7 @@ class provider implements metadataprovider,
      * @return mixed
      */
     public static function delete_data_for_all_users_in_context(context $context) {
-        self::deleteallonassignid($context->instanceid->id);
+        self::deleteallonassignid($context->instanceid);
     }
 
     /**
@@ -260,7 +266,7 @@ class provider implements metadataprovider,
             $compsubids = array_keys(self::judgementsmade($userid, $contextid));
             $DB->delete_records_list('assignsubmission_compsubs', 'id', $compsubids);
 
-            $context = \context::instance_by_id($contextid);
+            $context = context::instance_by_id($contextid);
             $DB->delete_records('assignsubmission_comp', ['assignmentid' => $context->instanceid, 'usermodified' => $userid]);
         }
     }
@@ -296,8 +302,8 @@ class provider implements metadataprovider,
     /**
      * @param assign_plugin_request_data $exportdata
      * @return array
-     * @throws \coding_exception
-     * @throws \dml_exception
+     * @throws coding_exception
+     * @throws dml_exception
      */
     private static function judgementsreceived(assign_plugin_request_data $exportdata): array {
         global $DB;
@@ -332,8 +338,8 @@ class provider implements metadataprovider,
 
     /**
      * @param assign_plugin_request_data $exportdata
-     * @throws \coding_exception
-     * @throws \dml_exception
+     * @throws coding_exception
+     * @throws dml_exception
      */
     private static function rankings(assign_plugin_request_data $exportdata): void {
         global $DB;
@@ -359,8 +365,8 @@ class provider implements metadataprovider,
      * @param int $userid
      * @param int $contextid
      * @return array
-     * @throws \coding_exception
-     * @throws \dml_exception
+     * @throws coding_exception
+     * @throws dml_exception
      */
     private static function judgementsmade($userid, $contextid): array {
         global $DB;

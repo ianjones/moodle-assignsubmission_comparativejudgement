@@ -21,6 +21,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace assignsubmission_comparativejudgement;
+
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
@@ -29,9 +31,8 @@ require_once($CFG->dirroot . '/mod/assign/locallib.php');
 require_once($CFG->dirroot . '/mod/assign/tests/generator.php');
 require_once($CFG->dirroot . '/mod/assign/submission/comparativejudgement/locallib.php');
 
-use assignsubmission_comparativejudgement\comparison;
-use assignsubmission_comparativejudgement\comparisonmanager;
-use assignsubmission_comparativejudgement\exemplar;
+use advanced_testcase;
+use mod_assign_test_generator;
 
 /**
  * @group assignsubmission_comparativejudgement

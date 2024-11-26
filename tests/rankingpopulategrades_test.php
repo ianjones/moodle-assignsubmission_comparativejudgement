@@ -21,8 +21,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use assignsubmission_comparativejudgement\exemplar;
-use assignsubmission_comparativejudgement\ranking;
+namespace assignsubmission_comparativejudgement;
+
+use advanced_testcase;
+use mod_assign_test_generator;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -150,7 +152,6 @@ class rankingpopulategrades_test extends advanced_testcase {
             $this->add_submission($firststudent, $secondassign);
             foreach ($groupstudents as $studentid) {
                 $this->submit_for_grading($students[$studentid], $secondassign);
-                $students[$studentid] = $students[$studentid];
             }
             $groupsubmissions[$groupid] = $secondassign->get_group_submission($firststudent->id, 0, false)->id;
         }

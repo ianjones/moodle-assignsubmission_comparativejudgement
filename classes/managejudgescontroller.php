@@ -23,7 +23,7 @@
 
 namespace assignsubmission_comparativejudgement;
 
-defined('MOODLE_INTERNAL') || die();
+use html_writer;
 
 class managejudgescontroller extends basecontroller {
     public function summary() {
@@ -51,7 +51,7 @@ class managejudgescontroller extends basecontroller {
         $table->out(25, false);
         $contents = ob_get_contents();
         ob_end_clean();
-        $o .= \html_writer::tag(
+        $o .= html_writer::tag(
             'h2',
             get_string('managejudgeswithcount', 'assignsubmission_comparativejudgement', $table->totalrows)
         );

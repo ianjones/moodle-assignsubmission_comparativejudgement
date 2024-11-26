@@ -21,8 +21,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use assignsubmission_comparativejudgement\exemplar;
-use assignsubmission_comparativejudgement\ranking;
+namespace assignsubmission_comparativejudgement;
+
+use advanced_testcase;
+use mod_assign_test_generator;
 
 defined('MOODLE_INTERNAL') || die();
 

@@ -23,18 +23,15 @@
 
 namespace assignsubmission_comparativejudgement;
 
-defined('MOODLE_INTERNAL') || die();
-
 use assign;
+use assign_feedback_comments;
 use stdClass;
 
 class managecomparisoncommentsmanager {
-    private $userid;
     private $assignment;
     private $assignmentinstance;
 
     public function __construct($userid, assign $assignment) {
-        $this->userid = $userid;
         $this->assignment = $assignment;
         $this->assignmentinstance = $this->assignment->get_instance($userid);
     }
@@ -55,7 +52,7 @@ class managecomparisoncommentsmanager {
         $comments = $DB->get_records_sql($commentssql,
             ['assignmentid' => $this->assignmentinstance->id, 'entitytype' => exclusion::EXCLUSION_TYPE_COMPARISONCOMMENT]);
 
-        $commenthandler = new \assign_feedback_comments($this->assignment, 'comments');
+        $commenthandler = new assign_feedback_comments($this->assignment, 'comments');
 
         $formattedcommentsbysubmissionid = [];
         $compsubids = [];

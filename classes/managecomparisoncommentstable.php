@@ -25,6 +25,9 @@ namespace assignsubmission_comparativejudgement;
 
 use assign;
 use core_user\fields;
+use html_writer;
+use moodle_url;
+use table_sql;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -32,7 +35,7 @@ global $CFG;
 require_once($CFG->dirroot . '/lib/tablelib.php');
 require_once($CFG->dirroot . '/user/profile/lib.php');
 
-class managecomparisoncommentstable extends \table_sql {
+class managecomparisoncommentstable extends table_sql {
     private $cangrade;
     private $cmid;
     private $canmanageexemplars;
@@ -125,7 +128,7 @@ class managecomparisoncommentstable extends \table_sql {
 
         $attributes['title'] = get_string('include', 'assignsubmission_comparativejudgement');
 
-        return \html_writer::span(\html_writer::checkbox($chkname, $chkname, empty($row->excluded), '',
+        return html_writer::span(html_writer::checkbox($chkname, $chkname, empty($row->excluded), '',
                 $attributes));
     }
 
@@ -138,10 +141,10 @@ class managecomparisoncommentstable extends \table_sql {
         if (!empty($row->$exemplartitlecol) && $this->canmanageexemplars) {
             $url = $this->exemplarcontroller->getinternallink('addexemplar');
             $url->param('exemplarid', $row->$exemplaridcol);
-            return \html_writer::link($url,
+            return html_writer::link($url,
                     get_string('viewexemplar', 'assignsubmission_comparativejudgement'));
         } else if ($this->cangrade && empty($row->$exemplartitlecol)) {
-            return \html_writer::link(new \moodle_url('/mod/assign/view.php', [
+            return html_writer::link(new moodle_url('/mod/assign/view.php', [
                     'id'     => $this->cmid,
                     'rownum' => 0,
                     'action' => 'grader',
@@ -158,6 +161,6 @@ class managecomparisoncommentstable extends \table_sql {
     }
 
     public function col_commentpublished($row) {
-        return \html_writer::checkbox('', '', !empty($row->commentpublished), '', ['disabled' => 'disabled']);
+        return html_writer::checkbox('', '', !empty($row->commentpublished), '', ['disabled' => 'disabled']);
     }
 }

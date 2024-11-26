@@ -26,13 +26,12 @@ namespace assignsubmission_comparativejudgement\task;
 use assign;
 use assignsubmission_comparativejudgement\comparisoncontroller;
 use assignsubmission_comparativejudgement\comparisonmanager;
+use assignsubmission_comparativejudgement\event\judgerequestemail_sent;
 use context_module;
 use core\message\message;
 use core\task\scheduled_task;
 use core_user;
-use assignsubmission_comparativejudgement\event\judgerequestemail_sent;
-
-defined('MOODLE_INTERNAL') || die();
+use moodle_url;
 
 class judgerequestemails extends scheduled_task {
     public function get_name() {
@@ -164,7 +163,7 @@ class judgerequestemails extends scheduled_task {
         $judgecomparisonmanager = new comparisonmanager($userid, $assign);
 
         if (!$judgecomparisonmanager->getpairtojudge()) {
-            return false;
+            return;
         }
 
         $cmid = $assign->get_course_module()->id;
@@ -183,7 +182,7 @@ class judgerequestemails extends scheduled_task {
         $message->fullmessageformat = FORMAT_PLAIN;
         $message->smallmessage = $body;
         $message->notification = $CFG->wwwroot;
-        $message->contexturl = new \moodle_url("$CFG->wwwroot/mod/assign/view.php", ['id' => $cmid]);
+        $message->contexturl = new moodle_url("$CFG->wwwroot/mod/assign/view.php", ['id' => $cmid]);
         $message->contexturlname = $assign->get_instance()->name;
         $message->replyto = $noreplyuser->email;
 
@@ -198,7 +197,7 @@ class judgerequestemails extends scheduled_task {
         ])->trigger();
     }
 
-    public function get_message_body($user, $email, \assign $assign) {
+    public function get_message_body($user, $email, assign $assign) {
         global $CFG;
 
         $msg = $email->body;
@@ -210,7 +209,7 @@ class judgerequestemails extends scheduled_task {
         $msg = str_replace('[firstname]', $user->firstname, $msg);
         $msg = str_replace('[lastname]', $user->lastname, $msg);
         $msg = str_replace('[fullname]', fullname($user), $msg);
-        $msg = str_replace('[assignurl]', new \moodle_url("$CFG->wwwroot/mod/assign/view.php", ['id' => $cmid]), $msg);
+        $msg = str_replace('[assignurl]', new moodle_url("$CFG->wwwroot/mod/assign/view.php", ['id' => $cmid]), $msg);
         $msg = str_replace('[judgeurl]', $controller->getinternallink('comparison'), $msg);
         $msg = str_replace('[assignname]', $assign->get_instance()->name, $msg);
         return $msg;

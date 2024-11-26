@@ -23,10 +23,10 @@
 
 namespace assignsubmission_comparativejudgement;
 
-defined('MOODLE_INTERNAL') || die();
-
 use assign;
 use assign_submission_comparativejudgement;
+use core_availability\info_module;
+use stdClass;
 
 class comparisonmanager {
     private $userid;
@@ -156,8 +156,8 @@ class comparisonmanager {
         }
 
         $submissionpair = reset($submissions);
-        $subone = new \stdClass();
-        $subtwo = new \stdClass();
+        $subone = new stdClass();
+        $subtwo = new stdClass();
 
         foreach ((array)$submissionpair as $key => $value) {
             list($key, $index) = explode('_', $key);
@@ -207,10 +207,8 @@ class comparisonmanager {
             $users = array_merge($users, array_keys(get_role_users($roleid, $this->assignment->get_context(), true)));
         }
 
-        $info = new \core_availability\info_module($this->assignment->get_course_module());
-        $users = array_keys($info->filter_user_list(array_combine($users, $users)));
-
-        return $users;
+        $info = new info_module($this->assignment->get_course_module());
+        return array_keys($info->filter_user_list(array_combine($users, $users)));
     }
 
     public function redirectusertojudge() {
@@ -369,7 +367,5 @@ class comparisonmanager {
         } else {
             return $duedate;
         }
-
-        return false;
     }
 }

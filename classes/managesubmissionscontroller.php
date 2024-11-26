@@ -23,8 +23,6 @@
 
 namespace assignsubmission_comparativejudgement;
 
-defined('MOODLE_INTERNAL') || die();
-
 use assignsubmission_comparativejudgement\event\grades_calculated;
 use assignsubmission_comparativejudgement\event\grades_imported;
 use html_writer;
@@ -50,7 +48,7 @@ class managesubmissionscontroller extends basecontroller {
                 $ranking = ranking::dofakecomparison($this->assignment);
             }
 
-            if ($ranking == false) {
+            if (!$ranking) {
                 redirect($this->getinternallink('managesubmissions'), get_string('nothingtocompare',
                         'assignsubmission_comparativejudgement'));
             }
@@ -112,7 +110,7 @@ class managesubmissionscontroller extends basecontroller {
         $table->out(25, false);
         $contents = ob_get_contents();
         ob_end_clean();
-        $o .= \html_writer::tag(
+        $o .= html_writer::tag(
             'h2',
             get_string('managesubmissionswithcount', 'assignsubmission_comparativejudgement', $table->totalrows)
         );

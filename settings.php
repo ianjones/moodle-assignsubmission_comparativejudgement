@@ -21,6 +21,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 $settings->add(new admin_setting_configcheckbox('assignsubmission_comparativejudgement/dofakecomparison',
                    new lang_string('dofakecomparison', 'assignsubmission_comparativejudgement'),
                    new lang_string('dofakecomparison', 'assignsubmission_comparativejudgement'), 0));
@@ -31,5 +33,6 @@ $settings->add(new admin_setting_configexecutable('assignsubmission_comparativej
     get_config('local_rhandler', 'pathtorscript')));
 
 $settings->add(new admin_setting_configexecutable('assignsubmission_comparativejudgement/sshproxy',
-    new lang_string('sshproxy', 'assignsubmission_comparativejudgement'), new lang_string('sshproxy_help', 'assignsubmission_comparativejudgement'),
+    new lang_string('sshproxy', 'assignsubmission_comparativejudgement'),
+    new lang_string('sshproxy_help', 'assignsubmission_comparativejudgement'),
     get_config('local_rhandler', 'sshproxy')));

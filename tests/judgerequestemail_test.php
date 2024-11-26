@@ -21,7 +21,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use assignsubmission_comparativejudgement\judgerequestemail;
+namespace assignsubmission_comparativejudgement;
+
+use advanced_testcase;
+use mod_assign_test_generator;
+use progress_trace_buffer;
+use text_progress_trace;
 
 defined('MOODLE_INTERNAL') || die();
 
