@@ -91,5 +91,16 @@ function xmldb_assignsubmission_comparativejudgement_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2019111814, 'assignsubmission', 'comparativejudgement');
     }
 
+    if ($oldversion < 2024121100) {
+        $table = new xmldb_table('assignsubmission_exclusion');
+        $field = new xmldb_field('assignmentid', XMLDB_TYPE_INTEGER, '10', null, null, null, '0', 'type');
+
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Assignment savepoint reached.
+        upgrade_plugin_savepoint(true, 2024121100, 'assignsubmission', 'comparativejudgement');
+    }
     return true;
 }
