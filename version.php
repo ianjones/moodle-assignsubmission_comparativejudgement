@@ -23,7 +23,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2024112500;
+$plugin->version   = 2024121100;
 $plugin->requires  = 2022112800;
 $plugin->component = 'assignsubmission_comparativejudgement';
 $plugin->cron      = 0;
