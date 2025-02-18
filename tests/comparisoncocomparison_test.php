@@ -69,10 +69,12 @@ class comparisoncocomparison_test extends advanced_testcase {
         $plugin->set_config('judges', \assign_submission_comparativejudgement::FAKEROLE_ASSIGNMENT_SUBMITTED);
 
         $students = [];
+        $studentids = [];
         for ($i = 0; $i < 4; $i++) {
             $students[$i] = $this->getDataGenerator()->create_and_enrol($course, 'student');
             $this->add_submission($students[$i] , $secondassign);
             $this->submit_for_grading($students[$i] , $secondassign);
+            $studentids[] = $students[$i]->id;
         }
 
         for ($j = 0; $j < 3; $j++) {
@@ -86,6 +88,16 @@ class comparisoncocomparison_test extends advanced_testcase {
             }
         }
 
-        ranking::docomparison($secondassign);
+        $ranking = ranking::docomparison($secondassign);
+        $this->assertEquals(0.21, $ranking->get('reliability'));
+
+        $this->setAdminUser();
+        $ranking->populategrades($secondassign);
+
+        $grades = grade_get_grades($course->id, 'mod', 'assign', $secondassign->get_instance()->id, $studentids);
+        $this->assertEquals('80.00', $grades->items[0]->grades[$students[0]->id]->str_grade);
+        $this->assertEquals('72.00', $grades->items[0]->grades[$students[1]->id]->str_grade);
+        $this->assertEquals('63.00', $grades->items[0]->grades[$students[2]->id]->str_grade);
+        $this->assertEquals('45.00', $grades->items[0]->grades[$students[3]->id]->str_grade);
     }
 }
