@@ -86,6 +86,7 @@ class managejudgestable extends table_sql {
 
         $inparams['entitytype'] = exclusion::EXCLUSION_TYPE_JUDGE;
         $inparams['assignmentid'] = $assignment->get_instance()->id;
+        $inparams['assignmentid2'] = $assignment->get_instance()->id;
 
         $left = comparison::POSITION_LEFT;
         $right = comparison::POSITION_RIGHT;
@@ -105,11 +106,13 @@ class managejudgestable extends table_sql {
                             SUM(CASE WHEN winningsubmissionposition = $left THEN 1 ELSE 0 END) as leftchoices,
                             SUM(CASE WHEN winningsubmissionposition = $right THEN 1 ELSE 0 END) as rightchoices",
                 "{user} u
-                        LEFT JOIN {assignsubmission_comp} comp ON comp.usermodified = u.id
+                        LEFT JOIN {assignsubmission_comp} comp
+                            ON comp.usermodified = u.id
+                            AND comp.assignmentid = :assignmentid 
                         LEFT JOIN {assignsubmission_exclusion} exclusion
                             ON exclusion.entityid = u.id
                             AND exclusion.type = :entitytype
-                            AND exclusion.assignmentid = :assignmentid",
+                            AND exclusion.assignmentid = :assignmentid2",
                 "u.id $insql GROUP BY u.id, exclusion.id $namefields",
                 $inparams);
     }
