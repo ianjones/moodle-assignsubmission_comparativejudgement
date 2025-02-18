@@ -119,7 +119,12 @@ where comp.assignmentid = :assignmentid
         }
 
         $output = array_map('str_getcsv', explode("\n", $rawoutput));
-        array_shift($output); // Ditch header.
+        $headerrow = array_shift($output); // Ditch header.
+
+        if ($headerrow !== ['submissionid', 'Score', 'Reliability']) {
+            throw new moodle_exception('errorexecutingscript', 'assignsubmission_comparativejudgement',
+                null, null, $rawoutput . "\n" . $rhandler->get('errors'));
+        }
 
         $scores = [];
         foreach ($output as $row) {
