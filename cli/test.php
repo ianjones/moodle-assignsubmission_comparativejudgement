@@ -28,8 +28,8 @@ define('CLI_SCRIPT', true);
 define('CACHE_DISABLE_ALL', true); // This prevents reading of existing caches.
 define('IGNORE_COMPONENT_CACHE', true);
 
-require(__DIR__.'/../../../../../config.php');
-require_once($CFG->libdir.'/clilib.php');
+require(__DIR__ . '/../../../../../config.php');
+require_once($CFG->libdir . '/clilib.php');
 
 $exampledecisions = file_get_contents("$CFG->dirroot/mod/assign/submission/comparativejudgement/docs/exampledecisions.csv");
 

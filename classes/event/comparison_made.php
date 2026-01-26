@@ -69,5 +69,4 @@ class comparison_made extends base {
         $this->data['edulevel'] = self::LEVEL_OTHER;
         $this->data['objecttable'] = 'assign';
     }
-
 }

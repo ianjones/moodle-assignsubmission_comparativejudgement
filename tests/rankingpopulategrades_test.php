@@ -35,10 +35,10 @@ require_once($CFG->dirroot . '/mod/assign/tests/generator.php');
 /**
  * @group assignsubmission_comparativejudgement
  */
-class rankingpopulategrades_test extends advanced_testcase {
+final class rankingpopulategrades_test extends advanced_testcase {
     use mod_assign_test_generator;
 
-    public function test_individual_submissions() {
+    public function test_individual_submissions(): void {
         global $DB;
 
         $this->resetAfterTest();
@@ -107,7 +107,7 @@ class rankingpopulategrades_test extends advanced_testcase {
         }
     }
 
-    public function test_team_submissions() {
+    public function test_team_submissions(): void {
         global $DB;
 
         $this->resetAfterTest();

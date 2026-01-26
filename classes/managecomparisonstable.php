@@ -49,8 +49,11 @@ class managecomparisonstable extends table_sql {
 
     public function __construct(assign $assignment, $sortcolumn) {
         global $PAGE;
-        $PAGE->requires->js_call_amd('assignsubmission_comparativejudgement/manage', 'init',
-            ['assignmentid' => $assignment->get_instance()->id, 'entitytype' => exclusion::EXCLUSION_TYPE_SUBMISSION]);
+        $PAGE->requires->js_call_amd(
+            'assignsubmission_comparativejudgement/manage',
+            'init',
+            ['assignmentid' => $assignment->get_instance()->id, 'entitytype' => exclusion::EXCLUSION_TYPE_SUBMISSION]
+        );
 
         parent::__construct('managecomparisons_table');
 
@@ -89,7 +92,8 @@ class managecomparisonstable extends table_sql {
 
         $namefields = fields::for_name()->get_sql('ujudge')->selects;
         if ($this->teamsubmission) {
-            $this->set_sql("comp.id, ujudge.id as userid $namefields,
+            $this->set_sql(
+                "comp.id, ujudge.id as userid $namefields,
                                 asssubwin.id as winsubmissionid, exempwin.title as winexemplartitle, exempwin.id as winexemplarid, gwin.name as wingroupname,
                                 asssubloose.id as loosesubmissionid, exemploose.title as looseexemplartitle, exemploose.id as looseexemplarid, gloose.name as loosegroupname,
                                 comp.timetaken, comp.winningsubmissionposition",
@@ -103,11 +107,13 @@ class managecomparisonstable extends table_sql {
                             LEFT JOIN {groups} gwin ON gwin.id = asssubwin.groupid
                             LEFT JOIN {groups} gloose ON gloose.id = asssubloose.groupid',
                 "comp.assignmentid = :assignmentid",
-                ['assignmentid' => $assignment->get_instance()->id]);
+                ['assignmentid' => $assignment->get_instance()->id]
+            );
         } else {
             $winnamefields = fields::for_name()->get_sql('uwin', true, 'win')->selects;
             $loosefields = fields::for_name()->get_sql('uloose', true, 'loose')->selects;
-            $this->set_sql("comp.id, ujudge.id as userid $namefields,
+            $this->set_sql(
+                "comp.id, ujudge.id as userid $namefields,
                                 asssubwin.id as winsubmissionid, exempwin.title as winexemplartitle, exempwin.id as winexemplarid $winnamefields, uwin.id as winuserid,
                                 asssubloose.id as loosesubmissionid, exemploose.title as looseexemplartitle, exemploose.id as looseexemplarid $loosefields, uwin.id as looseuserid,
                                 comp.timetaken, comp.winningsubmissionposition",
@@ -121,7 +127,8 @@ class managecomparisonstable extends table_sql {
                             LEFT JOIN {user} uwin ON uwin.id = asssubwin.userid
                             LEFT JOIN {user} uloose ON uloose.id = asssubloose.userid',
                 "comp.assignmentid = :assignmentid",
-                ['assignmentid' => $assignment->get_instance()->id]);
+                ['assignmentid' => $assignment->get_instance()->id]
+            );
         }
     }
 
@@ -194,13 +201,15 @@ class managecomparisonstable extends table_sql {
         }
 
         if ($this->cangrade) {
-            return html_writer::link(new moodle_url('/mod/assign/view.php', [
+            return html_writer::link(
+                new moodle_url('/mod/assign/view.php', [
                 'id' => $this->cmid,
                 'rownum' => 0,
                 'action' => 'grader',
                 'userid' => $row->userid,
-            ]),
-                $label);
+                ]),
+                $label
+            );
         } else {
             return $label;
         }

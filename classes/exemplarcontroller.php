@@ -30,8 +30,11 @@ use stdClass;
 class exemplarcontroller extends basecontroller {
     public function summary() {
         global $OUTPUT;
-        return $OUTPUT->single_button($this->getinternallink('manageexemplars'),
-                get_string('manageexemplars', 'assignsubmission_comparativejudgement'), 'get');
+        return $OUTPUT->single_button(
+            $this->getinternallink('manageexemplars'),
+            get_string('manageexemplars', 'assignsubmission_comparativejudgement'),
+            'get'
+        );
     }
 
     public function viewdelete() {
@@ -74,8 +77,10 @@ class exemplarcontroller extends basecontroller {
         );
         $o .= $contents;
 
-        $o .= $OUTPUT->single_button($this->getinternallink('addexemplar'),
-                get_string('addexemplar', 'assignsubmission_comparativejudgement'));
+        $o .= $OUTPUT->single_button(
+            $this->getinternallink('addexemplar'),
+            get_string('addexemplar', 'assignsubmission_comparativejudgement')
+        );
 
         $o .= $this->getfooter();
 

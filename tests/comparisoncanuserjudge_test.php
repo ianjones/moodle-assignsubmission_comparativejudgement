@@ -37,13 +37,12 @@ use mod_assign_test_generator;
 /**
  * @group assignsubmission_comparativejudgement
  */
-class comparisoncanuserjudge_test extends advanced_testcase {
-
+final class comparisoncanuserjudge_test extends advanced_testcase {
     // Use the generator helper.
     use mod_assign_test_generator;
 
-    public function test_canuserjudge_fakerole_assignment_submitted() {
-        list($teacher, $editingteacher, $student, $secondassign, $plugin) = $this->setupstandardscenario();
+    public function test_canuserjudge_fakerole_assignment_submitted(): void {
+        [$teacher, $editingteacher, $student, $secondassign, $plugin] = $this->setupstandardscenario();
 
         $plugin->set_config('judges', \assign_submission_comparativejudgement::FAKEROLE_ASSIGNMENT_SUBMITTED);
 
@@ -55,7 +54,7 @@ class comparisoncanuserjudge_test extends advanced_testcase {
         $this->assertTrue($comparisonmanager->canuserjudge());
     }
 
-    public function test_canuserjudge_fakerole_assignment_submitted_team() {
+    public function test_canuserjudge_fakerole_assignment_submitted_team(): void {
         $this->resetAfterTest();
         $course = $this->getDataGenerator()->create_course();
         $group = $this->getDataGenerator()->create_group(['courseid' => $course->id]);
@@ -110,7 +109,7 @@ class comparisoncanuserjudge_test extends advanced_testcase {
         $this->assertFalse($comparisonmanager4->canuserjudge());
     }
 
-    public function test_canuserjudge_fakerole_assignment_submitted_teamallsubit() {
+    public function test_canuserjudge_fakerole_assignment_submitted_teamallsubit(): void {
         $this->resetAfterTest();
         $course = $this->getDataGenerator()->create_course();
         $group = $this->getDataGenerator()->create_group(['courseid' => $course->id]);
@@ -159,8 +158,8 @@ class comparisoncanuserjudge_test extends advanced_testcase {
         $this->assertTrue($comparisonmanager2->canuserjudge());
     }
 
-    public function test_canuserjudge_fakerole_gradable_users_after_cutoff() {
-        list($teacher, $editingteacher, $student, $secondassign, $plugin) =
+    public function test_canuserjudge_fakerole_gradable_users_after_cutoff(): void {
+        [$teacher, $editingteacher, $student, $secondassign, $plugin] =
             $this->setupstandardscenario(['cutoffdate' => time() - 10]);
         $plugin->set_config('judgementswhileeditable', false);
 
@@ -173,8 +172,8 @@ class comparisoncanuserjudge_test extends advanced_testcase {
         $this->assertTrue($comparisonmanagerstudent->canuserjudge());
     }
 
-    public function test_canuserjudge_fakerole_gradable_users_before_cutoff() {
-        list($teacher, $editingteacher, $student, $secondassign, $plugin) =
+    public function test_canuserjudge_fakerole_gradable_users_before_cutoff(): void {
+        [$teacher, $editingteacher, $student, $secondassign, $plugin] =
             $this->setupstandardscenario(['cutoffdate' => time() + 10]);
         $plugin->set_config('judgementswhileeditable', false);
         $plugin->set_config('judges', \assign_submission_comparativejudgement::FAKEROLE_GRADABLE_USERS);
@@ -186,8 +185,8 @@ class comparisoncanuserjudge_test extends advanced_testcase {
         $this->assertFalse($comparisonmanagerstudent->canuserjudge());
     }
 
-    public function test_canuserjudge_fakerole_gradable_users_before_cutoff_judgementswhileeditable() {
-        list($teacher, $editingteacher, $student, $secondassign, $plugin) =
+    public function test_canuserjudge_fakerole_gradable_users_before_cutoff_judgementswhileeditable(): void {
+        [$teacher, $editingteacher, $student, $secondassign, $plugin] =
             $this->setupstandardscenario(['cutoffdate' => time() + 10]);
         $plugin->set_config('judgementswhileeditable', true);
         $plugin->set_config('judges', \assign_submission_comparativejudgement::FAKEROLE_GRADABLE_USERS);
@@ -199,8 +198,8 @@ class comparisoncanuserjudge_test extends advanced_testcase {
         $this->assertTrue($comparisonmanagerstudent->canuserjudge());
     }
 
-    public function test_canuserjudge_role() {
-        list($teacher, $editingteacher, $student, $secondassign, $plugin) = $this->setupstandardscenario();
+    public function test_canuserjudge_role(): void {
+        [$teacher, $editingteacher, $student, $secondassign, $plugin] = $this->setupstandardscenario();
 
         global $DB;
         $teacherroleid = $DB->get_field('role', 'id', ['shortname' => 'teacher' ]);
@@ -221,8 +220,8 @@ class comparisoncanuserjudge_test extends advanced_testcase {
         $this->assertTrue($comparisonmanagereditingteacher->canuserjudge());
     }
 
-    public function test_canuserjudge_starttime() {
-        list($teacher, $editingteacher, $student, $secondassign, $plugin) = $this->setupstandardscenario();
+    public function test_canuserjudge_starttime(): void {
+        [$teacher, $editingteacher, $student, $secondassign, $plugin] = $this->setupstandardscenario();
 
         global $DB;
         $teacherroleid = $DB->get_field('role', 'id', ['shortname' => 'teacher' ]);
@@ -239,10 +238,10 @@ class comparisoncanuserjudge_test extends advanced_testcase {
         $this->assertTrue($comparisonmanagerteacher->canuserjudge());
     }
 
-    public function test_canuserjudge_maxjudgements() {
+    public function test_canuserjudge_maxjudgements(): void {
         global $DB;
 
-        list($teacher, $editingteacher, $student, $secondassign, $plugin) = $this->setupstandardscenario();
+        [$teacher, $editingteacher, $student, $secondassign, $plugin] = $this->setupstandardscenario();
         $plugin->set_config('judges', $DB->get_field('role', 'id', ['shortname' => 'teacher' ]));
 
         for ($i = 0; $i < 4; $i++) {
@@ -259,8 +258,13 @@ class comparisoncanuserjudge_test extends advanced_testcase {
         $this->assertTrue($comparisonmanager->canuserjudge());
 
         $getpairtojudge1 = $comparisonmanager->getpairtojudge();
-        comparison::recordcomparison($secondassign->get_instance()->id, 50, current($getpairtojudge1)->id,
-                comparison::POSITION_RIGHT, next($getpairtojudge1)->id);
+        comparison::recordcomparison(
+            $secondassign->get_instance()->id,
+            50,
+            current($getpairtojudge1)->id,
+            comparison::POSITION_RIGHT,
+            next($getpairtojudge1)->id
+        );
 
         $this->assertFalse($comparisonmanager->canuserjudge());
 

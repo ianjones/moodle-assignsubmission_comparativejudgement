@@ -49,8 +49,10 @@ class managecomparisoncommentsmanager {
                             exclusion.type = :entitytype
                         WHERE comp.comments is not null AND comp.comments <> '' AND sub.assignment = :assignmentid
                             AND commentpublished = 0 AND exclusion.id IS NULL";
-        $comments = $DB->get_records_sql($commentssql,
-            ['assignmentid' => $this->assignmentinstance->id, 'entitytype' => exclusion::EXCLUSION_TYPE_COMPARISONCOMMENT]);
+        $comments = $DB->get_records_sql(
+            $commentssql,
+            ['assignmentid' => $this->assignmentinstance->id, 'entitytype' => exclusion::EXCLUSION_TYPE_COMPARISONCOMMENT]
+        );
 
         $commenthandler = new assign_feedback_comments($this->assignment, 'comments');
 
@@ -94,7 +96,7 @@ class managecomparisoncommentsmanager {
         }
 
         if ($comments) {
-            list($insql, $params) = $DB->get_in_or_equal(array_keys($compsubids));
+            [$insql, $params] = $DB->get_in_or_equal(array_keys($compsubids));
             $DB->execute("UPDATE {assignsubmission_compsubs} SET commentpublished = 1 WHERE id $insql", $params);
         }
 

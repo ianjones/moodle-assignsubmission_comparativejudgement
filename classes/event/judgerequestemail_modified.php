@@ -69,5 +69,4 @@ class judgerequestemail_modified extends base {
         $this->data['edulevel'] = self::LEVEL_OTHER;
         $this->data['objecttable'] = 'assign';
     }
-
 }

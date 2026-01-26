@@ -25,13 +25,13 @@ namespace assignsubmission_comparativejudgement;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->libdir.'/formslib.php');
+require_once($CFG->libdir . '/formslib.php');
 
 use moodleform;
 
 class judgerequestemaildeleteform extends moodleform {
     protected function definition() {
-        list($assign, $emailid) = $this->_customdata;
+        [$assign, $emailid] = $this->_customdata;
 
         $mform = $this->_form;
 

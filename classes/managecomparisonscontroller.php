@@ -31,8 +31,11 @@ class managecomparisonscontroller extends basecontroller {
     public function summary() {
         global $OUTPUT;
 
-        return $OUTPUT->single_button($this->getinternallink('managecomparisons'),
-                get_string('managecomparisons', 'assignsubmission_comparativejudgement'), 'get');
+        return $OUTPUT->single_button(
+            $this->getinternallink('managecomparisons'),
+            get_string('managecomparisons', 'assignsubmission_comparativejudgement'),
+            'get'
+        );
     }
 
     public function view() {
@@ -68,8 +71,10 @@ class managecomparisonscontroller extends basecontroller {
 
         $comparisonid = required_param('comparisonid', PARAM_INT);
 
-        $mform = new managecomparisondeleteform($this->getinternallink('deletemanagecomparison',
-            ['comparisonid' => $comparisonid]), [$this->assignment, $comparisonid]);
+        $mform = new managecomparisondeleteform($this->getinternallink(
+            'deletemanagecomparison',
+            ['comparisonid' => $comparisonid]
+        ), [$this->assignment, $comparisonid]);
 
         if ($mform->is_cancelled()) {
             redirect($this->getinternallink('managecomparisons'));

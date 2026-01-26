@@ -55,7 +55,7 @@ class ranking extends persistent {
         $comparisonmanager = new comparisonmanager($USER->id, $assign);
         $userids = $comparisonmanager->getalljudges();
         if ($userids) {
-            list($insql, $inparams) = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED);
+            [$insql, $inparams] = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED);
             $params = array_merge($params, $inparams);
         } else {
             $insql = " <> -1 ";
@@ -107,23 +107,33 @@ where comp.assignmentid = :assignmentid
             return false;
         }
 
-        $rhandler = new rhandler( $CFG->dirroot . "/mod/assign/submission/comparativejudgement/lib/pipeablescript.R");
+        $rhandler = new rhandler($CFG->dirroot . "/mod/assign/submission/comparativejudgement/lib/pipeablescript.R");
         $rhandler->setinput($csv);
         $rhandler->execute();
 
         $rawoutput = $rhandler->get('output');
 
         if (empty($rawoutput)) {
-            throw new moodle_exception('errorexecutingscript', 'assignsubmission_comparativejudgement',
-                    null, null, $rhandler->get('errors'));
+            throw new moodle_exception(
+                'errorexecutingscript',
+                'assignsubmission_comparativejudgement',
+                null,
+                null,
+                $rhandler->get('errors')
+            );
         }
 
         $output = array_map('str_getcsv', explode("\n", $rawoutput));
         $headerrow = array_shift($output); // Ditch header.
 
         if ($headerrow !== ['submissionid', 'Score', 'Reliability']) {
-            throw new moodle_exception('errorexecutingscript', 'assignsubmission_comparativejudgement',
-                null, null, $rawoutput . "\n" . $rhandler->get('errors'));
+            throw new moodle_exception(
+                'errorexecutingscript',
+                'assignsubmission_comparativejudgement',
+                null,
+                null,
+                $rawoutput . "\n" . $rhandler->get('errors')
+            );
         }
 
         $scores = [];
@@ -190,8 +200,10 @@ where comp.assignmentid = :assignmentid
         $DB->delete_records('assignsubmission_rankingsub', ['rankingid' => $this->get('id')]);
 
         foreach ($scores as $submissionid => $score) {
-            $DB->insert_record('assignsubmission_rankingsub',
-                    (object) ['rankingid' => $this->get('id'), 'submissionid' => $submissionid, 'score' => $score]);
+            $DB->insert_record(
+                'assignsubmission_rankingsub',
+                (object) ['rankingid' => $this->get('id'), 'submissionid' => $submissionid, 'score' => $score]
+            );
         }
     }
 
@@ -199,12 +211,13 @@ where comp.assignmentid = :assignmentid
         global $DB, $CFG;
         require_once($CFG->dirroot . '/mod/assign/gradeform.php');
 
-        $submissiongrades = $DB->get_records_sql('SELECT asssub.id, asssub.groupid, asssub.userid, ranksub.score
+        $submissiongrades = $DB->get_records_sql(
+            'SELECT asssub.id, asssub.groupid, asssub.userid, ranksub.score
                                 FROM {assign_submission} asssub
                                 INNER JOIN {assignsubmission_rankingsub} ranksub ON ranksub.submissionid = asssub.id
                                 LEFT JOIN {assignsubmission_exemplars} exemp ON exemp.submissionid = asssub.id
                                 WHERE exemp.id IS NULL AND ranksub.rankingid = :rankingid',
-                ['rankingid' => $this->get('id')]
+            ['rankingid' => $this->get('id')]
         );
 
         foreach ($submissiongrades as $grade) {

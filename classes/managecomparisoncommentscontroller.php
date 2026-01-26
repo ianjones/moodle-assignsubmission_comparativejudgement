@@ -35,8 +35,11 @@ class managecomparisoncommentscontroller extends basecontroller {
             return '';
         }
 
-        return $OUTPUT->single_button($this->getinternallink('managecomparisoncomments'),
-                get_string('managecomparisoncomments', 'assignsubmission_comparativejudgement'), 'get');
+        return $OUTPUT->single_button(
+            $this->getinternallink('managecomparisoncomments'),
+            get_string('managecomparisoncomments', 'assignsubmission_comparativejudgement'),
+            'get'
+        );
     }
 
     public function view() {
@@ -53,8 +56,10 @@ class managecomparisoncommentscontroller extends basecontroller {
                     'context'       => $this->assignment->get_context(),
             ])->trigger();
 
-            redirect($this->getinternallink('managecomparisoncomments'),
-                    get_string('commentsimported', 'assignsubmission_comparativejudgement'));
+            redirect(
+                $this->getinternallink('managecomparisoncomments'),
+                get_string('commentsimported', 'assignsubmission_comparativejudgement')
+            );
         }
 
         $downloadformat = optional_param('download', false, PARAM_ALPHA);
@@ -77,8 +82,10 @@ class managecomparisoncommentscontroller extends basecontroller {
 
         $link = $this->getinternallink('managecomparisoncomments');
         $link->params(['importcomments' => true]);
-        $o .= $OUTPUT->single_button($link,
-                get_string('importcomments', 'assignsubmission_comparativejudgement'));
+        $o .= $OUTPUT->single_button(
+            $link,
+            get_string('importcomments', 'assignsubmission_comparativejudgement')
+        );
 
         $o .= $this->getfooter();
 

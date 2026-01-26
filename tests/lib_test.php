@@ -35,10 +35,10 @@ require_once($CFG->dirroot . '/mod/assign/tests/generator.php');
 /**
  * @group assignsubmission_comparativejudgement
  */
-class lib_test extends advanced_testcase {
+final class lib_test extends advanced_testcase {
     use mod_assign_test_generator;
 
-    public function test_delete_instance() {
+    public function test_delete_instance(): void {
         global $DB;
 
         $this->resetAfterTest();

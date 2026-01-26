@@ -38,12 +38,11 @@ use mod_assign_test_generator;
 /**
  * @group assignsubmission_comparativejudgement
  */
-class comparisongetalljudges_test extends advanced_testcase {
-
+final class comparisongetalljudges_test extends advanced_testcase {
     // Use the generator helper.
     use mod_assign_test_generator;
 
-    public function test_getalljudges_fakerole_assignment_submitted() {
+    public function test_getalljudges_fakerole_assignment_submitted(): void {
         global $DB;
 
         $this->resetAfterTest();
@@ -74,8 +73,9 @@ class comparisongetalljudges_test extends advanced_testcase {
         $teacherroleid = $DB->get_field('role', 'id', ['shortname' => 'teacher']);
         $editingteacherroleid = $DB->get_field('role', 'id', ['shortname' => 'editingteacher']);
 
-        $plugin->set_config('judges',
-                implode(',', [
+        $plugin->set_config(
+            'judges',
+            implode(',', [
                         \assign_submission_comparativejudgement::FAKEROLE_GRADABLE_USERS,
                         $teacherroleid,
                         $editingteacherroleid])
@@ -84,8 +84,9 @@ class comparisongetalljudges_test extends advanced_testcase {
         $comparisonmanager = new comparisonmanager($editingteacher->id, $secondassign);
         $this->assertCount(4, $comparisonmanager->getalljudges());
 
-        $plugin->set_config('judges',
-                implode(',', [
+        $plugin->set_config(
+            'judges',
+            implode(',', [
                         \assign_submission_comparativejudgement::FAKEROLE_ASSIGNMENT_SUBMITTED,
                         $teacherroleid,
                         $editingteacherroleid])
@@ -93,16 +94,18 @@ class comparisongetalljudges_test extends advanced_testcase {
 
         $this->assertCount(3, $comparisonmanager->getalljudges());
 
-        $plugin->set_config('judges',
-                implode(',', [
+        $plugin->set_config(
+            'judges',
+            implode(',', [
                         $teacherroleid,
                         $editingteacherroleid])
         );
 
         $this->assertCount(2, $comparisonmanager->getalljudges());
 
-        $plugin->set_config('judges',
-                implode(',', [
+        $plugin->set_config(
+            'judges',
+            implode(',', [
                         $editingteacherroleid])
         );
 
@@ -113,7 +116,7 @@ class comparisongetalljudges_test extends advanced_testcase {
         $this->assertCount(0, $comparisonmanager->getalljudges());
     }
 
-    public function test_getjudgesavailabilityrestriction() {
+    public function test_getjudgesavailabilityrestriction(): void {
         global $DB;
 
         $this->resetAfterTest();
@@ -136,9 +139,13 @@ class comparisongetalljudges_test extends advanced_testcase {
             'assignsubmission_onlinetext_enabled'           => 1,
             'assignsubmission_comparativejudgement_enabled' => 1,
             'availability' => json_encode(
-                \core_availability\tree::get_root_json([
+                \core_availability\tree::get_root_json(
+                    [
                     condition::get_json(false, 'department', condition::OP_IS_EQUAL_TO, 'psychology')],
-                    \core_availability\tree::OP_AND, false)),
+                    \core_availability\tree::OP_AND,
+                    false
+                )
+            ),
         ]);
         $plugin = \assign_submission_comparativejudgement::getplugin($secondassign);
         $plugin->set_config('judges', \assign_submission_comparativejudgement::FAKEROLE_GRADABLE_USERS);
@@ -151,7 +158,7 @@ class comparisongetalljudges_test extends advanced_testcase {
         $this->assertCount(1, $comparisonmanager->getalljudges());
     }
 
-    public function test_canuserjudge_fakerole_assignment_submitted_team() {
+    public function test_canuserjudge_fakerole_assignment_submitted_team(): void {
         $this->resetAfterTest();
         $course = $this->getDataGenerator()->create_course();
         $group = $this->getDataGenerator()->create_group(['courseid' => $course->id]);

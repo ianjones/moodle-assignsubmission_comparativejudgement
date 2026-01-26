@@ -25,13 +25,13 @@ namespace assignsubmission_comparativejudgement;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->libdir.'/formslib.php');
+require_once($CFG->libdir . '/formslib.php');
 
 use moodleform;
 
 class managecomparisondeleteform extends moodleform {
     protected function definition() {
-        list($assign, $comparisonid) = $this->_customdata;
+        [$assign, $comparisonid] = $this->_customdata;
 
         $mform = $this->_form;
 

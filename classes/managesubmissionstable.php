@@ -44,8 +44,11 @@ class managesubmissionstable extends table_sql {
 
     public function __construct(assign $assignment, $sortcolumn) {
         global $PAGE;
-        $PAGE->requires->js_call_amd('assignsubmission_comparativejudgement/manage', 'init',
-                ['assignmentid' => $assignment->get_instance()->id, 'entitytype' => exclusion::EXCLUSION_TYPE_SUBMISSION]);
+        $PAGE->requires->js_call_amd(
+            'assignsubmission_comparativejudgement/manage',
+            'init',
+            ['assignmentid' => $assignment->get_instance()->id, 'entitytype' => exclusion::EXCLUSION_TYPE_SUBMISSION]
+        );
 
         parent::__construct('managesubmissions_table');
 
@@ -99,12 +102,13 @@ class managesubmissionstable extends table_sql {
 
         if ($teamsubmission) {
             $this->set_count_sql(
-                    "select count(id) from {assign_submission} where status = :status and " .
+                "select count(id) from {assign_submission} where status = :status and " .
                     "assignment = :assignment and groupid <> 0 and userid = 0",
-                    ['status' => ASSIGN_SUBMISSION_STATUS_SUBMITTED, 'assignment' => $assignment->get_instance()->id]
+                ['status' => ASSIGN_SUBMISSION_STATUS_SUBMITTED, 'assignment' => $assignment->get_instance()->id]
             );
 
-            $this->set_sql("asssub.id, asssub.id as submissionid,
+            $this->set_sql(
+                "asssub.id, asssub.id as submissionid,
                             max(asssub.userid) as userid, asssub.id as entityid, g.name as groupname,
                             exemp.title as exemplartitle, exemp.id as exemplarid, count(comp.id) as comparisons,
                             sum(comp.timetaken) as timetaken, avg(comp.timetaken) as avgtimetaken,
@@ -113,7 +117,7 @@ class managesubmissionstable extends table_sql {
                             SUM(CASE WHEN asssub.id <> comp.winningsubmission THEN 1 ELSE 0 END) as losses,
                             rsub.score,
                             CASE WHEN exclusion.id IS NOT NULL THEN 1 ELSE 0 END as excluded",
-                    '{assign_submission} asssub
+                '{assign_submission} asssub
                             LEFT JOIN {assignsubmission_exemplars} exemp ON exemp.submissionid = asssub.id
                             LEFT JOIN {groups} g ON g.id = asssub.groupid
                             LEFT JOIN {assignsubmission_compsubs} compsubs ON compsubs.submissionid = asssub.id
@@ -121,20 +125,22 @@ class managesubmissionstable extends table_sql {
                             LEFT JOIN {assignsubmission_rankingsub} rsub ON rsub.submissionid = asssub.id
                             LEFT JOIN {assignsubmission_exclusion} exclusion ON exclusion.entityid = asssub.id AND
                                 exclusion.type = :entitytype',
-                    "asssub.assignment = :assignmentid AND asssub.status = :status AND
+                "asssub.assignment = :assignmentid AND asssub.status = :status AND
                         asssub.userid <= 0 GROUP BY asssub.id, rsub.score, exclusion.id,
                         asssub.id, g.name, g.id, exemp.title",
-                    ['assignmentid' => $assignment->get_instance()->id, 'status' => ASSIGN_SUBMISSION_STATUS_SUBMITTED,
-                     'entitytype'   => exclusion::EXCLUSION_TYPE_SUBMISSION]);
+                ['assignmentid' => $assignment->get_instance()->id, 'status' => ASSIGN_SUBMISSION_STATUS_SUBMITTED,
+                'entitytype'   => exclusion::EXCLUSION_TYPE_SUBMISSION]
+            );
         } else {
             $this->set_count_sql(
-                    "select count(id) from {assign_submission} where status = :status and " .
+                "select count(id) from {assign_submission} where status = :status and " .
                     "assignment = :assignment and groupid = 0 and userid <> 0",
-                    ['status' => ASSIGN_SUBMISSION_STATUS_SUBMITTED, 'assignment' => $assignment->get_instance()->id]
+                ['status' => ASSIGN_SUBMISSION_STATUS_SUBMITTED, 'assignment' => $assignment->get_instance()->id]
             );
 
             $namefields = fields::for_name()->get_sql('u')->selects;
-            $this->set_sql("asssub.id, u.id as userid, asssub.id as entityid $namefields, asssub.id as submissionid, " .
+            $this->set_sql(
+                "asssub.id, u.id as userid, asssub.id as entityid $namefields, asssub.id as submissionid, " .
                            "exemp.title as exemplartitle,
                                 exemp.id as exemplarid, COUNT(comp.id) as comparisons, SUM(comp.timetaken) as timetaken,
                                 AVG(comp.timetaken) as avgtimetaken,
@@ -143,7 +149,7 @@ class managesubmissionstable extends table_sql {
                                 SUM(CASE WHEN asssub.id <> comp.winningsubmission THEN 1 ELSE 0 END) as losses,
                                 rsub.score,
                                 CASE WHEN exclusion.id IS NOT NULL THEN 1 ELSE 0 END as excluded",
-                    '{assign_submission} asssub
+                '{assign_submission} asssub
                             LEFT JOIN {assignsubmission_exemplars} exemp ON exemp.submissionid = asssub.id
                             LEFT JOIN {user} u ON u.id = asssub.userid
                             LEFT JOIN {assignsubmission_compsubs} compsubs ON compsubs.submissionid = asssub.id
@@ -151,10 +157,11 @@ class managesubmissionstable extends table_sql {
                             LEFT JOIN {assignsubmission_rankingsub} rsub ON rsub.submissionid = asssub.id
                             LEFT JOIN {assignsubmission_exclusion} exclusion ON
                             exclusion.entityid = asssub.id AND exclusion.type = :entitytype',
-                    "asssub.assignment = :assignmentid AND asssub.status = :status AND asssub.userid <> 0 GROUP BY u.id,
+                "asssub.assignment = :assignmentid AND asssub.status = :status AND asssub.userid <> 0 GROUP BY u.id,
                     exemp.title, exemp.id, exclusion.id, rsub.score, asssub.id $namefields",
-                    ['assignmentid' => $assignment->get_instance()->id, 'status' => ASSIGN_SUBMISSION_STATUS_SUBMITTED,
-                     'entitytype'   => exclusion::EXCLUSION_TYPE_SUBMISSION]);
+                ['assignmentid' => $assignment->get_instance()->id, 'status' => ASSIGN_SUBMISSION_STATUS_SUBMITTED,
+                'entitytype'   => exclusion::EXCLUSION_TYPE_SUBMISSION]
+            );
         }
     }
 
@@ -164,8 +171,13 @@ class managesubmissionstable extends table_sql {
 
         $attributes['title'] = get_string('include', 'assignsubmission_comparativejudgement');
 
-        return html_writer::span(html_writer::checkbox($chkname, $chkname, empty($row->excluded), '',
-                $attributes));
+        return html_writer::span(html_writer::checkbox(
+            $chkname,
+            $chkname,
+            empty($row->excluded),
+            '',
+            $attributes
+        ));
     }
 
     public function col_groupname($row) {
@@ -189,19 +201,22 @@ class managesubmissionstable extends table_sql {
 
     public function col_submission($row) {
         if (!empty($row->exemplartitle) && $this->canmanageexemplars) {
-
             $url = $this->exemplarcontroller->getinternallink('addexemplar');
             $url->param('exemplarid', $row->exemplarid);
-            return html_writer::link($url,
-                    get_string('viewexemplar', 'assignsubmission_comparativejudgement'));
+            return html_writer::link(
+                $url,
+                get_string('viewexemplar', 'assignsubmission_comparativejudgement')
+            );
         } else if ($this->cangrade) {
-            return html_writer::link(new moodle_url('/mod/assign/view.php', [
+            return html_writer::link(
+                new moodle_url('/mod/assign/view.php', [
                     'id'     => $this->cmid,
                     'rownum' => 0,
                     'action' => 'grader',
                     'userid' => $row->userid,
-            ]),
-                    get_string('viewassignment', 'assignsubmission_comparativejudgement'));
+                ]),
+                get_string('viewassignment', 'assignsubmission_comparativejudgement')
+            );
         } else {
             return '';
         }

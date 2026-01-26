@@ -31,13 +31,12 @@ require_once($CFG->libdir . '/formslib.php');
 require_once($CFG->dirroot . '/mod/assign/locallib.php');
 
 class exemplarform extends moodleform {
-
     /**
      * Define this form - called by the parent constructor
      */
     protected function definition() {
         $mform = $this->_form;
-        list($assign, $data, $submission) = $this->_customdata;
+        [$assign, $data, $submission] = $this->_customdata;
 
         $mform->addElement('text', 'title', get_string('exemplartitle', 'assignsubmission_comparativejudgement'));
         $mform->addRule('title', null, 'required');
@@ -65,8 +64,11 @@ class exemplarform extends moodleform {
 
         $buttonarray = [];
         $buttonarray[] = &$mform->createElement('submit', 'submitbutton', get_string('savechanges', 'assign'));
-        $buttonarray[] = &$mform->createElement('submit', 'submitandaddanother',
-            get_string('savechangesandaddanother', 'assignsubmission_comparativejudgement'));
+        $buttonarray[] = &$mform->createElement(
+            'submit',
+            'submitandaddanother',
+            get_string('savechangesandaddanother', 'assignsubmission_comparativejudgement')
+        );
         $buttonarray[] = &$mform->createElement('cancel');
         $mform->addGroup($buttonarray, 'buttonar', '', [' '], false);
         $mform->closeHeaderBefore('buttonar');
@@ -81,4 +83,3 @@ class exemplarform extends moodleform {
         }
     }
 }
-

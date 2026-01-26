@@ -28,12 +28,13 @@ use advanced_testcase;
 /**
  * @group assignsubmission_comparativejudgement
  */
-class comparisonrunrscript_test extends advanced_testcase {
+final class comparisonrunrscript_test extends advanced_testcase {
     public function setUp(): void {
+        parent::setUp();
         \assignsubmission_comparativejudgement\rhandler::init_for_phpunit();
     }
 
-    public function test_runrscript_exampledate() {
+    public function test_runrscript_exampledate(): void {
         global $CFG;
 
         if (empty(get_config('assignsubmission_comparativejudgement', 'pathtorscript'))) {
@@ -54,7 +55,7 @@ class comparisonrunrscript_test extends advanced_testcase {
         $this->assertEquals($exampleoput, $output);
     }
 
-    public function test_runrscript_exampledate_remote() {
+    public function test_runrscript_exampledate_remote(): void {
         global $CFG;
 
         if (!file_exists("$CFG->dirroot/mod/assign/submission/comparativejudgement/tests/sshproxy.php")) {

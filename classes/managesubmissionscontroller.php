@@ -31,8 +31,11 @@ class managesubmissionscontroller extends basecontroller {
     public function summary() {
         global $OUTPUT;
 
-        return $OUTPUT->single_button($this->getinternallink('managesubmissions'),
-                get_string('managesubmissions', 'assignsubmission_comparativejudgement'), 'get');
+        return $OUTPUT->single_button(
+            $this->getinternallink('managesubmissions'),
+            get_string('managesubmissions', 'assignsubmission_comparativejudgement'),
+            'get'
+        );
     }
 
     public function view() {
@@ -49,8 +52,10 @@ class managesubmissionscontroller extends basecontroller {
             }
 
             if (!$ranking) {
-                redirect($this->getinternallink('managesubmissions'), get_string('nothingtocompare',
-                        'assignsubmission_comparativejudgement'));
+                redirect($this->getinternallink('managesubmissions'), get_string(
+                    'nothingtocompare',
+                    'assignsubmission_comparativejudgement'
+                ));
             }
 
             grades_calculated::create([
@@ -59,8 +64,10 @@ class managesubmissionscontroller extends basecontroller {
                     'context'       => $this->assignment->get_context(),
             ])->trigger();
 
-            redirect($this->getinternallink('managesubmissions'),
-                    get_string('comparisondone', 'assignsubmission_comparativejudgement'));
+            redirect(
+                $this->getinternallink('managesubmissions'),
+                get_string('comparisondone', 'assignsubmission_comparativejudgement')
+            );
         }
 
         if (optional_param('downloadrawjudgedata', false, PARAM_BOOL)) {
@@ -76,8 +83,10 @@ class managesubmissionscontroller extends basecontroller {
             $ranking = ranking::get_record(['assignmentid' => $assignmentid]);
 
             if (empty($ranking)) {
-                redirect($this->getinternallink('managesubmissions'), get_string('calculategradesfirst',
-                    'assignsubmission_comparativejudgement'));
+                redirect($this->getinternallink('managesubmissions'), get_string(
+                    'calculategradesfirst',
+                    'assignsubmission_comparativejudgement'
+                ));
             } else {
                 $ranking->populategrades($this->assignment);
 
@@ -87,8 +96,10 @@ class managesubmissionscontroller extends basecontroller {
                     'context' => $this->assignment->get_context(),
                 ])->trigger();
 
-                redirect($this->getinternallink('managesubmissions'),
-                    get_string('gradescopied', 'assignsubmission_comparativejudgement'));
+                redirect(
+                    $this->getinternallink('managesubmissions'),
+                    get_string('gradescopied', 'assignsubmission_comparativejudgement')
+                );
             }
         }
 
@@ -118,8 +129,11 @@ class managesubmissionscontroller extends basecontroller {
 
         $ranking = ranking::get_record(['assignmentid' => $assignmentid]);
         if ($ranking) {
-            $o .= html_writer::div(get_string('lastcalculation', 'assignsubmission_comparativejudgement',
-                    userdate($ranking->get('timemodified'))));
+            $o .= html_writer::div(get_string(
+                'lastcalculation',
+                'assignsubmission_comparativejudgement',
+                userdate($ranking->get('timemodified'))
+            ));
 
             $reliability = $ranking->get('reliability');
             if ($reliability < 0) {
@@ -131,17 +145,23 @@ class managesubmissionscontroller extends basecontroller {
         }
 
         $link = $this->getinternallink('managesubmissions', ['doranking' => true]);
-        $o .= $OUTPUT->single_button($link,
-                get_string('calculategrades', 'assignsubmission_comparativejudgement'));
+        $o .= $OUTPUT->single_button(
+            $link,
+            get_string('calculategrades', 'assignsubmission_comparativejudgement')
+        );
 
         $link = $this->getinternallink('managesubmissions', ['downloadrawjudgedata' => true]);
-        $o .= $OUTPUT->single_button($link,
-                get_string('downloadrawjudgedata', 'assignsubmission_comparativejudgement'));
+        $o .= $OUTPUT->single_button(
+            $link,
+            get_string('downloadrawjudgedata', 'assignsubmission_comparativejudgement')
+        );
 
         if (has_capability('mod/assign:grade', $this->assignment->get_context())) {
             $link = $this->getinternallink('managesubmissions', ['copytogradebook' => true]);
-            $o .= $OUTPUT->single_button($link,
-                    get_string('copytogradebook', 'assignsubmission_comparativejudgement'));
+            $o .= $OUTPUT->single_button(
+                $link,
+                get_string('copytogradebook', 'assignsubmission_comparativejudgement')
+            );
         }
 
         $o .= $this->getfooter();

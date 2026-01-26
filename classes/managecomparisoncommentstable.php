@@ -49,8 +49,11 @@ class managecomparisoncommentstable extends table_sql {
         $this->canmanageexemplars =
                 has_capability('assignsubmission/comparativejudgement:manageexemplars', $assignment->get_context());
 
-        $PAGE->requires->js_call_amd('assignsubmission_comparativejudgement/manage', 'init',
-                ['assignmentid' => $assignment->get_instance()->id, 'entitytype' => exclusion::EXCLUSION_TYPE_COMPARISONCOMMENT]);
+        $PAGE->requires->js_call_amd(
+            'assignsubmission_comparativejudgement/manage',
+            'init',
+            ['assignmentid' => $assignment->get_instance()->id, 'entitytype' => exclusion::EXCLUSION_TYPE_COMPARISONCOMMENT]
+        );
 
         parent::__construct('managecomparisoncomments_table');
 
@@ -91,7 +94,8 @@ class managecomparisoncommentstable extends table_sql {
         ];
 
         $uniquecol = $DB->sql_concat('compsub.id', '"_"', 'asssub.id', '"_"', 'asssubother.id');
-        $this->set_sql("$uniquecol,
+        $this->set_sql(
+            "$uniquecol,
             compsub.id,
             u.id as judgeid
             $namefields,
@@ -119,7 +123,8 @@ class managecomparisoncommentstable extends table_sql {
             LEFT JOIN {assignsubmission_exclusion} exclusion ON
                     exclusion.entityid = compsub.id AND exclusion.type = :entitytype",
             "compsub.comments is not null AND compsub.comments <> '' AND comp.assignmentid = :assignmentid",
-            $inparams);
+            $inparams
+        );
     }
 
     public function col_include($row) {
@@ -128,29 +133,42 @@ class managecomparisoncommentstable extends table_sql {
 
         $attributes['title'] = get_string('include', 'assignsubmission_comparativejudgement');
 
-        return html_writer::span(html_writer::checkbox($chkname, $chkname, empty($row->excluded), '',
-                $attributes));
+        return html_writer::span(html_writer::checkbox(
+            $chkname,
+            $chkname,
+            empty($row->excluded),
+            '',
+            $attributes
+        ));
     }
 
     public function col_othersubmission($row) {
         return $this->col_submission($row, 'othersubuserid', 'otherexemplartitle', 'otherexemplarid');
     }
 
-    public function col_submission($row, $subuseridcol = 'subuserid', $exemplartitlecol = 'exemplartitle',
-            $exemplaridcol = 'exemplarid') {
+    public function col_submission(
+        $row,
+        $subuseridcol = 'subuserid',
+        $exemplartitlecol = 'exemplartitle',
+        $exemplaridcol = 'exemplarid'
+    ) {
         if (!empty($row->$exemplartitlecol) && $this->canmanageexemplars) {
             $url = $this->exemplarcontroller->getinternallink('addexemplar');
             $url->param('exemplarid', $row->$exemplaridcol);
-            return html_writer::link($url,
-                    get_string('viewexemplar', 'assignsubmission_comparativejudgement'));
+            return html_writer::link(
+                $url,
+                get_string('viewexemplar', 'assignsubmission_comparativejudgement')
+            );
         } else if ($this->cangrade && empty($row->$exemplartitlecol)) {
-            return html_writer::link(new moodle_url('/mod/assign/view.php', [
+            return html_writer::link(
+                new moodle_url('/mod/assign/view.php', [
                     'id'     => $this->cmid,
                     'rownum' => 0,
                     'action' => 'grader',
                     'userid' => $row->$subuseridcol,
-            ]),
-                    get_string('viewassignment', 'assignsubmission_comparativejudgement'));
+                ]),
+                get_string('viewassignment', 'assignsubmission_comparativejudgement')
+            );
         } else {
             return '';
         }

@@ -32,9 +32,11 @@ class judgerequestemailcontroller extends basecontroller {
     public function summary() {
         global $OUTPUT;
 
-        return $OUTPUT->single_button($this->getinternallink('judgerequestemail'),
-                get_string('managejudgerequestemail', 'assignsubmission_comparativejudgement'), 'get');
-
+        return $OUTPUT->single_button(
+            $this->getinternallink('judgerequestemail'),
+            get_string('managejudgerequestemail', 'assignsubmission_comparativejudgement'),
+            'get'
+        );
     }
 
     public function view() {
@@ -50,8 +52,11 @@ class judgerequestemailcontroller extends basecontroller {
         $o .= ob_get_contents();
         ob_end_clean();
 
-        $o .= html_writer::link($this->getinternallink('judgerequestemailcreate'),
-                get_string('newreminderemail', 'assignsubmission_comparativejudgement'), ['class' => 'btn btn-primary']);
+        $o .= html_writer::link(
+            $this->getinternallink('judgerequestemailcreate'),
+            get_string('newreminderemail', 'assignsubmission_comparativejudgement'),
+            ['class' => 'btn btn-primary']
+        );
 
         $o .= $this->getfooter();
 
@@ -108,8 +113,10 @@ class judgerequestemailcontroller extends basecontroller {
 
         $emailid = required_param('emailid', PARAM_INT);
 
-        $mform = new judgerequestemaildeleteform($this->getinternallink('deletejudgerequestemail',
-                ['emailid' => $emailid]), [$this->assignment, $emailid]);
+        $mform = new judgerequestemaildeleteform($this->getinternallink(
+            'deletejudgerequestemail',
+            ['emailid' => $emailid]
+        ), [$this->assignment, $emailid]);
 
         if ($mform->is_cancelled()) {
             redirect($this->getinternallink('judgerequestemail'));

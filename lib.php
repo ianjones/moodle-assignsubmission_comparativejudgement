@@ -38,13 +38,15 @@ use core_files\converter;
  * @param array $options - List of options affecting file serving.
  * @return bool false if file not found, does not return if found - just send the file
  */
-function assignsubmission_comparativejudgement_pluginfile($course,
-        $cm,
-        context $context,
-        $filearea,
-        $args,
-        $forcedownload,
-        array $options = []) {
+function assignsubmission_comparativejudgement_pluginfile(
+    $course,
+    $cm,
+    context $context,
+    $filearea,
+    $args,
+    $forcedownload,
+    array $options = []
+) {
     global $DB, $CFG, $USER, $SESSION;
 
     if ($context->contextlevel != CONTEXT_MODULE) {
@@ -59,10 +61,12 @@ function assignsubmission_comparativejudgement_pluginfile($course,
 
     require_login($course, false, $cm);
     $itemid = (int) array_shift($args);
-    $record = $DB->get_record('assign_submission',
-            ['id' => $itemid],
-            'id, userid, assignment, groupid',
-            MUST_EXIST);
+    $record = $DB->get_record(
+        'assign_submission',
+        ['id' => $itemid],
+        'id, userid, assignment, groupid',
+        MUST_EXIST
+    );
     $userid = $record->userid;
 
     require_once($CFG->dirroot . '/mod/assign/locallib.php');
@@ -93,8 +97,13 @@ function assignsubmission_comparativejudgement_pluginfile($course,
         return false;
     }
 
-    $args[count($args) - 1] = urldecode(openssl_decrypt(base64_decode($args[count($args) - 1]), openssl_get_cipher_methods()[0],
-            $SESSION->assignsubmission_comparativejudgement_key, 0, $SESSION->assignsubmission_comparativejudgement_iv));
+    $args[count($args) - 1] = urldecode(openssl_decrypt(
+        base64_decode($args[count($args) - 1]),
+        openssl_get_cipher_methods()[0],
+        $SESSION->assignsubmission_comparativejudgement_key,
+        0,
+        $SESSION->assignsubmission_comparativejudgement_iv
+    ));
 
     $relativepath = implode('/', $args);
 

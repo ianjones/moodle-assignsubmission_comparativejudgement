@@ -54,10 +54,12 @@ class judgerequestemailstable extends table_sql {
         $this->sort_default_column = $sortcolumn;
 
         $this->set_count_sql('SELECT COUNT(id) FROM {assignsubmission_email}');
-        $this->set_sql('id, delay, subject',
-                '{assignsubmission_email}',
-                'assignmentid = :assignmentid',
-                ['assignmentid' => $assignment->get_instance()->id]);
+        $this->set_sql(
+            'id, delay, subject',
+            '{assignsubmission_email}',
+            'assignmentid = :assignmentid',
+            ['assignmentid' => $assignment->get_instance()->id]
+        );
 
         $this->controller = new judgerequestemailcontroller($assignment);
         $this->manager = new comparisonmanager($USER->id, $assignment);

@@ -37,13 +37,12 @@ use mod_assign_test_generator;
 /**
  * @group assignsubmission_comparativejudgement
  */
-class comparisonalldatespastorempty_test extends advanced_testcase {
-
+final class comparisonalldatespastorempty_test extends advanced_testcase {
     // Use the generator helper.
     use mod_assign_test_generator;
 
-    public function test_alldatespastorempty() {
-        list($teacher, $editingteacher, $student, $secondassign, $plugin) =
+    public function test_alldatespastorempty(): void {
+        [$teacher, $editingteacher, $student, $secondassign, $plugin] =
                 $this->setupstandardscenario(['duedate' => time() - 10, 'cutoffdate' => time() - 5]);
         $plugin->set_config('judgementstartdate', time() - 1);
 
@@ -56,11 +55,10 @@ class comparisonalldatespastorempty_test extends advanced_testcase {
         $comparisonmanager = new comparisonmanager($student->id, $secondassign);
 
         $this->assertFalse($comparisonmanager->alldatespastorempty());
-
     }
 
-    public function test_alldatespastorempty_nojudgedate() {
-        list($teacher, $editingteacher, $student, $secondassign, $plugin) =
+    public function test_alldatespastorempty_nojudgedate(): void {
+        [$teacher, $editingteacher, $student, $secondassign, $plugin] =
                 $this->setupstandardscenario(['duedate' => time() - 10, 'cutoffdate' => time() - 5]);
 
         $comparisonmanager = new comparisonmanager($student->id, $secondassign);
@@ -68,8 +66,8 @@ class comparisonalldatespastorempty_test extends advanced_testcase {
         $this->assertTrue($comparisonmanager->alldatespastorempty());
     }
 
-    public function test_alldatespastorempty_precutoff() {
-        list($teacher, $editingteacher, $student, $secondassign, $plugin) =
+    public function test_alldatespastorempty_precutoff(): void {
+        [$teacher, $editingteacher, $student, $secondassign, $plugin] =
                 $this->setupstandardscenario(['duedate' => time() - 10, 'cutoffdate' => time() + 5]);
 
         $comparisonmanager = new comparisonmanager($student->id, $secondassign);
@@ -77,15 +75,15 @@ class comparisonalldatespastorempty_test extends advanced_testcase {
         $this->assertFalse($comparisonmanager->alldatespastorempty());
     }
 
-    public function test_alldatespastorempty_nocutoff() {
-        list($teacher, $editingteacher, $student, $secondassign, $plugin) =
+    public function test_alldatespastorempty_nocutoff(): void {
+        [$teacher, $editingteacher, $student, $secondassign, $plugin] =
                 $this->setupstandardscenario(['duedate' => time() + 10]);
 
         $comparisonmanager = new comparisonmanager($student->id, $secondassign);
 
         $this->assertFalse($comparisonmanager->alldatespastorempty());
 
-        list($teacher, $editingteacher, $student, $secondassign, $plugin) =
+        [$teacher, $editingteacher, $student, $secondassign, $plugin] =
                 $this->setupstandardscenario(['duedate' => time() - 10]);
 
         $comparisonmanager = new comparisonmanager($student->id, $secondassign);
@@ -93,8 +91,8 @@ class comparisonalldatespastorempty_test extends advanced_testcase {
         $this->assertTrue($comparisonmanager->alldatespastorempty());
     }
 
-    public function test_alldatespastorempty_nodates() {
-        list($teacher, $editingteacher, $student, $secondassign, $plugin) = $this->setupstandardscenario(['duedate' => false]);
+    public function test_alldatespastorempty_nodates(): void {
+        [$teacher, $editingteacher, $student, $secondassign, $plugin] = $this->setupstandardscenario(['duedate' => false]);
 
         $comparisonmanager = new comparisonmanager($student->id, $secondassign);
 

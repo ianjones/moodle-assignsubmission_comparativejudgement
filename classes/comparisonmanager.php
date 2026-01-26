@@ -160,7 +160,7 @@ class comparisonmanager {
         $subtwo = new stdClass();
 
         foreach ((array)$submissionpair as $key => $value) {
-            list($key, $index) = explode('_', $key);
+            [$key, $index] = explode('_', $key);
             if ($index == 0) {
                 $subone->{$key} = $value;
             } else if ($index == 1) {
@@ -313,8 +313,10 @@ class comparisonmanager {
             return false;
         }
 
-        if ($this->isusergradable() && empty($settings->judgementswhileeditable) &&
-            $this->assignment->submissions_open($this->userid)) {
+        if (
+            $this->isusergradable() && empty($settings->judgementswhileeditable) &&
+            $this->assignment->submissions_open($this->userid)
+        ) {
             return false;
         }
 

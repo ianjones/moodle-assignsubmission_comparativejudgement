@@ -38,8 +38,11 @@ class managejudgestable extends table_sql {
     public function __construct(assign $assignment, $sortcolumn) {
         global $DB, $PAGE, $USER;
 
-        $PAGE->requires->js_call_amd('assignsubmission_comparativejudgement/manage', 'init',
-                ['assignmentid' => $assignment->get_instance()->id, 'entitytype' => exclusion::EXCLUSION_TYPE_JUDGE]);
+        $PAGE->requires->js_call_amd(
+            'assignsubmission_comparativejudgement/manage',
+            'init',
+            ['assignmentid' => $assignment->get_instance()->id, 'entitytype' => exclusion::EXCLUSION_TYPE_JUDGE]
+        );
 
         parent::__construct('managejudges_table');
 
@@ -77,7 +80,7 @@ class managejudgestable extends table_sql {
         $userids = $comparisonmanager->getalljudges();
 
         if ($userids) {
-            list($insql, $inparams) = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED);
+            [$insql, $inparams] = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED);
         } else {
             $insql = " <> u.id ";
             $inparams = [];
@@ -92,7 +95,8 @@ class managejudgestable extends table_sql {
         $right = comparison::POSITION_RIGHT;
 
         $this->set_count_sql("select count(id) from {user} u where u.id $insql", $inparams);
-        $this->set_sql("u.id,
+        $this->set_sql(
+            "u.id,
                             u.id as judgeid
                             $namefields,
                             COUNT(comp.id) as comparisons,
@@ -105,7 +109,7 @@ class managejudgestable extends table_sql {
                             CASE WHEN exclusion.id IS NULL THEN 0 ELSE 1 END as excluded,
                             SUM(CASE WHEN winningsubmissionposition = $left THEN 1 ELSE 0 END) as leftchoices,
                             SUM(CASE WHEN winningsubmissionposition = $right THEN 1 ELSE 0 END) as rightchoices",
-                "{user} u
+            "{user} u
                         LEFT JOIN {assignsubmission_comp} comp
                             ON comp.usermodified = u.id
                             AND comp.assignmentid = :assignmentid 
@@ -113,8 +117,9 @@ class managejudgestable extends table_sql {
                             ON exclusion.entityid = u.id
                             AND exclusion.type = :entitytype
                             AND exclusion.assignmentid = :assignmentid2",
-                "u.id $insql GROUP BY u.id, exclusion.id $namefields",
-                $inparams);
+            "u.id $insql GROUP BY u.id, exclusion.id $namefields",
+            $inparams
+        );
     }
 
     public function col_include($row) {
@@ -123,8 +128,13 @@ class managejudgestable extends table_sql {
 
         $attributes['title'] = get_string('include', 'assignsubmission_comparativejudgement');
 
-        return html_writer::span(html_writer::checkbox($chkname, $chkname, empty($row->excluded), '',
-                $attributes));
+        return html_writer::span(html_writer::checkbox(
+            $chkname,
+            $chkname,
+            empty($row->excluded),
+            '',
+            $attributes
+        ));
     }
 
     public function col_avgtimetaken($row) {
@@ -139,11 +149,13 @@ class managejudgestable extends table_sql {
         $text = $row->leftchoices . " : " . $row->rightchoices;
 
         if ($row->leftchoices == $row->comparisons || $row->rightchoices == $row->comparisons) {
-
             if (!optional_param('download', false, PARAM_ALPHA)) {
-                $text .= " " . $OUTPUT->pix_icon('i/warning',
-                        get_string('alwayssameside', 'assignsubmission_comparativejudgement'), '',
-                        ['class' => 'icon icon-pre', 'title' => '']);
+                $text .= " " . $OUTPUT->pix_icon(
+                    'i/warning',
+                    get_string('alwayssameside', 'assignsubmission_comparativejudgement'),
+                    '',
+                    ['class' => 'icon icon-pre', 'title' => '']
+                );
             }
         }
 

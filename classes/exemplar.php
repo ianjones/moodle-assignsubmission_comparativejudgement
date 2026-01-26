@@ -39,8 +39,10 @@ class exemplar extends persistent {
     public static function getnextuserid(assign $assignment) {
         global $DB;
 
-        $nextuserid = $DB->get_field_sql('select min(userid) from {assign_submission} where assignment = :assignment',
-                ['assignment' => $assignment->get_instance()->id]);
+        $nextuserid = $DB->get_field_sql(
+            'select min(userid) from {assign_submission} where assignment = :assignment',
+            ['assignment' => $assignment->get_instance()->id]
+        );
         if ($nextuserid > 0) {
             $nextuserid = -1;
         } else {
@@ -124,7 +126,6 @@ class exemplar extends persistent {
             $instances[] = $newrecord;
         }
         return $instances;
-
     }
 
     public function delete_exemplar_submission(assign $assignment) {

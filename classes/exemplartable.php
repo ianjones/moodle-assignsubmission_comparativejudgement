@@ -33,7 +33,6 @@ require_once($CFG->dirroot . '/lib/tablelib.php');
 require_once($CFG->dirroot . '/user/profile/lib.php');
 
 class exemplartable extends table_sql {
-
     /** @var exemplarcontroller */
     private $exemplarcontroller;
     public function __construct(assign $assignment, $sortcolumn) {
@@ -53,11 +52,13 @@ class exemplartable extends table_sql {
         $this->is_downloadable(false);
         $this->sort_default_column = $sortcolumn;
 
-        $this->set_sql("asex.id, asex.title",
-                '{assignsubmission_exemplars} asex
+        $this->set_sql(
+            "asex.id, asex.title",
+            '{assignsubmission_exemplars} asex
                                             inner join {assign_submission} subs on asex.submissionid = subs.id',
-                "subs.assignment = :assignmentid",
-                ['assignmentid' => $assignment->get_instance()->id]);
+            "subs.assignment = :assignmentid",
+            ['assignmentid' => $assignment->get_instance()->id]
+        );
     }
 
     public function col_actions($row) {

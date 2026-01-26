@@ -37,16 +37,16 @@ use mod_assign_test_generator;
 /**
  * @group assignsubmission_comparativejudgement
  */
-class comparisoncocomparison_test extends advanced_testcase {
-
+final class comparisoncocomparison_test extends advanced_testcase {
     // Use the generator helper.
     use mod_assign_test_generator;
 
     public function setUp(): void {
+        parent::setUp();
         \assignsubmission_comparativejudgement\rhandler::init_for_phpunit();
     }
 
-    public function test_canuserjudge_fakerole_assignment_do_comparisons() {
+    public function test_canuserjudge_fakerole_assignment_do_comparisons(): void {
         $this->resetAfterTest();
 
         if (empty(get_config('assignsubmission_comparativejudgement', 'pathtorscript'))) {
@@ -72,8 +72,8 @@ class comparisoncocomparison_test extends advanced_testcase {
         $studentids = [];
         for ($i = 0; $i < 4; $i++) {
             $students[$i] = $this->getDataGenerator()->create_and_enrol($course, 'student');
-            $this->add_submission($students[$i] , $secondassign);
-            $this->submit_for_grading($students[$i] , $secondassign);
+            $this->add_submission($students[$i], $secondassign);
+            $this->submit_for_grading($students[$i], $secondassign);
             $studentids[] = $students[$i]->id;
         }
 

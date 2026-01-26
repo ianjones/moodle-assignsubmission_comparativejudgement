@@ -40,8 +40,11 @@ class comparisoncontroller extends basecontroller {
     public function summary() {
         global $OUTPUT;
 
-        return $OUTPUT->single_button($this->getinternallink('comparison'),
-                get_string('docomparison', 'assignsubmission_comparativejudgement'), 'get');
+        return $OUTPUT->single_button(
+            $this->getinternallink('comparison'),
+            get_string('docomparison', 'assignsubmission_comparativejudgement'),
+            'get'
+        );
     }
 
     public function view() {
@@ -81,14 +84,19 @@ class comparisoncontroller extends basecontroller {
      */
     private function getsubmissionplugincontents(assign_submission_plugin $plugin, stdClass $submission): string {
         $o = '';
-        if ($plugin->is_enabled() && $plugin->is_visible() && $plugin->has_user_summary() &&
-                (!$plugin->is_empty($submission) || !$plugin->allow_submissions())) {
+        if (
+            $plugin->is_enabled() && $plugin->is_visible() && $plugin->has_user_summary() &&
+                (!$plugin->is_empty($submission) || !$plugin->allow_submissions())
+        ) {
             $displaymode = assign_submission_plugin_submission::FULL;
-            $pluginsubmission = new assign_submission_plugin_submission($plugin,
-                    $submission,
-                    $displaymode,
-                    $this->assignment->get_course_module()->id,
-                    '', []);
+            $pluginsubmission = new assign_submission_plugin_submission(
+                $plugin,
+                $submission,
+                $displaymode,
+                $this->assignment->get_course_module()->id,
+                '',
+                []
+            );
             $assignrenderer = $this->assignment->get_renderer();
 
             if (!$plugin->is_empty($submission)) {
@@ -107,8 +115,10 @@ class comparisoncontroller extends basecontroller {
         }
 
         $allfileembeddable[$plugin->get_type()] = true;
-        if ($plugin->is_enabled() && $plugin->is_visible() && $plugin->has_user_summary() &&
-                (!$plugin->is_empty($submission) || !$plugin->allow_submissions())) {
+        if (
+            $plugin->is_enabled() && $plugin->is_visible() && $plugin->has_user_summary() &&
+                (!$plugin->is_empty($submission) || !$plugin->allow_submissions())
+        ) {
             $plugincomponent = $plugin->get_subtype() . '_' . $plugin->get_type();
 
             if (method_exists($plugin, 'get_files')) {
@@ -129,10 +139,14 @@ class comparisoncontroller extends basecontroller {
                         $allfileembeddable = false;
                     }
 
-                    $url = moodle_url::make_pluginfile_url($this->assignment->get_context()->id,
-                            'assignsubmission_comparativejudgement',
-                            $plugincomponent . 'fileareadelim' . $file->get_filearea(), $file->get_itemid(), $file->get_filepath(),
-                            $file->get_filename());
+                    $url = moodle_url::make_pluginfile_url(
+                        $this->assignment->get_context()->id,
+                        'assignsubmission_comparativejudgement',
+                        $plugincomponent . 'fileareadelim' . $file->get_filearea(),
+                        $file->get_itemid(),
+                        $file->get_filepath(),
+                        $file->get_filename()
+                    );
 
                     if ($embeddable) {
                         $mimetype = $file->get_mimetype();
@@ -201,14 +215,16 @@ class comparisoncontroller extends basecontroller {
                 $loserformat = FORMAT_HTML;
             }
 
-            comparison::recordcomparison($this->assignment->get_instance()->id, time() - $data->starttime, $data->winner,
-                    $data->position,
-                    $data->loser,
-                    $winnercomments,
-                    $winnerformat,
-                    $losercomments,
-                    $loserformat
-
+            comparison::recordcomparison(
+                $this->assignment->get_instance()->id,
+                time() - $data->starttime,
+                $data->winner,
+                $data->position,
+                $data->loser,
+                $winnercomments,
+                $winnerformat,
+                $losercomments,
+                $loserformat
             );
 
             comparison_made::create([
@@ -241,13 +257,17 @@ class comparisoncontroller extends basecontroller {
         }
         $judgementsremaining = $settings->minjudgementsperuser - $judgementsmade;
         if ($judgementsremaining > 0) {
-            $judgeinst .= html_writer::tag('p',
-                    get_string('remainingjudgements', 'assignsubmission_comparativejudgement') . ' ' . $judgementsremaining);
+            $judgeinst .= html_writer::tag(
+                'p',
+                get_string('remainingjudgements', 'assignsubmission_comparativejudgement') . ' ' . $judgementsremaining
+            );
         }
 
         $renderable = [];
-        $renderable['header'] = $this->getheader(get_string('docomparison', 'assignsubmission_comparativejudgement'),
-                $judgeinst);
+        $renderable['header'] = $this->getheader(
+            get_string('docomparison', 'assignsubmission_comparativejudgement'),
+            $judgeinst
+        );
         $renderable['submissions'] = [];
 
         $position = comparison::POSITION_LEFT;
@@ -265,7 +285,7 @@ class comparisoncontroller extends basecontroller {
                 }
 
                 if ($plugincomponent == 'assignsubmission_file') { // All other plugins we rely on the user summary.
-                    list($allfileembeddable, $pluginsubmissionfiles) =
+                    [$allfileembeddable, $pluginsubmissionfiles] =
                             $this->getsubmissionpluginfiles($plugin, $submission);
 
                     if (!empty($pluginsubmissionfiles)) {
@@ -279,9 +299,11 @@ class comparisoncontroller extends basecontroller {
                     }
                 }
 
-                $getsubmissionplugincontents = preg_replace('/pluginfile.php\/([\d]+)\/([a-z_]+)\/([a-z_]+)/',
-                        'pluginfile.php/$1/assignsubmission_comparativejudgement/' . $plugincomponent . 'fileareadelim' . '$3',
-                        $getsubmissionplugincontents);
+                $getsubmissionplugincontents = preg_replace(
+                    '/pluginfile.php\/([\d]+)\/([a-z_]+)\/([a-z_]+)/',
+                    'pluginfile.php/$1/assignsubmission_comparativejudgement/' . $plugincomponent . 'fileareadelim' . '$3',
+                    $getsubmissionplugincontents
+                );
 
                 $submissioncontents[] = (object) ['type'    => $plugin->get_name(),
                                                   'content' => $this->scrambleurls($getsubmissionplugincontents)];
@@ -315,19 +337,27 @@ class comparisoncontroller extends basecontroller {
 
         $PAGE->requires->js_call_amd('assignsubmission_comparativejudgement/judge', 'init');
 
-        $renderable['buttonleft'] = html_writer::tag('button', get_string('chooseleft', 'assignsubmission_comparativejudgement'),
-                ['class' => 'btn btn-primary comparisonbuttonleft']);
+        $renderable['buttonleft'] = html_writer::tag(
+            'button',
+            get_string('chooseleft', 'assignsubmission_comparativejudgement'),
+            ['class' => 'btn btn-primary comparisonbuttonleft']
+        );
         $renderable['buttonleftbottom'] = $leftform->render();
 
-        $renderable['buttonright'] = html_writer::tag('button', get_string('chooseright', 'assignsubmission_comparativejudgement'),
-                ['class' => 'btn btn-primary comparisonbuttonright']);
+        $renderable['buttonright'] = html_writer::tag(
+            'button',
+            get_string('chooseright', 'assignsubmission_comparativejudgement'),
+            ['class' => 'btn btn-primary comparisonbuttonright']
+        );
         $renderable['buttonrightbottom'] = $rightform->render();
 
         if (!$comparisonmanager->redirectusertojudge()) {
             $finish = $this->getinternallink('comparison');
             $finish->params(['finish' => true]);
-            $renderable['buttonfinish'] = $OUTPUT->single_button($finish,
-                    get_string('stopjudging', 'assignsubmission_comparativejudgement'));
+            $renderable['buttonfinish'] = $OUTPUT->single_button(
+                $finish,
+                get_string('stopjudging', 'assignsubmission_comparativejudgement')
+            );
         } else if (!empty($this->assignmentsettings->minjudgementsperuser)) {
             $comparisoncount =
                     comparison::count_records(['usermodified' => $USER->id,
@@ -335,10 +365,16 @@ class comparisoncontroller extends basecontroller {
             if (empty($comparisoncount)) {
                 $comparisoncount = 0;
             }
-            $renderable['buttonfinish'] = $OUTPUT->single_button('',
-                    get_string('comparisonprogress', 'assignsubmission_comparativejudgement',
-                            ['number' => $comparisoncount + 1, 'required' => $this->assignmentsettings->minjudgementsperuser]),
-                            'get', ['disabled' => 'disabled']);
+            $renderable['buttonfinish'] = $OUTPUT->single_button(
+                '',
+                get_string(
+                    'comparisonprogress',
+                    'assignsubmission_comparativejudgement',
+                    ['number' => $comparisoncount + 1, 'required' => $this->assignmentsettings->minjudgementsperuser]
+                ),
+                'get',
+                ['disabled' => 'disabled']
+            );
         }
 
         $renderable['footer'] = $this->getfooter();
@@ -376,13 +412,21 @@ class comparisoncontroller extends basecontroller {
             $explode = explode('/', $match);
             $filenameraw = $explode[count($explode) - 1];
             $filenameraw = explode('?', $filenameraw)[0];
-            $encryptedfilename = openssl_encrypt($filenameraw, openssl_get_cipher_methods()[0],
-                    $SESSION->assignsubmission_comparativejudgement_key, 0, $SESSION->assignsubmission_comparativejudgement_iv);
+            $encryptedfilename = openssl_encrypt(
+                $filenameraw,
+                openssl_get_cipher_methods()[0],
+                $SESSION->assignsubmission_comparativejudgement_key,
+                0,
+                $SESSION->assignsubmission_comparativejudgement_iv
+            );
             $filename = base64_encode($encryptedfilename);
 
             $string = str_replace($filenameraw, $filename, $string);
-            $string = str_replace(urldecode($filenameraw), get_string('userupload', 'assignsubmission_comparativejudgement'),
-                    $string);
+            $string = str_replace(
+                urldecode($filenameraw),
+                get_string('userupload', 'assignsubmission_comparativejudgement'),
+                $string
+            );
         }
 
         return $string;

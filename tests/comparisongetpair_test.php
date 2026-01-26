@@ -37,12 +37,11 @@ use mod_assign_test_generator;
 /**
  * @group assignsubmission_comparativejudgement
  */
-class comparisongetpair_test extends advanced_testcase {
-
+final class comparisongetpair_test extends advanced_testcase {
     // Use the generator helper.
     use mod_assign_test_generator;
 
-    public function test_canuserjudge_fakerole_assignment_do_comparisons() {
+    public function test_canuserjudge_fakerole_assignment_do_comparisons(): void {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -76,8 +75,13 @@ class comparisongetpair_test extends advanced_testcase {
         $this->assertCount(2, $getpairtojudge1);
         $this->assertCount(2, $comparisonmanager->getpairtojudge(true));
 
-        comparison::recordcomparison($secondassign->get_instance()->id, 50, current($getpairtojudge1)->id,
-                comparison::POSITION_RIGHT, next($getpairtojudge1)->id);
+        comparison::recordcomparison(
+            $secondassign->get_instance()->id,
+            50,
+            current($getpairtojudge1)->id,
+            comparison::POSITION_RIGHT,
+            next($getpairtojudge1)->id
+        );
 
         $getpairtojudge2 = $comparisonmanager->getpairtojudge();
         $this->assertCount(2, $getpairtojudge2);
@@ -85,22 +89,32 @@ class comparisongetpair_test extends advanced_testcase {
 
         $this->assertFalse($comparisonmanager->getpairtojudge(true));
 
-        comparison::recordcomparison($secondassign->get_instance()->id, 50, current($getpairtojudge2)->id,
-                comparison::POSITION_RIGHT, next($getpairtojudge2)->id);
+        comparison::recordcomparison(
+            $secondassign->get_instance()->id,
+            50,
+            current($getpairtojudge2)->id,
+            comparison::POSITION_RIGHT,
+            next($getpairtojudge2)->id
+        );
 
         $getpairtojudge3 = $comparisonmanager->getpairtojudge();
         $this->assertCount(2, $getpairtojudge3);
         $this->assertCount(1, array_intersect_key($getpairtojudge3, $getpairtojudge2));
         $this->assertCount(1, array_intersect_key($getpairtojudge3, $getpairtojudge1));
 
-        comparison::recordcomparison($secondassign->get_instance()->id, 50, current($getpairtojudge3)->id,
-                comparison::POSITION_RIGHT, next($getpairtojudge3)->id);
+        comparison::recordcomparison(
+            $secondassign->get_instance()->id,
+            50,
+            current($getpairtojudge3)->id,
+            comparison::POSITION_RIGHT,
+            next($getpairtojudge3)->id
+        );
 
         $getpairtojudge = $comparisonmanager->getpairtojudge();
         $this->assertFalse($getpairtojudge);
     }
 
-    public function test_canuserjudge_fakerole_assignment_do_infinite_comparisons() {
+    public function test_canuserjudge_fakerole_assignment_do_infinite_comparisons(): void {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -135,8 +149,13 @@ class comparisongetpair_test extends advanced_testcase {
         $this->assertCount(2, $getpairtojudge1);
         $this->assertCount(2, $comparisonmanager->getpairtojudge(true));
 
-        comparison::recordcomparison($secondassign->get_instance()->id, 50, current($getpairtojudge1)->id,
-                comparison::POSITION_RIGHT, next($getpairtojudge1)->id);
+        comparison::recordcomparison(
+            $secondassign->get_instance()->id,
+            50,
+            current($getpairtojudge1)->id,
+            comparison::POSITION_RIGHT,
+            next($getpairtojudge1)->id
+        );
 
         $getpairtojudge2 = $comparisonmanager->getpairtojudge();
         $this->assertCount(2, $getpairtojudge2);
@@ -144,30 +163,45 @@ class comparisongetpair_test extends advanced_testcase {
 
         $this->assertFalse($comparisonmanager->getpairtojudge(true));
 
-        comparison::recordcomparison($secondassign->get_instance()->id, 50, current($getpairtojudge2)->id,
-                comparison::POSITION_RIGHT, next($getpairtojudge2)->id);
+        comparison::recordcomparison(
+            $secondassign->get_instance()->id,
+            50,
+            current($getpairtojudge2)->id,
+            comparison::POSITION_RIGHT,
+            next($getpairtojudge2)->id
+        );
 
         $getpairtojudge3 = $comparisonmanager->getpairtojudge();
         $this->assertCount(2, $getpairtojudge3);
         $this->assertCount(1, array_intersect_key($getpairtojudge3, $getpairtojudge2));
         $this->assertCount(1, array_intersect_key($getpairtojudge3, $getpairtojudge1));
 
-        comparison::recordcomparison($secondassign->get_instance()->id, 50, current($getpairtojudge3)->id,
-                comparison::POSITION_RIGHT, next($getpairtojudge3)->id);
+        comparison::recordcomparison(
+            $secondassign->get_instance()->id,
+            50,
+            current($getpairtojudge3)->id,
+            comparison::POSITION_RIGHT,
+            next($getpairtojudge3)->id
+        );
 
         $getpairtojudge4 = $comparisonmanager->getpairtojudge();
         $this->assertCount(2, $getpairtojudge4);
         $this->assertCount(2, array_intersect_key($getpairtojudge1, $getpairtojudge4));
 
-        comparison::recordcomparison($secondassign->get_instance()->id, 50, current($getpairtojudge4)->id,
-                comparison::POSITION_RIGHT, next($getpairtojudge4)->id);
+        comparison::recordcomparison(
+            $secondassign->get_instance()->id,
+            50,
+            current($getpairtojudge4)->id,
+            comparison::POSITION_RIGHT,
+            next($getpairtojudge4)->id
+        );
 
         $getpairtojudge5 = $comparisonmanager->getpairtojudge();
         $this->assertCount(2, $getpairtojudge5);
         $this->assertCount(2, array_intersect_key($getpairtojudge2, $getpairtojudge5));
     }
 
-    public function test_canuserjudge_fakerole_assignment_do_loads_of_comparisons() {
+    public function test_canuserjudge_fakerole_assignment_do_loads_of_comparisons(): void {
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -201,8 +235,13 @@ class comparisongetpair_test extends advanced_testcase {
             $getpairtojudge = $comparisonmanager->getpairtojudge();
 
             if ($getpairtojudge) {
-                comparison::recordcomparison($secondassign->get_instance()->id, 50, current($getpairtojudge)->id,
-                        comparison::POSITION_RIGHT, next($getpairtojudge)->id);
+                comparison::recordcomparison(
+                    $secondassign->get_instance()->id,
+                    50,
+                    current($getpairtojudge)->id,
+                    comparison::POSITION_RIGHT,
+                    next($getpairtojudge)->id
+                );
 
                 $akeys = array_keys($getpairtojudge);
                 sort($akeys);
@@ -215,7 +254,7 @@ class comparisongetpair_test extends advanced_testcase {
         $this->assertCount(15, $compared);
     }
 
-    public function test_canuserjudge_fakerole_assignment_do_comparisons_exemplar_rand() {
+    public function test_canuserjudge_fakerole_assignment_do_comparisons_exemplar_rand(): void {
         global $DB;
 
         $this->resetAfterTest();
@@ -265,8 +304,13 @@ class comparisongetpair_test extends advanced_testcase {
             $getpairtojudge = $comparisonmanager->getpairtojudge();
 
             if ($getpairtojudge) {
-                comparison::recordcomparison($secondassign->get_instance()->id, 50, current($getpairtojudge)->id,
-                        comparison::POSITION_RIGHT, next($getpairtojudge)->id);
+                comparison::recordcomparison(
+                    $secondassign->get_instance()->id,
+                    50,
+                    current($getpairtojudge)->id,
+                    comparison::POSITION_RIGHT,
+                    next($getpairtojudge)->id
+                );
 
                 $akeys = array_keys($getpairtojudge);
                 sort($akeys);
@@ -285,8 +329,13 @@ class comparisongetpair_test extends advanced_testcase {
             $getpairtojudge = $comparisonmanager->getpairtojudge();
 
             if ($getpairtojudge) {
-                comparison::recordcomparison($secondassign->get_instance()->id, 50, current($getpairtojudge)->id,
-                        comparison::POSITION_RIGHT, next($getpairtojudge)->id);
+                comparison::recordcomparison(
+                    $secondassign->get_instance()->id,
+                    50,
+                    current($getpairtojudge)->id,
+                    comparison::POSITION_RIGHT,
+                    next($getpairtojudge)->id
+                );
 
                 $akeys = array_keys($getpairtojudge);
                 sort($akeys);

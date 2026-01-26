@@ -30,12 +30,11 @@ use moodleform;
 require_once($CFG->libdir . '/formslib.php');
 
 class judgerequestemailform extends moodleform {
-
     /** @var string Persistent class name. */
     protected static $persistentclass = 'assignsubmission_comparativejudgement\\judgerequestemail';
 
     protected function definition() {
-        list($assign, $emailid) = $this->_customdata;
+        [$assign, $emailid] = $this->_customdata;
 
         $mform = $this->_form;
 
@@ -62,17 +61,25 @@ class judgerequestemailform extends moodleform {
             $mform->setType($key, PARAM_INT);
         }
 
-        $mform->addElement('duration', 'delay', get_string('delay', 'assignsubmission_comparativejudgement'),
-                ['defaultunit' => WEEKSECS, 'optional' => false]);
+        $mform->addElement(
+            'duration',
+            'delay',
+            get_string('delay', 'assignsubmission_comparativejudgement'),
+            ['defaultunit' => WEEKSECS, 'optional' => false]
+        );
         $mform->setDefault('delay', DAYSECS);
 
         $mform->addElement('text', 'subject', get_string('subject', 'assignsubmission_comparativejudgement'), 'maxlength="100"');
         $mform->setType('subject', PARAM_TEXT);
         $mform->setDefault('subject', get_string('subjectdefault', 'assignsubmission_comparativejudgement'));
 
-        $mform->addElement('textarea', 'body', get_string('body', 'assignsubmission_comparativejudgement'),
-                ['rows' => 10,
-                      'cols' => 57]);
+        $mform->addElement(
+            'textarea',
+            'body',
+            get_string('body', 'assignsubmission_comparativejudgement'),
+            ['rows' => 10,
+            'cols' => 57]
+        );
         $mform->setType('body', PARAM_TEXT);
         $mform->addHelpButton('body', 'body', 'assignsubmission_comparativejudgement');
         $mform->setDefault('body', get_string('bodydefault', 'assignsubmission_comparativejudgement'));

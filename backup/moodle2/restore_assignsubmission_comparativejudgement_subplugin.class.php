@@ -21,7 +21,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class restore_assignsubmission_comparativejudgement_subplugin extends restore_subplugin {
-
     /**
      * Returns array the paths to be handled by the subplugin at assignment level
      *
@@ -37,8 +36,10 @@ class restore_assignsubmission_comparativejudgement_subplugin extends restore_su
         $obj->set_processing_object($this);
         $paths[] = $obj;
 
-        $obj = new restore_path_element('assignsubmission_rankingsub',
-                $root . 'assignsubmission_ranking/rankingsubs/assignsubmission_rankingsub');
+        $obj = new restore_path_element(
+            'assignsubmission_rankingsub',
+            $root . 'assignsubmission_ranking/rankingsubs/assignsubmission_rankingsub'
+        );
         $obj->set_processing_object($this);
         $paths[] = $obj;
 
@@ -46,8 +47,10 @@ class restore_assignsubmission_comparativejudgement_subplugin extends restore_su
         $obj->set_processing_object($this);
         $paths[] = $obj;
 
-        $obj = new restore_path_element('assignsubmission_compsubs',
-                $root . 'assignsubmission_comp/compsubs/assignsubmission_compsubs');
+        $obj = new restore_path_element(
+            'assignsubmission_compsubs',
+            $root . 'assignsubmission_comp/compsubs/assignsubmission_compsubs'
+        );
         $obj->set_processing_object($this);
         $paths[] = $obj;
 

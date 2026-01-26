@@ -33,7 +33,6 @@ use external_value;
 use external_warnings;
 
 class external extends external_api {
-
     public static function toggle_exclusion_parameters() {
         return new external_function_parameters(
             [

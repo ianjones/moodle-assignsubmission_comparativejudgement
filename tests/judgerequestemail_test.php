@@ -36,13 +36,13 @@ require_once($CFG->dirroot . '/mod/assign/tests/generator.php');
 /**
  * @group assignsubmission_comparativejudgement
  */
-class judgerequestemail_test extends advanced_testcase {
-
+final class judgerequestemail_test extends advanced_testcase {
     // Use the generator helper.
     use mod_assign_test_generator;
 
     public function setUp(): void {
         global $CFG;
+        parent::setUp();
 
         $CFG->enablecompletion = true;
         $buffer = new progress_trace_buffer(new text_progress_trace(), false);
@@ -66,10 +66,10 @@ class judgerequestemail_test extends advanced_testcase {
         $this->assertCount(0, $messages);
     }
 
-    public function test_emails_submitted() {
+    public function test_emails_submitted(): void {
         global $DB;
 
-        list($teacher, $editingteacher, $student, $secondassign, $plugin, $course) = $this->setupstandardscenario();
+        [$teacher, $editingteacher, $student, $secondassign, $plugin, $course] = $this->setupstandardscenario();
         $task = \core\task\manager::get_scheduled_task('assignsubmission_comparativejudgement\task\judgerequestemails');
         $email = new judgerequestemail();
         $email->set('delay', 1);
@@ -144,12 +144,12 @@ class judgerequestemail_test extends advanced_testcase {
         $this->assertCount(0, $messages); // All done.
     }
 
-    public function test_emails_submitted_cutoffdate() {
+    public function test_emails_submitted_cutoffdate(): void {
         global $DB;
 
         $now = time();
 
-        list($teacher, $editingteacher, $student, $secondassign, $plugin, $course) =
+        [$teacher, $editingteacher, $student, $secondassign, $plugin, $course] =
                 $this->setupstandardscenario(['cutoffdate' => $now + 3]);
         $task = \core\task\manager::get_scheduled_task('assignsubmission_comparativejudgement\task\judgerequestemails');
         $email = new judgerequestemail();
@@ -194,12 +194,12 @@ class judgerequestemail_test extends advanced_testcase {
         $this->assertCount(6, $messages); // Everyone as it's now too late for the unsubmitted user.
     }
 
-    public function test_emails_submitted_cutoffdate_override() {
+    public function test_emails_submitted_cutoffdate_override(): void {
         global $DB;
 
         $now = time();
 
-        list($teacher, $editingteacher, $student, $secondassign, $plugin, $course) =
+        [$teacher, $editingteacher, $student, $secondassign, $plugin, $course] =
                 $this->setupstandardscenario(['cutoffdate' => $now + 10]);
         $task = \core\task\manager::get_scheduled_task('assignsubmission_comparativejudgement\task\judgerequestemails');
         $email = new judgerequestemail();
@@ -266,12 +266,12 @@ class judgerequestemail_test extends advanced_testcase {
         $this->assertCount(0, $messages); // No one.
     }
 
-    public function test_emails_submitted_cutoffdate_override_group() {
+    public function test_emails_submitted_cutoffdate_override_group(): void {
         global $DB;
 
         $now = time();
 
-        list($teacher, $editingteacher, $student, $secondassign, $plugin, $course) =
+        [$teacher, $editingteacher, $student, $secondassign, $plugin, $course] =
                 $this->setupstandardscenario(['cutoffdate' => $now + 10, 'teamsubmission' => 1]);
         $task = \core\task\manager::get_scheduled_task('assignsubmission_comparativejudgement\task\judgerequestemails');
         $email = new judgerequestemail();
@@ -348,10 +348,10 @@ class judgerequestemail_test extends advanced_testcase {
         $this->assertCount(0, $messages); // No one.
     }
 
-    public function test_emails_submitted_cutoffdate_extension() {
+    public function test_emails_submitted_cutoffdate_extension(): void {
         $now = time();
 
-        list($teacher, $editingteacher, $student, $secondassign, $plugin, $course) =
+        [$teacher, $editingteacher, $student, $secondassign, $plugin, $course] =
                 $this->setupstandardscenario(['duedate' => $now + 1, 'cutoffdate' => $now + 2]);
         $task = \core\task\manager::get_scheduled_task('assignsubmission_comparativejudgement\task\judgerequestemails');
         $email = new judgerequestemail();
@@ -419,10 +419,10 @@ class judgerequestemail_test extends advanced_testcase {
         $this->assertCount(0, $messages); // No one.
     }
 
-    public function test_email_body() {
+    public function test_email_body(): void {
         $now = time();
 
-        list($teacher, $editingteacher, $student, $secondassign, $plugin, $course) =
+        [$teacher, $editingteacher, $student, $secondassign, $plugin, $course] =
                 $this->setupstandardscenario(['duedate' => $now + 1, 'cutoffdate' => $now + 2]);
 
         $task = \core\task\manager::get_scheduled_task('assignsubmission_comparativejudgement\task\judgerequestemails');

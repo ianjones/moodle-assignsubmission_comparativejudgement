@@ -44,12 +44,7 @@ use mod_assign\privacy\assignsubmission_provider;
 use mod_assign\privacy\assignsubmission_user_provider;
 use mod_assign\privacy\useridlist;
 
-class provider implements metadataprovider,
-        assignsubmission_provider,
-        assignsubmission_user_provider,
-        core_userlist_provider,
-        core_user_data_provider {
-
+class provider implements assignsubmission_provider, assignsubmission_user_provider, core_userlist_provider, core_user_data_provider, metadataprovider {
     /**
      * Return meta data about this plugin.
      *
@@ -64,24 +59,33 @@ class provider implements metadataprovider,
                 'winningsubmissionposition' => 'privacy:metadata:assignsubmission_comparativejudgement:winningsubmissionposition',
                 'timetaken'                 => 'privacy:metadata:assignsubmission_comparativejudgement:timetaken',
         ];
-        $collection->add_database_table('assignsubmission_comp', $detail,
-                'privacy:metadata:assignsubmission_comparativejudgement:assignsubmission_comp:tablepurpose');
+        $collection->add_database_table(
+            'assignsubmission_comp',
+            $detail,
+            'privacy:metadata:assignsubmission_comparativejudgement:assignsubmission_comp:tablepurpose'
+        );
 
         $detail = [
                 'judgementid'  => 'privacy:metadata:assignsubmission_comparativejudgement:judgementid',
                 'submissionid' => 'privacy:metadata:assignsubmission_comparativejudgement:submissionid',
                 'comments'     => 'privacy:metadata:assignsubmission_comparativejudgement:comments',
         ];
-        $collection->add_database_table('assignsubmission_compsubs', $detail,
-                'privacy:metadata:assignsubmission_comparativejudgement:assignsubmission_compsubs:tablepurpose');
+        $collection->add_database_table(
+            'assignsubmission_compsubs',
+            $detail,
+            'privacy:metadata:assignsubmission_comparativejudgement:assignsubmission_compsubs:tablepurpose'
+        );
 
         $detail = [
                 'rankingid'    => 'privacy:metadata:assignsubmission_comparativejudgement:rankingid',
                 'submissionid' => 'privacy:metadata:assignsubmission_comparativejudgement:submissionid',
                 'score'        => 'privacy:metadata:assignsubmission_comparativejudgement:score',
         ];
-        $collection->add_database_table('assignsubmission_rankingsub', $detail,
-                'privacy:metadata:assignsubmission_comparativejudgement:assignsubmission_rankingsub:tablepurpose');
+        $collection->add_database_table(
+            'assignsubmission_rankingsub',
+            $detail,
+            'privacy:metadata:assignsubmission_comparativejudgement:assignsubmission_rankingsub:tablepurpose'
+        );
 
         return $collection;
     }
@@ -114,9 +118,9 @@ class provider implements metadataprovider,
     public static function get_userids_from_context(userlist $userlist) {
         $context = $userlist->get_context();
         $userlist->add_from_sql(
-                'usermodified',
-                'SELECT usermodified FROM {assignsubmission_comp} WHERE assignmentid = :assignmentid',
-                ['assignmentid' => $context->instanceid]
+            'usermodified',
+            'SELECT usermodified FROM {assignsubmission_comp} WHERE assignmentid = :assignmentid',
+            ['assignmentid' => $context->instanceid]
         );
     }
 
@@ -231,9 +235,9 @@ class provider implements metadataprovider,
                     'judgements' => $judgements,
             ];
             writer::with_context($context)->export_related_data(
-                    $path,
-                    $DB->get_field('assign', 'name', ['id' => $context->instanceid]),
-                    (object)$data
+                $path,
+                $DB->get_field('assign', 'name', ['id' => $context->instanceid]),
+                (object)$data
             );
         }
     }
@@ -310,17 +314,19 @@ class provider implements metadataprovider,
 
         $submission = $exportdata->get_pluginobject();
 
-        $judgements = $DB->get_records_sql("select timemodified, comments, commentsformat, winningsubmission
+        $judgements = $DB->get_records_sql(
+            "select timemodified, comments, commentsformat, winningsubmission
                                 from {assignsubmission_comp} comp
                                          inner join {assignsubmission_compsubs} compsubs on
                                     comp.winningsubmission <> compsubs.submissionid and comp.id = compsubs.judgementid
                                 where comp.winningsubmission = :submissionid or compsubs.submissionid = :submissionid2
                                 group by timemodified, comments, commentsformat, winningsubmission",
-                ['submissionid' => $submission->id, 'submissionid2' => $submission->id]);
+            ['submissionid' => $submission->id, 'submissionid2' => $submission->id]
+        );
 
         $currentpath = array_merge(
-                $exportdata->get_subcontext(),
-                [get_string('privacy:judgement', 'assignsubmission_comparativejudgement')]
+            $exportdata->get_subcontext(),
+            [get_string('privacy:judgement', 'assignsubmission_comparativejudgement')]
         );
         $items = [];
         foreach ($judgements as $judgement) {
@@ -328,8 +334,11 @@ class provider implements metadataprovider,
             [
                     'winner'   => $judgement->winningsubmission == $submission->id,
                     'time'     => userdate($judgement->timemodified),
-                    'comments' => format_text($judgement->comments, $judgement->commentsformat,
-                            ['context' => $exportdata->get_context()]),
+                    'comments' => format_text(
+                        $judgement->comments,
+                        $judgement->commentsformat,
+                        ['context' => $exportdata->get_context()]
+                    ),
             ];
         }
         writer::with_context($exportdata->get_context())->export_data($currentpath, (object) ['judgements' => $items]);
@@ -347,8 +356,8 @@ class provider implements metadataprovider,
         $submission = $exportdata->get_pluginobject();
 
         $currentpath = array_merge(
-                $exportdata->get_subcontext(),
-                [get_string('privacy:ranking', 'assignsubmission_comparativejudgement')]
+            $exportdata->get_subcontext(),
+            [get_string('privacy:ranking', 'assignsubmission_comparativejudgement')]
         );
 
         $ranking = $DB->get_record('assignsubmission_rankingsub', ['submissionid' => $submission->id]);
@@ -371,7 +380,8 @@ class provider implements metadataprovider,
     private static function judgementsmade($userid, $contextid): array {
         global $DB;
 
-        return $DB->get_records_sql("SELECT compsubs.id, timemodified, comments, commentsformat, winningsubmission,
+        return $DB->get_records_sql(
+            "SELECT compsubs.id, timemodified, comments, commentsformat, winningsubmission,
                     compsubs.submissionid as submissionid
                     FROM {assignsubmission_comp} comp
                     INNER JOIN {assignsubmission_compsubs} compsubs ON comp.id = compsubs.judgementid
@@ -380,26 +390,31 @@ class provider implements metadataprovider,
                     INNER JOIN {context} ctx ON ctx.instanceid = cm.id AND ctx.contextlevel = :cmcontextlevel
                     WHERE comp.usermodified = :userid AND ctx.id = :contextid
                     GROUP BY compsubs.id, timemodified, comments, commentsformat, winningsubmission, compsubs.submissionid",
-                ['userid' => $userid, 'cmcontextlevel' => CONTEXT_MODULE, 'contextid' => $contextid]);
+            ['userid' => $userid, 'cmcontextlevel' => CONTEXT_MODULE, 'contextid' => $contextid]
+        );
     }
 
     private static function deleteallonassignid($assignid) {
         global $DB;
 
-        $DB->delete_records_list('assignsubmission_compsubs', 'id', array_keys($DB->get_records_sql('
+        $DB->delete_records_list('assignsubmission_compsubs', 'id', array_keys($DB->get_records_sql(
+            '
             SELECT subs.id
             FROM {assignsubmission_comp} comp
             INNER JOIN {assignsubmission_compsubs} subs on subs.judgementid = comp.id
             WHERE comp.assignmentid = :assignmentid',
-                ['assignmentid' => $assignid])));
+            ['assignmentid' => $assignid]
+        )));
         $DB->delete_records('assignsubmission_comp', ['assignmentid' => $assignid]);
 
-        $DB->delete_records_list('assignsubmission_rankingsub', 'id', array_keys($DB->get_records_sql('
+        $DB->delete_records_list('assignsubmission_rankingsub', 'id', array_keys($DB->get_records_sql(
+            '
             SELECT subs.id
             FROM {assignsubmission_ranking} ranking
             INNER JOIN {assignsubmission_rankingsub} subs on subs.rankingid = ranking.id
             WHERE ranking.assignmentid = :assignmentid',
-                ['assignmentid' => $assignid])));
+            ['assignmentid' => $assignid]
+        )));
         $DB->delete_records('assignsubmission_ranking', ['assignmentid' => $assignid]);
     }
 }

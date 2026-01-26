@@ -47,8 +47,17 @@ class comparison extends persistent {
         ];
     }
 
-    public static function recordcomparison($assigmentid, $timetaken, $winner, $winnerposition, $loser, $winnercomments = '',
-            $winnerformat = FORMAT_HTML, $losercomments = '', $loserformat = FORMAT_HTML) {
+    public static function recordcomparison(
+        $assigmentid,
+        $timetaken,
+        $winner,
+        $winnerposition,
+        $loser,
+        $winnercomments = '',
+        $winnerformat = FORMAT_HTML,
+        $losercomments = '',
+        $loserformat = FORMAT_HTML
+    ) {
         global $DB;
         $comparison = new comparison();
         $comparison->set('assignmentid', $assigmentid);
@@ -58,12 +67,18 @@ class comparison extends persistent {
 
         $comparison->save();
 
-        $DB->insert_record('assignsubmission_compsubs',
-                (object) ['judgementid' => $comparison->get('id'), 'submissionid' => $winner,
-                    'comments' => $winnercomments, 'commentsformat' => $winnerformat]);
-        $DB->insert_record('assignsubmission_compsubs',
-                (object) ['judgementid' => $comparison->get('id'), 'submissionid' => $loser,
-                    'comments' => $losercomments, 'commentsformat' => $loserformat]);
+        $DB->insert_record(
+            'assignsubmission_compsubs',
+            (object) ['judgementid' => $comparison->get('id'), 'submissionid' => $winner,
+            'comments' => $winnercomments,
+            'commentsformat' => $winnerformat]
+        );
+        $DB->insert_record(
+            'assignsubmission_compsubs',
+            (object) ['judgementid' => $comparison->get('id'), 'submissionid' => $loser,
+            'comments' => $losercomments,
+            'commentsformat' => $loserformat]
+        );
     }
 
     public static $skipconversion = [
