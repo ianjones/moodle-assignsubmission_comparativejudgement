@@ -85,12 +85,11 @@ jobs:
         run: moodle-plugin-ci phplint
 
       - name: Moodle Code Checker
-        continue-on-error: true # Currently fails. We really ought to get this passing.
         if: ${{ always() }}
-        run: moodle-plugin-ci codechecker --max-warnings 0
+        run: moodle-plugin-ci codechecker --exclude=moodle.Commenting.MissingDocblock,moodle.Commenting.DocblockDescription,moodle.PHPUnit.TestCaseCovers,moodle.Commenting.VariableComment --max-warnings 0
 
       - name: Validating
-        continue-on-error: true # Currently fails. We really ought to get this passing.
+        continue-on-error: true # Fails due to db prefix rule which is impossible to satisfy due to length of plugin name.
         if: ${{ always() }}
         run: moodle-plugin-ci validate
 
@@ -104,7 +103,6 @@ jobs:
         run: moodle-plugin-ci mustache
 
       - name: Grunt
-        continue-on-error: true # Currently fails. We really ought to get this passing.
         if: ${{ matrix.moodle-branch == 'MOODLE_500_STABLE' }}
         run: moodle-plugin-ci grunt
 

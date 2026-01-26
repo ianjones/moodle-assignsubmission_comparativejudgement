@@ -1,8 +1,5 @@
 @mod @mod_assign @assignsubmission @assignsubmission_comparativejudgement @_file_upload
-Feature: In an assignment, teacher can submit blind feedback during grading
-  In order to provide a feedback file
-  As a teacher
-  I need to submit a feedback file.
+Feature: In an assignment, teacher can use comparative judgement to grade student submissions.
 
   Background:
     Given the following "courses" exist:
@@ -61,7 +58,7 @@ Feature: In an assignment, teacher can submit blind feedback during grading
     And I press "Continue"
 
   @javascript
-  Scenario: A teacher can provide a feedback file when grading an assignment.
+  Scenario: In an assignment, teacher can use comparative judgement to grade student submissions.
     And I am on the "Test assignment name" Activity page logged in as teacher1
     And I navigate to "Settings" in current page administration
     And I set the following fields to these values:

@@ -44,7 +44,12 @@ use mod_assign\privacy\assignsubmission_provider;
 use mod_assign\privacy\assignsubmission_user_provider;
 use mod_assign\privacy\useridlist;
 
-class provider implements assignsubmission_provider, assignsubmission_user_provider, core_userlist_provider, core_user_data_provider, metadataprovider {
+class provider implements
+    assignsubmission_provider,
+    assignsubmission_user_provider,
+    core_userlist_provider,
+    core_user_data_provider,
+    metadataprovider {
     /**
      * Return meta data about this plugin.
      *

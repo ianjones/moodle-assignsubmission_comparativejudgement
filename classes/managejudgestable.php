@@ -112,7 +112,7 @@ class managejudgestable extends table_sql {
             "{user} u
                         LEFT JOIN {assignsubmission_comp} comp
                             ON comp.usermodified = u.id
-                            AND comp.assignmentid = :assignmentid 
+                            AND comp.assignmentid = :assignmentid
                         LEFT JOIN {assignsubmission_exclusion} exclusion
                             ON exclusion.entityid = u.id
                             AND exclusion.type = :entitytype

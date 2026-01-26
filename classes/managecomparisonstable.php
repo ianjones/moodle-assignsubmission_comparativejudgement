@@ -93,13 +93,15 @@ class managecomparisonstable extends table_sql {
         $namefields = fields::for_name()->get_sql('ujudge')->selects;
         if ($this->teamsubmission) {
             $this->set_sql(
-                "comp.id, ujudge.id as userid $namefields,
-                                asssubwin.id as winsubmissionid, exempwin.title as winexemplartitle, exempwin.id as winexemplarid, gwin.name as wingroupname,
-                                asssubloose.id as loosesubmissionid, exemploose.title as looseexemplartitle, exemploose.id as looseexemplarid, gloose.name as loosegroupname,
-                                comp.timetaken, comp.winningsubmissionposition",
+                "comp.id, ujudge.id as userid $namefields, asssubwin.id as winsubmissionid,
+                                exempwin.title as winexemplartitle, exempwin.id as winexemplarid,
+                                gwin.name as wingroupname, asssubloose.id as loosesubmissionid,
+                                exemploose.title as looseexemplartitle, exemploose.id as looseexemplarid,
+                                gloose.name as loosegroupname, comp.timetaken, comp.winningsubmissionposition",
                 '{assignsubmission_comp} comp
                             INNER JOIN {user} ujudge ON ujudge.id = comp.usermodified
-                            INNER JOIN {assignsubmission_compsubs} compsubs ON compsubs.judgementid = comp.id and compsubs.submissionid <> comp.winningsubmission
+                            INNER JOIN {assignsubmission_compsubs} compsubs ON compsubs.judgementid = comp.id
+                                AND compsubs.submissionid <> comp.winningsubmission
                             INNER JOIN {assign_submission} asssubwin ON asssub.id = comp.winningsubmission
                             INNER JOIN {assign_submission} asssubloose ON asssubloose.id = compsubs.submissionid
                             LEFT JOIN {assignsubmission_exemplars} exempwin ON exempwin.submissionid = asssubwin.id
@@ -114,12 +116,15 @@ class managecomparisonstable extends table_sql {
             $loosefields = fields::for_name()->get_sql('uloose', true, 'loose')->selects;
             $this->set_sql(
                 "comp.id, ujudge.id as userid $namefields,
-                                asssubwin.id as winsubmissionid, exempwin.title as winexemplartitle, exempwin.id as winexemplarid $winnamefields, uwin.id as winuserid,
-                                asssubloose.id as loosesubmissionid, exemploose.title as looseexemplartitle, exemploose.id as looseexemplarid $loosefields, uwin.id as looseuserid,
+                                asssubwin.id as winsubmissionid, exempwin.title as winexemplartitle,
+                                exempwin.id as winexemplarid $winnamefields, uwin.id as winuserid,
+                                asssubloose.id as loosesubmissionid, exemploose.title as looseexemplartitle,
+                                exemploose.id as looseexemplarid $loosefields, uwin.id as looseuserid,
                                 comp.timetaken, comp.winningsubmissionposition",
                 '{assignsubmission_comp} comp
                             INNER JOIN {user} ujudge ON ujudge.id = comp.usermodified
-                            INNER JOIN {assignsubmission_compsubs} compsubs ON compsubs.judgementid = comp.id and compsubs.submissionid <> comp.winningsubmission
+                            INNER JOIN {assignsubmission_compsubs} compsubs ON compsubs.judgementid = comp.id
+                                AND compsubs.submissionid <> comp.winningsubmission
                             INNER JOIN {assign_submission} asssubwin ON asssubwin.id = comp.winningsubmission
                             INNER JOIN {assign_submission} asssubloose ON asssubloose.id = compsubs.submissionid
                             LEFT JOIN {assignsubmission_exemplars} exempwin ON exempwin.submissionid = asssubwin.id
@@ -147,9 +152,10 @@ class managecomparisonstable extends table_sql {
     public function col_winningsubmissionposition($row) {
         if ($row->winningsubmissionposition == 1) {
             return get_string('left', 'assignsubmission_comparativejudgement');
-        }
-        if ($row->winningsubmissionposition == 2) {
+        } else if ($row->winningsubmissionposition == 2) {
             return get_string('right', 'assignsubmission_comparativejudgement');
+        } else {
+            return null;
         }
     }
 
@@ -159,7 +165,13 @@ class managecomparisonstable extends table_sql {
         $out = '';
 
         $icon = $OUTPUT->pix_icon('t/delete', get_string('delete'));
-        $out .= $OUTPUT->action_link($this->managecomparisonscontroller->getinternallink('deletecomparison', ['comparisonid' => $row->id]), $icon);
+        $out .= $OUTPUT->action_link(
+            $this->managecomparisonscontroller->getinternallink(
+                'deletecomparison',
+                ['comparisonid' => $row->id]
+            ),
+            $icon
+        );
 
         return $out;
     }
