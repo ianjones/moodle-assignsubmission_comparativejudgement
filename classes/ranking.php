@@ -107,47 +107,57 @@ where comp.assignmentid = :assignmentid
             return false;
         }
 
-        $rhandler = new rhandler($CFG->dirroot . "/mod/assign/submission/comparativejudgement/lib/pipeablescript.R");
-        $rhandler->setinput($csv);
-        $rhandler->execute();
+        $pathtorscript = get_config('assignsubmission_comparativejudgement', 'pathtorscript');
 
-        $rawoutput = $rhandler->get('output');
+        if (!empty($pathtorscript)) {
+            // Use R/rhandler when Rscript path is configured.
+            $rhandler = new rhandler($CFG->dirroot . "/mod/assign/submission/comparativejudgement/lib/pipeablescript.R");
+            $rhandler->setinput($csv);
+            $rhandler->execute();
 
-        if (empty($rawoutput)) {
-            throw new moodle_exception(
-                'errorexecutingscript',
-                'assignsubmission_comparativejudgement',
-                null,
-                null,
-                $rhandler->get('errors')
-            );
-        }
+            $rawoutput = $rhandler->get('output');
 
-        $output = array_map('str_getcsv', explode("\n", $rawoutput));
-        $headerrow = array_shift($output); // Ditch header.
-
-        if ($headerrow !== ['submissionid', 'Score', 'Reliability']) {
-            throw new moodle_exception(
-                'errorexecutingscript',
-                'assignsubmission_comparativejudgement',
-                null,
-                null,
-                $rawoutput . "\n" . $rhandler->get('errors')
-            );
-        }
-
-        $scores = [];
-        foreach ($output as $row) {
-            if (!isset($row) || count($row) < 2 || !(int)($row[1])) {
-                continue;
+            if (empty($rawoutput)) {
+                throw new moodle_exception(
+                    'errorexecutingscript',
+                    'assignsubmission_comparativejudgement',
+                    null,
+                    null,
+                    $rhandler->get('errors')
+                );
             }
-            $scores[$row[0]] = $row[1];
-        }
 
-        if (isset($output[0][2]) && is_numeric($output[0][2])) {
-            $reliability = $output[0][2];
+            $output = array_map('str_getcsv', explode("\n", $rawoutput));
+            $headerrow = array_shift($output); // Ditch header.
+
+            if ($headerrow !== ['submissionid', 'Score', 'Reliability']) {
+                throw new moodle_exception(
+                    'errorexecutingscript',
+                    'assignsubmission_comparativejudgement',
+                    null,
+                    null,
+                    $rawoutput . "\n" . $rhandler->get('errors')
+                );
+            }
+
+            $scores = [];
+            foreach ($output as $row) {
+                if (!isset($row) || count($row) < 2 || !(int)($row[1])) {
+                    continue;
+                }
+                $scores[$row[0]] = $row[1];
+            }
+
+            if (isset($output[0][2]) && is_numeric($output[0][2])) {
+                $reliability = $output[0][2];
+            } else {
+                $reliability = 0;
+            }
         } else {
-            $reliability = 0;
+            // Use PHP Bradley-Terry implementation (no R dependency required).
+            $result = bradleyterry::fitfromcsv($csv);
+            $scores = $result->scores;
+            $reliability = $result->reliability;
         }
 
         $assignmentid = $assign->get_instance()->id;

@@ -34,8 +34,8 @@ $settings->add(new admin_setting_configcheckbox(
 $settings->add(new admin_setting_configexecutable(
     'assignsubmission_comparativejudgement/pathtorscript',
     new lang_string('pathtorscript', 'assignsubmission_comparativejudgement'),
-    '',
-    get_config('local_rhandler', 'pathtorscript')
+    new lang_string('pathtorscript_help', 'assignsubmission_comparativejudgement'),
+    ''
 ));
 
 $settings->add(new admin_setting_configexecutable(
