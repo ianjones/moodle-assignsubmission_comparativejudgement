@@ -45,11 +45,7 @@ class managesubmissionscontroller extends basecontroller {
         $assignmentid = $this->assignment->get_instance()->id;
 
         if (optional_param('doranking', false, PARAM_BOOL)) {
-            if (empty(get_config('assignsubmission_comparativejudgement', 'dofakecomparison'))) {
-                $ranking = ranking::docomparison($this->assignment);
-            } else {
-                $ranking = ranking::dofakecomparison($this->assignment);
-            }
+            $ranking = ranking::docomparison($this->assignment);
 
             if (!$ranking) {
                 redirect($this->getinternallink('managesubmissions'), get_string(
@@ -71,7 +67,12 @@ class managesubmissionscontroller extends basecontroller {
         }
 
         if (optional_param('downloadrawjudgedata', false, PARAM_BOOL)) {
-            $csv = ranking::getrawjudgedatacsv($this->assignment);
+            $csv = ['JudgeID,Won,Lost,TimeTaken'];
+            foreach (ranking::getrawjudgedata($this->assignment) as $row) {
+                unset($row->id);
+                $csv[] = implode(',', (array) $row);
+            }
+            $csv = implode("\n", $csv);
             send_file($csv, "rawjudgedata_$assignmentid.csv", 0, 0, true, true);
         }
 

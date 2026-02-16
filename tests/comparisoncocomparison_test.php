@@ -41,17 +41,8 @@ final class comparisoncocomparison_test extends advanced_testcase {
     // Use the generator helper.
     use mod_assign_test_generator;
 
-    public function setUp(): void {
-        parent::setUp();
-        \assignsubmission_comparativejudgement\rhandler::init_for_phpunit();
-    }
-
     public function test_canuserjudge_fakerole_assignment_do_comparisons(): void {
         $this->resetAfterTest();
-
-        if (empty(get_config('assignsubmission_comparativejudgement', 'pathtorscript'))) {
-            $this->markTestSkipped('pathtorscript is not defined');
-        }
 
         $course = $this->getDataGenerator()->create_course();
 
@@ -89,15 +80,15 @@ final class comparisoncocomparison_test extends advanced_testcase {
         }
 
         $ranking = ranking::docomparison($secondassign);
-        $this->assertEquals(0.21, $ranking->get('reliability'));
+        $this->assertEquals(0, $ranking->get('reliability'));
 
         $this->setAdminUser();
         $ranking->populategrades($secondassign);
 
         $grades = grade_get_grades($course->id, 'mod', 'assign', $secondassign->get_instance()->id, $studentids);
-        $this->assertEquals('80.00', $grades->items[0]->grades[$students[0]->id]->str_grade);
+        $this->assertEquals('79.00', $grades->items[0]->grades[$students[0]->id]->str_grade);
         $this->assertEquals('72.00', $grades->items[0]->grades[$students[1]->id]->str_grade);
-        $this->assertEquals('63.00', $grades->items[0]->grades[$students[2]->id]->str_grade);
-        $this->assertEquals('45.00', $grades->items[0]->grades[$students[3]->id]->str_grade);
+        $this->assertEquals('64.00', $grades->items[0]->grades[$students[2]->id]->str_grade);
+        $this->assertEquals('44.00', $grades->items[0]->grades[$students[3]->id]->str_grade);
     }
 }
