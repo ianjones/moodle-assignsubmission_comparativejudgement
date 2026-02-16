@@ -293,7 +293,6 @@ class bradleyterry {
         }
         $vartheta = $variance / ($n - 1);
 
-        // SSR = Var(theta) / (Var(theta) + mean(SE^2)).
         $denom = $vartheta + $meansesq;
         if ($denom > 0) {
             $ssr = $vartheta / $denom;

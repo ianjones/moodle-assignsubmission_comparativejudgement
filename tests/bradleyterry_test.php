@@ -47,8 +47,8 @@ final class bradleyterry_test extends advanced_testcase {
     private function getcsvdata_as_objects($filename): array {
         $file = fopen($filename, "r");
         $exampledecisions = [];
-        $header = fgetcsv($file);
-        while (($data = fgetcsv($file)) !== false) {
+        $header = fgetcsv($file, escape: "");
+        while (($data = fgetcsv($file, escape: "")) !== false) {
             $exampledecisions[] = (object)array_combine($header, $data);
         }
 
@@ -58,8 +58,8 @@ final class bradleyterry_test extends advanced_testcase {
     private function getcsvdata_as_assocarray($filename): array {
         $file = fopen($filename, "r");
         $exampledecisions = [];
-        $header = fgetcsv($file);
-        while (($data = fgetcsv($file)) !== false) {
+        $header = fgetcsv($file, escape: "");
+        while (($data = fgetcsv($file, escape: "")) !== false) {
             $exampledecisions[$data[0]] = $data[1];
         }
 
