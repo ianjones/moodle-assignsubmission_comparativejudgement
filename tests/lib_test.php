@@ -96,4 +96,49 @@ final class lib_test extends advanced_testcase {
         $this->assertFalse($DB->record_exists('assignsubmission_exclusion', []));
         $this->assertFalse($DB->record_exists('assignsubmission_email', []));
     }
+
+    public function test_tiicompatibility(): void {
+        global $DB;
+
+        if (!key_exists('turnitin', core_plugin_manager::instance()->get_installed_plugins('plagiarism'))) {
+            $this->markTestSkipped('plagiarism_turnitin not installed so skipping tests');
+        }
+
+
+        $this->resetAfterTest();
+
+        $course = $this->getDataGenerator()->create_course();
+
+        // Assignment with submissions.
+        $secondassign = $this->create_instance($course, [
+            'name' => 'Assignment with submissions',
+            'duedate' => time(),
+            'attemptreopenmethod' => ASSIGN_ATTEMPT_REOPEN_METHOD_MANUAL,
+            'maxattempts' => 3,
+            'submissiondrafts' => 1,
+            'assignsubmission_onlinetext_enabled' => 1,
+            'assignsubmission_comparativejudgement_enabled' => 1,
+            'assignfeedback_comments_enabled' => 1,
+        ]);
+
+        $DB->insert_record('plagiarism_turnitin_config', ['cm' => $secondassign->get_course_module()->id, 'name' => 'use_turnitin', 'value' => true]);
+
+        set_config('plagiarism_turnitin_mod_assign', '505147', 'plagiarism_turnitin');
+
+        $notices = null;
+        exemplar::save_exemplar_submission(
+            (object)[
+                'title' => 'submission',
+                'onlinetext_editor' => ['text' => 'submission text', 'format' => FORMAT_MOODLE]
+            ],
+            $secondassign,
+            null,
+            $notices
+        );
+
+        $this->assertEquals(
+            '505147',
+            get_config('plagiarism_turnitin', 'plagiarism_turnitin_mod_assign')
+        );
+    }
 }

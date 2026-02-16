@@ -81,6 +81,7 @@ class exemplar extends persistent {
         $submission->status = ASSIGN_SUBMISSION_STATUS_SUBMITTED;
 
         $pluginerror = false;
+        self::toggleturnitinprocessing(false);
         foreach ($assignment->get_submission_plugins() as $plugin) {
             if ($plugin->is_enabled() && $plugin->is_visible()) {
                 if (!$plugin->save($submission, $data)) {
@@ -89,6 +90,7 @@ class exemplar extends persistent {
                 }
             }
         }
+        self::toggleturnitinprocessing(true);
 
         $allempty = $assignment->submission_empty($submission);
         if ($pluginerror || $allempty) {
@@ -109,6 +111,30 @@ class exemplar extends persistent {
         $exempler->save();
 
         $trans->allow_commit();
+    }
+
+    private static function toggleturnitinprocessing(bool $state) {
+        global $CFG;
+
+        static $oldvalue = null;
+
+        if (!isset($CFG->forced_plugin_settings)) {
+            $CFG->forced_plugin_settings = [];
+        }
+        if (!isset($CFG->forced_plugin_settings['plagiarism_turnitin'])) {
+            $CFG->forced_plugin_settings['plagiarism_turnitin'] = [];
+        }
+
+        if ($state === false) {
+            if (!isset($oldvalue)) {
+                $oldvalue = $CFG->forced_plugin_settings['plagiarism_turnitin']['plagiarism_turnitin_mod_assign'] ?? null;
+            }
+            $CFG->forced_plugin_settings['plagiarism_turnitin']['plagiarism_turnitin_mod_assign'] = false;
+        } else if (isset($oldvalue)) {
+            $CFG->forced_plugin_settings['plagiarism_turnitin']['plagiarism_turnitin_mod_assign'] = $oldvalue;
+        } else {
+            unset($CFG->forced_plugin_settings['plagiarism_turnitin']['plagiarism_turnitin_mod_assign']);
+        }
     }
 
     public static function get_exemplarsbyassignmentid($assignmentid) {
