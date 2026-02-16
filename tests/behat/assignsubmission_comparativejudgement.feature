@@ -29,9 +29,6 @@ Feature: In an assignment, teacher can use comparative judgement to grade studen
       | name                                          | Test assignment name |
       | assignsubmission_comparativejudgement_enabled | 1                    |
       | assignsubmission_onlinetext_enabled           | 1                    |
-    And the following config values are set as admin:
-      | config           | value | plugin                                |
-      | dofakecomparison | 1     | assignsubmission_comparativejudgement |
 
     And I am on the "Test assignment name" Activity page logged in as student1
     When I press "Add submission"
@@ -145,9 +142,9 @@ Feature: In an assignment, teacher can use comparative judgement to grade studen
 
     And I am on the "Course 1" Course page
     And I navigate to "Grades" in current page administration
-    And I should see "1.00" in the "Student 1" "table_row"
-    And I should see "4.00" in the "Student 2" "table_row"
-    And I should see "2.00" in the "Student 3" "table_row"
+    And I should see "50.00" in the "Student 1" "table_row"
+    And I should see "80.00" in the "Student 2" "table_row"
+    And I should see "65.00" in the "Student 3" "table_row"
 
     And I am on the "Test assignment name" Activity page
     And I press "Manage judges"
@@ -161,9 +158,9 @@ Feature: In an assignment, teacher can use comparative judgement to grade studen
 
     And I am on the "Course 1" Course page
     And I navigate to "Grades" in current page administration
-    And I should see "0.00" in the "Student 1" "table_row"
-    And I should see "1.00" in the "Student 2" "table_row"
-    And I should see "2.00" in the "Student 3" "table_row"
+    And I should see "48.00" in the "Student 1" "table_row"
+    And I should see "69.00" in the "Student 2" "table_row"
+    And I should see "77.00" in the "Student 3" "table_row"
 
     And I am on the "Test assignment name" Activity page
     And I press "Manage comparisons"

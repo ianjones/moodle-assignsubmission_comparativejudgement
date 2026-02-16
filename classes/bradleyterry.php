@@ -29,7 +29,6 @@ namespace assignsubmission_comparativejudgement;
  * Replaces the R/sirt dependency for computing comparative judgement scores.
  */
 class bradleyterry {
-
     /** @var int Maximum MM iterations. */
     const MAXITER = 400;
 
@@ -42,12 +41,10 @@ class bradleyterry {
     /**
      * Main entry point: fit Bradley-Terry from CSV and return scores + reliability.
      *
-     * @param string $csv  CSV with header JudgeID,Won,Lost,TimeTaken
+     * @param array $comparisons array of objects with properties judgeid,won,lost,timetaken
      * @return object {scores: [int itemid => int score], reliability: float}
      */
-    public static function fitfromcsv(string $csv): object {
-        $comparisons = self::parsecsv($csv);
-
+    public static function fitfromarray(array $comparisons): object {
         $itemindex = [];
         $wins = self::comparisonstomatrix($comparisons, $itemindex);
 
@@ -57,35 +54,6 @@ class bradleyterry {
         $reliability = self::computereliability($pi, $wins, $itemindex);
 
         return (object) ['scores' => $scores, 'reliability' => $reliability];
-    }
-
-    /**
-     * Parse JudgeID,Won,Lost,TimeTaken CSV into an array of comparisons.
-     *
-     * @param string $csv
-     * @return array of ['judge' => int, 'won' => int, 'lost' => int]
-     */
-    public static function parsecsv(string $csv): array {
-        $lines = explode("\n", trim($csv));
-        array_shift($lines); // Remove header.
-
-        $comparisons = [];
-        foreach ($lines as $line) {
-            $line = trim($line);
-            if ($line === '') {
-                continue;
-            }
-            $parts = str_getcsv($line);
-            if (count($parts) < 3) {
-                continue;
-            }
-            $comparisons[] = [
-                'judge' => (int) $parts[0],
-                'won'   => (int) $parts[1],
-                'lost'  => (int) $parts[2],
-            ];
-        }
-        return $comparisons;
     }
 
     /**
@@ -101,8 +69,8 @@ class bradleyterry {
         // Collect unique item IDs.
         $items = [];
         foreach ($comparisons as $comp) {
-            $items[$comp['won']] = true;
-            $items[$comp['lost']] = true;
+            $items[$comp->won] = true;
+            $items[$comp->lost] = true;
         }
         $itemids = array_keys($items);
         sort($itemids, SORT_NUMERIC);
@@ -117,8 +85,8 @@ class bradleyterry {
         $wins = array_fill(0, $n, array_fill(0, $n, 0));
 
         foreach ($comparisons as $comp) {
-            $w = $itemindex[$comp['won']];
-            $l = $itemindex[$comp['lost']];
+            $w = $itemindex[$comp->won];
+            $l = $itemindex[$comp->lost];
             $wins[$w][$l]++;
         }
 
