@@ -24,6 +24,7 @@
 namespace assignsubmission_comparativejudgement;
 
 use advanced_testcase;
+use core_plugin_manager;
 use mod_assign_test_generator;
 
 defined('MOODLE_INTERNAL') || die();
@@ -104,7 +105,6 @@ final class lib_test extends advanced_testcase {
             $this->markTestSkipped('plagiarism_turnitin not installed so skipping tests');
         }
 
-
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -121,7 +121,10 @@ final class lib_test extends advanced_testcase {
             'assignfeedback_comments_enabled' => 1,
         ]);
 
-        $DB->insert_record('plagiarism_turnitin_config', ['cm' => $secondassign->get_course_module()->id, 'name' => 'use_turnitin', 'value' => true]);
+        $DB->insert_record(
+            'plagiarism_turnitin_config',
+            ['cm' => $secondassign->get_course_module()->id, 'name' => 'use_turnitin', 'value' => true]
+        );
 
         set_config('plagiarism_turnitin_mod_assign', '505147', 'plagiarism_turnitin');
 
@@ -129,7 +132,7 @@ final class lib_test extends advanced_testcase {
         exemplar::save_exemplar_submission(
             (object)[
                 'title' => 'submission',
-                'onlinetext_editor' => ['text' => 'submission text', 'format' => FORMAT_MOODLE]
+                'onlinetext_editor' => ['text' => 'submission text', 'format' => FORMAT_MOODLE],
             ],
             $secondassign,
             null,
