@@ -145,6 +145,7 @@ final class comparisongetpair_test extends advanced_testcase {
         $this->setUser($students[0]);
 
         $comparisonmanager = new comparisonmanager($students[0]->id, $secondassign);
+        $comparisonmanager->disablerandomness();
         $getpairtojudge1 = $comparisonmanager->getpairtojudge();
         $this->assertCount(2, $getpairtojudge1);
         $this->assertCount(2, $comparisonmanager->getpairtojudge(true));
@@ -222,36 +223,48 @@ final class comparisongetpair_test extends advanced_testcase {
         $teacher = $this->getDataGenerator()->create_and_enrol($course, 'teacher');
 
         $students = [];
-        for ($i = 0; $i < 7; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $students[$i] = $this->getDataGenerator()->create_and_enrol($course, 'student');
             $this->add_submission($students[$i], $secondassign);
             $this->submit_for_grading($students[$i], $secondassign);
         }
 
         $compared = [];
-        $this->setUser($students[0]);
-        $comparisonmanager = new comparisonmanager($students[0]->id, $secondassign);
-        do {
-            $getpairtojudge = $comparisonmanager->getpairtojudge();
+        for ($i = 0; $i < 10; $i++) {
+            $student = $students[$i];
 
-            if ($getpairtojudge) {
-                comparison::recordcomparison(
-                    $secondassign->get_instance()->id,
-                    50,
-                    current($getpairtojudge)->id,
-                    comparison::POSITION_RIGHT,
-                    next($getpairtojudge)->id
+            $compared[$i] = [];
+            $this->setUser($student);
+            $comparisonmanager = new comparisonmanager($student->id, $secondassign);
+            do {
+                $getpairtojudge = $comparisonmanager->getpairtojudge();
+
+                if ($getpairtojudge) {
+                    comparison::recordcomparison(
+                        $secondassign->get_instance()->id,
+                        50,
+                        current($getpairtojudge)->id,
+                        comparison::POSITION_RIGHT,
+                        next($getpairtojudge)->id
+                    );
+
+                    $akeys = array_keys($getpairtojudge);
+                    sort($akeys);
+                    $key = implode('|', $akeys);
+                    $this->assertNotContains($key, $compared);
+                    $compared[$i][] = $key;
+                }
+            } while (!empty($getpairtojudge));
+
+            $this->assertCount(36, $compared[$i]);
+
+            if ($i > 0) {
+                $this->assertNotEquals(
+                    array_slice($compared[$i], 0, 3),
+                    array_slice($compared[$i - 1], 0, 3)
                 );
-
-                $akeys = array_keys($getpairtojudge);
-                sort($akeys);
-                $key = implode('|', $akeys);
-                $this->assertNotContains($key, $compared);
-                $compared[] = $key;
             }
-        } while (!empty($getpairtojudge));
-
-        $this->assertCount(15, $compared);
+        }
     }
 
     public function test_canuserjudge_fakerole_assignment_do_comparisons_exemplar_rand(): void {
