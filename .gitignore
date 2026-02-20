@@ -1,2 +1,4 @@
 phpunit.xml
 tests/sshproxy.php
+.DS_Store
+classes/.DS_Store

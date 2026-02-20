@@ -42,7 +42,7 @@ class ranking extends persistent {
         ];
     }
 
-    public static function getrawjudgedatacsv(assign $assign) {
+    public static function getrawjudgedata(assign $assign) {
         global $DB, $USER;
 
         $params = ['assignmentid' => $assign->get_instance()->id,
@@ -87,68 +87,23 @@ where comp.assignmentid = :assignmentid
         $inputraw = $DB->get_records_sql($sql, $params);
 
         if (empty($inputraw)) {
-            return '';
+            return [];
         }
 
-        $csv = ['JudgeID,Won,Lost,TimeTaken'];
-        foreach ($inputraw as $row) {
-            unset($row->id);
-            $csv[] = implode(',', (array) $row);
-        }
-        return implode("\n", $csv);
+        return $inputraw;
     }
 
     public static function docomparison(assign $assign) {
-        global $CFG;
+        $rawjudgedata = self::getrawjudgedata($assign);
 
-        $csv = self::getrawjudgedatacsv($assign);
-
-        if (empty($csv)) {
+        if (empty($rawjudgedata)) {
             return false;
         }
 
-        $rhandler = new rhandler($CFG->dirroot . "/mod/assign/submission/comparativejudgement/lib/pipeablescript.R");
-        $rhandler->setinput($csv);
-        $rhandler->execute();
-
-        $rawoutput = $rhandler->get('output');
-
-        if (empty($rawoutput)) {
-            throw new moodle_exception(
-                'errorexecutingscript',
-                'assignsubmission_comparativejudgement',
-                null,
-                null,
-                $rhandler->get('errors')
-            );
-        }
-
-        $output = array_map('str_getcsv', explode("\n", $rawoutput));
-        $headerrow = array_shift($output); // Ditch header.
-
-        if ($headerrow !== ['submissionid', 'Score', 'Reliability']) {
-            throw new moodle_exception(
-                'errorexecutingscript',
-                'assignsubmission_comparativejudgement',
-                null,
-                null,
-                $rawoutput . "\n" . $rhandler->get('errors')
-            );
-        }
-
-        $scores = [];
-        foreach ($output as $row) {
-            if (!isset($row) || count($row) < 2 || !(int)($row[1])) {
-                continue;
-            }
-            $scores[$row[0]] = $row[1];
-        }
-
-        if (isset($output[0][2]) && is_numeric($output[0][2])) {
-            $reliability = $output[0][2];
-        } else {
-            $reliability = 0;
-        }
+        // Use PHP Bradley-Terry implementation (no R dependency required).
+        $result = bradleyterry::fitfromarray($rawjudgedata);
+        $scores = $result->scores;
+        $reliability = $result->reliability;
 
         $assignmentid = $assign->get_instance()->id;
         $ranking = self::get_record(['assignmentid' => $assignmentid]);
@@ -156,35 +111,6 @@ where comp.assignmentid = :assignmentid
             $ranking = new ranking();
         }
         $ranking->saverankings($reliability, $assignmentid, $scores);
-
-        return $ranking;
-    }
-
-    public static function dofakecomparison(assign $assign) {
-        $assignmentid = $assign->get_instance()->id;
-
-        $ranking = self::get_record(['assignmentid' => $assignmentid]);
-        if (!$ranking) {
-            $ranking = new ranking();
-        }
-        $csv = self::getrawjudgedatacsv($assign);
-
-        $scores = [];
-        foreach (explode("\n", $csv) as $line) {
-            $cells = explode(",", $line);
-            if (!is_numeric($cells[1])) {
-                continue;
-            }
-            if (!isset($scores[$cells[1]])) {
-                $scores[$cells[1]] = 0;
-            }
-            if (!isset($scores[$cells[2]])) {
-                $scores[$cells[2]] = 0;
-            }
-            $scores[$cells[1]] += 1;
-        }
-
-        $ranking->saverankings(-1.4, $assignmentid, $scores);
 
         return $ranking;
     }

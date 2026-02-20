@@ -1,5 +1,0 @@
-install.packages("dplyr",repos = "http://cran.us.r-project.org")
-install.packages("sirt",repos = "http://cran.us.r-project.org")
-install.packages("readr",repos = "http://cran.us.r-project.org")
-install.packages("rlang",repos = "http://cran.us.r-project.org")
-install.packages("mvtnorm",repos = "http://cran.us.r-project.org")
