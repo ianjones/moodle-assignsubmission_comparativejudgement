@@ -32,6 +32,7 @@ class comparisonmanager {
     private $userid;
     private $assignment;
     private $assignmentinstance;
+    private $randomise = true;
 
     /**
      * Function comment.
@@ -40,6 +41,18 @@ class comparisonmanager {
         $this->userid = $userid;
         $this->assignment = $assignment;
         $this->assignmentinstance = $this->assignment->get_instance($userid);
+
+        if (defined('BEHAT_SITE_RUNNING')) {
+            $this->randomise = false;
+        }
+    }
+
+    public function disablerandomness() {
+        if (!(defined('PHPUNIT_TEST') && PHPUNIT_TEST)) {
+            throw new \Exception('disbalerandomness only applicable within unit tests');
+        }
+
+        $this->randomise = false;
     }
 
     private function getsubmission() {
@@ -62,7 +75,7 @@ class comparisonmanager {
     // Number of judgements on this assignment.
     // Variable $urgent means below min or never judged.
     public function getpairtojudge(bool $urgent = false) {
-        global $DB;
+        global $DB, $CFG;
 
         if (!$this->canuserjudge()) {
             return false;
@@ -132,6 +145,12 @@ class comparisonmanager {
             $preventcompareexemplars = " (subone.exemp_1 IS NULL OR subzero.exemp_0 IS NULL) ";
         }
 
+        if ($this->randomise) {
+            $rand = ($CFG->dbtype == 'pgsql') ? ", RANDOM() " : ", RAND()";
+        } else {
+            $rand = ', subone.userid_1, subzero.userid_0';
+        }
+
         $sql = "
             SELECT subone.*, subzero.*
             FROM ($sql[0]) as subzero
@@ -147,7 +166,7 @@ class comparisonmanager {
             )
             WHERE $preventrepeats AND $preventcompareexemplars
             ORDER BY subzero.totaluserjudgements_0 asc, subone.totaluserjudgements_1 asc,
-                subzero.totaljudgements_0 asc, subone.totaljudgements_1, subone.userid_1, subzero.userid_0";
+                subzero.totaljudgements_0 asc, subone.totaljudgements_1 $rand";
 
         $submissions = $DB->get_records_sql($sql, null, 0, 1);
 
