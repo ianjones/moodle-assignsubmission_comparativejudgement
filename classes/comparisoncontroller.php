@@ -312,7 +312,7 @@ class comparisoncontroller extends basecontroller {
 
             $renderable['submissions'][] =
                     (object) ['position'            => $position, 'contents' => $submissioncontents, 'files' => $submissionfiles,
-                              'multiplepluginsused' => $pluginsusedinsubmission > 1];
+                              'multiplepluginsused' => $pluginsusedinsubmission > 1, 'first' => $position == 1];
 
             $position = comparison::POSITION_RIGHT;
         }
