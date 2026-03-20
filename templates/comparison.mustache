@@ -1,14 +1,18 @@
 {{{header}}}
 
-<div class="row col-md-12 comparisonbuttonrow">
-    <div class="col-md-6 buttonleft">{{{buttonleft}}}</div>
-    <div class="col-md-6 buttonright">{{{buttonright}}}</div>
-</div>
-
 <div class="row col-md-12">
     {{#submissions}}
         <div class="col-md-6 submissioncontents pos_{{position}}">
-
+            
+            <div class="row">
+                {{#first}}
+                    <div class="buttonleft">{{{buttonleft}}}</div>
+                {{/first}}
+                {{^first}}
+                    <div class="buttonright">{{{buttonright}}}</div>
+                {{/first}}
+            </div>
+        
             {{#contents}}
                 {{#multiplepluginsused}}
                     <div class="row col-md-12"><h4>{{{type}}}</h4></div>
@@ -23,15 +27,21 @@
                 {{/content}}
             {{/files}}
 
-            {{{button}}}
+            <div class="row">
+                {{#first}}
+                    <div class="buttonleft">{{{buttonleftbottom}}}</div>
+                {{/first}}
+                {{^first}}
+                    <div class="buttonright">{{{buttonrightbottom}}}</div>
+                {{/first}}
+                
+            </div>
+
+            <hr class="d-md-none"/>
+            
         </div>
     {{/submissions}}
 
-</div>
-
-<div class="row col-md-12 comparisonbuttonrow">
-    <div class="col-md-6 buttonleft">{{{buttonleftbottom}}}</div>
-    <div class="col-md-6 buttonright">{{{buttonrightbottom}}}</div>
 </div>
 
 <div class="row col-md-12 comparisonbuttonrow">

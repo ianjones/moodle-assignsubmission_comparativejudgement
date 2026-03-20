@@ -1,5 +1,7 @@
-div.submissioncontents.pos_1 {
-    border-right: 1px solid rgba(0, 0, 0, .125);
+@media (width >= 768px) {
+    div.submissioncontents.pos_1 {
+        border-right: 1px solid rgba(0, 0, 0, .125);
+    }
 }
 
 div.comparisonbuttonrow {
