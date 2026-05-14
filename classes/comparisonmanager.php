@@ -113,13 +113,19 @@ class comparisonmanager {
                 $threshold = '';
             }
 
-            $sql[$i] = "SELECT  sub.id as id_$i, sub.assignment as assignment_$i, sub.userid as userid_$i,
-                        sub.timecreated as timecreated_$i, sub.timemodified as timemodified_$i,
-                        sub.status as status_$i, sub.groupid as groupid_$i, sub.attemptnumber as attemptnumber_$i,
-                        sub.latest as latest_$i,
+            $sql[$i] = "SELECT
+                        sub.id AS id_$i,
+                        sub.assignment AS assignment_$i,
+                        sub.userid AS userid_$i,
+                        sub.timecreated as timecreated_$i,
+                        sub.timemodified AS timemodified_$i,
+                        sub.status AS status_$i,
+                        sub.groupid AS groupid_$i,
+                        sub.attemptnumber AS attemptnumber_$i,
+                        sub.latest AS latest_$i,
                         count(comp.id) AS totaljudgements_$i,
                         SUM(CASE WHEN comp.usermodified = $this->userid THEN 1 ELSE 0 END) AS totaluserjudgements_$i,
-                        exemp.id as exemp_$i
+                        exemp.id AS exemp_$i
                 FROM {assign_submission} sub
                          LEFT JOIN {assignsubmission_compsubs} compsub ON compsub.submissionid = sub.id
                          LEFT JOIN {assignsubmission_comp} comp ON compsub.judgementid = comp.id
@@ -146,27 +152,50 @@ class comparisonmanager {
         }
 
         if ($this->randomise) {
-            $rand = ($CFG->dbtype == 'pgsql') ? ", RANDOM() " : ", RAND()";
+            $rand = ($CFG->dbtype == 'pgsql') ? "RANDOM() " : "RAND()";
         } else {
-            $rand = ', subone.userid_1, subzero.userid_0';
+            $rand = 'subone.userid_1, subzero.userid_0';
         }
 
         $sql = "
-            SELECT subone.*, subzero.*
-            FROM ($sql[0]) as subzero
-            INNER JOIN ($sql[1]) as subone on subzero.id_0 <> subone.id_1
+            SELECT 
+                subone.*,
+                subzero.*
+            FROM ($sql[0]) AS subzero
+            INNER JOIN ($sql[1]) AS subone ON subzero.id_0 <> subone.id_1
             LEFT JOIN (
-                SELECT comp.winningsubmission as winning, compsub.submissionid as losing
+                SELECT
+                    count(comp.id) AS timescompared,
+                    SUM(CASE WHEN comp.usermodified = $this->userid THEN 1 ELSE 0 END) AS timescomparedbyuser,
+                    comp.winningsubmission AS winning,
+                    compsub.submissionid AS losing
                 FROM {assignsubmission_comp} comp
                 INNER JOIN {assignsubmission_compsubs} compsub ON
-                    compsub.judgementid = comp.id and compsub.submissionid <> comp.winningsubmission
+                    compsub.judgementid = comp.id AND compsub.submissionid <> comp.winningsubmission
                 WHERE comp.usermodified = $this->userid
-                )  as subs ON (subzero.id_0 = subs.winning and subone.id_1 = subs.losing) OR
-                    (subone.id_1 = subs.winning and subzero.id_0 = subs.losing
-            )
+                GROUP BY comp.winningsubmission, compsub.submissionid
+            )  AS subs ON 
+                (subzero.id_0 = subs.winning AND subone.id_1 = subs.losing)
+                    OR
+                (subone.id_1 = subs.winning AND subzero.id_0 = subs.losing)
             WHERE $preventrepeats AND $preventcompareexemplars
-            ORDER BY subzero.totaluserjudgements_0 asc, subone.totaluserjudgements_1 asc,
-                subzero.totaljudgements_0 asc, subone.totaljudgements_1 $rand";
+            ORDER BY
+                subs.timescomparedbyuser ASC,
+                subs.timescompared ASC,
+                (subzero.totaluserjudgements_0 + subone.totaluserjudgements_1) ASC,
+                subzero.totaluserjudgements_0 ASC,
+                subone.totaluserjudgements_1 ASC,
+                (subzero.totaljudgements_0 + subone.totaljudgements_1) ASC,
+                subzero.totaljudgements_0 ASC,
+                subone.totaljudgements_1 ASC,
+                $rand";
+
+        # Sorted on:
+        # number of times the user has seen this exact pair
+        # number of times anyone has seen this exact pair
+        # number of times the user has seen either and then each of the submissions
+        # number of times anyone has seen either and then each of the submissions
+        # random factor applied (unless phpunit in which case submission userids to make it testable)
 
         $submissions = $DB->get_records_sql($sql, null, 0, 1);
 
