@@ -25,20 +25,19 @@ namespace assignsubmission_comparativejudgement;
 
 use assign_feedback_comments;
 use assignsubmission_comparativejudgement\event\comments_imported;
+use html_writer;
 
 class managecomparisoncommentscontroller extends basecontroller {
     public function summary() {
-        global $OUTPUT;
-
         $commenthandler = new assign_feedback_comments($this->assignment, 'comments');
         if (!$commenthandler->is_enabled() || empty($this->assignmentsettings->enablecomments)) {
             return '';
         }
 
-        return $OUTPUT->single_button(
+        return html_writer::link(
             $this->getinternallink('managecomparisoncomments'),
             get_string('managecomparisoncomments', 'assignsubmission_comparativejudgement'),
-            'get'
+            ['class' => 'btn btn-secondary m-1']
         );
     }
 

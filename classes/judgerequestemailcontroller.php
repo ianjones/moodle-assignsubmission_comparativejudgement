@@ -30,12 +30,10 @@ use html_writer;
 
 class judgerequestemailcontroller extends basecontroller {
     public function summary() {
-        global $OUTPUT;
-
-        return $OUTPUT->single_button(
+        return html_writer::link(
             $this->getinternallink('judgerequestemail'),
             get_string('managejudgerequestemail', 'assignsubmission_comparativejudgement'),
-            'get'
+            ['class' => 'btn btn-secondary m-1']
         );
     }
 

@@ -27,12 +27,10 @@ use html_writer;
 
 class managejudgescontroller extends basecontroller {
     public function summary() {
-        global $OUTPUT;
-
-        return $OUTPUT->single_button(
+        return html_writer::link(
             $this->getinternallink('managejudges'),
             get_string('managejudges', 'assignsubmission_comparativejudgement'),
-            'get'
+            ['class' => 'btn btn-secondary m-1']
         );
     }
 

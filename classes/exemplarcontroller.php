@@ -29,11 +29,10 @@ use stdClass;
 
 class exemplarcontroller extends basecontroller {
     public function summary() {
-        global $OUTPUT;
-        return $OUTPUT->single_button(
+        return html_writer::link(
             $this->getinternallink('manageexemplars'),
             get_string('manageexemplars', 'assignsubmission_comparativejudgement'),
-            'get'
+            ['class' => 'btn btn-secondary m-1']
         );
     }
 

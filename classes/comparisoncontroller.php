@@ -38,12 +38,10 @@ use stdClass;
 
 class comparisoncontroller extends basecontroller {
     public function summary() {
-        global $OUTPUT;
-
-        return $OUTPUT->single_button(
+        return html_writer::link(
             $this->getinternallink('comparison'),
             get_string('docomparison', 'assignsubmission_comparativejudgement'),
-            'get'
+            ['class' => 'btn btn-secondary m-1']
         );
     }
 
