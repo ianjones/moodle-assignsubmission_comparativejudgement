@@ -65,7 +65,7 @@ Feature: In an assignment, teacher can use comparative judgement to grade studen
       | Introduction for judges            | The introduction to the judging process |
       | Judges                             | Non-editing teacher                     |
     And I press "Save and display"
-    And I press "Manage judges"
+    And I follow "Manage judges"
     And I should not see "Nonediting 1"
     And I should not see "Nonediting 2"
     And I set the following fields to these values:
@@ -74,13 +74,13 @@ Feature: In an assignment, teacher can use comparative judgement to grade studen
     And I should see "Nonediting 1" in the "#managejudges_table_r0" "css_element"
     And I should see "Nonediting 2" in the "#managejudges_table_r1" "css_element"
     And I am on the "Test assignment name" Activity page
-    And I press "Manage submissions"
+    And I follow "Manage submissions"
     And I should see "Student 1" in the "#managesubmissions_table_r0" "css_element"
     And I should see "Student 2" in the "#managesubmissions_table_r1" "css_element"
     And I should see "Student 3" in the "#managesubmissions_table_r2" "css_element"
 
     And I am on the "Test assignment name" Activity page logged in as nonediting1
-    And I press "Do comparison"
+    And I follow "Do comparison"
     And I should see "The introduction to the judging process"
     And I follow "Continue"
     And I should see "The submitted text for student1"
@@ -95,7 +95,7 @@ Feature: In an assignment, teacher can use comparative judgement to grade studen
     And I press "Finish judging"
 
     And I am on the "Test assignment name" Activity page logged in as nonediting2
-    And I press "Do comparison"
+    And I follow "Do comparison"
     And I should see "The introduction to the judging process"
     And I follow "Continue"
     And I should see "The submitted text for student1"
@@ -110,7 +110,7 @@ Feature: In an assignment, teacher can use comparative judgement to grade studen
     And I press "Finish judging"
 
     And I am on the "Test assignment name" Activity page logged in as nonediting3
-    And I press "Do comparison"
+    And I follow "Do comparison"
     And I should see "The introduction to the judging process"
     And I follow "Continue"
     And I should see "The submitted text for student1"
@@ -118,7 +118,7 @@ Feature: In an assignment, teacher can use comparative judgement to grade studen
     And I press "Choose A"
 
     And I am on the "Test assignment name" Activity page logged in as teacher1
-    And I press "Manage judges"
+    And I follow "Manage judges"
     And I should see "1 : 2" in the "Nonediting 1" "table_row"
     And I should see "3" in the "Nonediting 1" "table_row"
     And I should see "3 : 0" in the "Nonediting 2" "table_row"
@@ -127,7 +127,7 @@ Feature: In an assignment, teacher can use comparative judgement to grade studen
     And I should see "1" in the "Nonediting 3" "table_row"
 
     And I am on the "Test assignment name" Activity page
-    And I press "Manage submissions"
+    And I follow "Manage submissions"
     And I should see "5" in the "#managesubmissions_table_r0_c3" "css_element"
     And I should see "1" in the "#managesubmissions_table_r0_c8" "css_element"
     And I should see "4" in the "#managesubmissions_table_r0_c9" "css_element"
@@ -152,12 +152,12 @@ Feature: In an assignment, teacher can use comparative judgement to grade studen
     And I should see "65.00" in the "Student 3" "table_row"
 
     And I am on the "Test assignment name" Activity page
-    And I press "Manage judges"
+    And I follow "Manage judges"
     And I click on "#managejudges_table_r0_c10 .excludeentity" "css_element"
     And I click on "#managejudges_table_r2_c10 .excludeentity" "css_element"
 
     And I am on the "Test assignment name" Activity page
-    And I press "Manage submissions"
+    And I follow "Manage submissions"
     And I press "Calculate scores"
     And I press "Copy grades to gradebook"
 
@@ -168,11 +168,11 @@ Feature: In an assignment, teacher can use comparative judgement to grade studen
     And I should see "77.00" in the "Student 3" "table_row"
 
     And I am on the "Test assignment name" Activity page
-    And I press "Manage comparisons"
+    And I follow "Manage comparisons"
     And I should see "Manage comparisons (7)"
     And I should see "Student 2" in the "#managecomparisons_table_r0_c1" "css_element"
     And I should see "Student 1" in the "#managecomparisons_table_r0_c3" "css_element"
-    And I should see "Left" in the "#managecomparisons_table_r0_c6" "css_element"
+    And I should see "A" in the "#managecomparisons_table_r0_c6" "css_element"
     And I click on "#managecomparisons_table_r0_c7 .icon" "css_element"
     And I press "Delete"
     And I should see "Manage comparisons (6)"

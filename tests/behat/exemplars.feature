@@ -30,7 +30,7 @@ Feature: In an assignment with comparative judgement enabled a teacher can suppl
       | dofakecomparison | 1     | assignsubmission_comparativejudgement |
 
     And I am on the "Test assignment name" Activity page logged in as teacher1
-    When I press "Manage exemplars"
+    When I follow "Manage exemplars"
     And I press "Add exemplar"
     And I set the following fields to these values:
       | Title | The first exemplar |
@@ -61,7 +61,7 @@ Feature: In an assignment with comparative judgement enabled a teacher can suppl
     And I press "Save and display"
 
     And I am on the "Test assignment name" Activity page logged in as nonediting1
-    And I press "Do comparison"
+    And I follow "Do comparison"
     And I should see "An examplar submissions"
     And I should see "A second examplar submissions"
     And I press "Choose A"
@@ -71,7 +71,7 @@ Feature: In an assignment with comparative judgement enabled a teacher can suppl
     And I press "Finish judging"
 
     And I am on the "Test assignment name" Activity page logged in as teacher1
-    And I press "Manage submissions"
+    And I follow "Manage submissions"
     And I should see "The first exemplar" in the "#managesubmissions_table_r0_c0" "css_element"
     And I should see "1" in the "#managesubmissions_table_r0_c8" "css_element"
     And I should see "0" in the "#managesubmissions_table_r0_c9" "css_element"
@@ -83,6 +83,6 @@ Feature: In an assignment with comparative judgement enabled a teacher can suppl
     And I should see "0" in the "#managesubmissions_table_r2_c9" "css_element"
 
     And I am on the "Test assignment name" Activity page
-    And I press "Manage comparisons"
+    And I follow "Manage comparisons"
     And I should see "The first exemplar" in the "#managecomparisons_table_r0_c1" "css_element"
     And I should see "The second exemplar" in the "#managecomparisons_table_r0_c3" "css_element"
