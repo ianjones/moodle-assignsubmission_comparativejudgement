@@ -8,7 +8,7 @@ define(['jquery'],
     function ($) {
         return {
             init: function () {
-                $('div#page-content').on('submit', 'div.comparisonbuttonrow form', function () {
+                $('div#page-content').on('submit', 'form', function () {
                     $('input[name=comments_loser_2\\[format\\]]').val($('input[name=comments_winner_1\\[format\\]]').val());
                     $('textarea[name=comments_loser_2\\[text\\]]').val($('textarea[name=comments_winner_1\\[text\\]]').val());
 

@@ -47,7 +47,7 @@ class comparisoncontroller extends basecontroller {
 
     public function view() {
         global $PAGE, $USER;
-        $url = $this->getinternallink('comparison');
+        $url = $this->getinternallink('comparison', ['autosavebuster' => time()]);
         $PAGE->set_url($url);
 
         $assignmentid = $this->assignment->get_instance()->id;
