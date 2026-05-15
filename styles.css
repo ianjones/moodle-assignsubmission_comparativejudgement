@@ -1,6 +1,12 @@
 @media (width >= 768px) {
-    div.submissioncontents.pos_1 {
-        border-right: 1px solid rgba(0, 0, 0, .125);
+    .submissioncontents:first-child .submissioncontents_innerwrapper {
+        border-right: 2px solid rgba(0, 0, 0, .125);
+    }
+}
+
+@media (width < 768px) {
+    .submissioncontents .submissioncontents_innerwrapper {
+        border-bottom: 2px solid rgba(0, 0, 0, .125);
     }
 }
 

@@ -1,50 +1,48 @@
 {{{header}}}
 
-<div class="row col-md-12">
+<div class="row">
     {{#submissions}}
         <div class="col-md-6 submissioncontents pos_{{position}}">
+            <div class="m-1 submissioncontents_innerwrapper">
+                <div class="col-12">
+                    {{#first}}
+                        <div class="buttona">{{{buttona}}}</div>
+                    {{/first}}
+                    {{^first}}
+                        <div class="buttonb">{{{buttonb}}}</div>
+                    {{/first}}
+                </div>
 
-            <div class="row">
-                {{#first}}
-                    <div class="buttona">{{{buttona}}}</div>
-                {{/first}}
-                {{^first}}
-                    <div class="buttonb">{{{buttonb}}}</div>
-                {{/first}}
+                {{#contents}}
+                    {{#multiplepluginsused}}
+                        <div class="col-12"><h4>{{{type}}}</h4></div>
+                    {{/multiplepluginsused}}
+                    <div class="col-12">{{{content}}}</div>
+                {{/contents}}
+
+                {{#files}}
+                    <div class="col-12"><h4>{{{type}}}</h4></div>
+                    {{#content}}
+                        <div class="col-12">{{{embed}}}</div>
+                    {{/content}}
+                {{/files}}
+
+                <div class="col-12">
+                    {{#first}}
+                        <div class="buttona">{{{buttonabottom}}}</div>
+                    {{/first}}
+                    {{^first}}
+                        <div class="buttonb">{{{buttonbbottom}}}</div>
+                    {{/first}}
+
+                </div>
             </div>
-
-            {{#contents}}
-                {{#multiplepluginsused}}
-                    <div class="row col-md-12"><h4>{{{type}}}</h4></div>
-                {{/multiplepluginsused}}
-                <div class="row col-md-12">{{{content}}}</div>
-            {{/contents}}
-
-            {{#files}}
-                <div class="row col-md-12"><h4>{{{type}}}</h4></div>
-                {{#content}}
-                    <div class="row col-md-12">{{{embed}}}</div>
-                {{/content}}
-            {{/files}}
-
-            <div class="row">
-                {{#first}}
-                    <div class="buttona">{{{buttonabottom}}}</div>
-                {{/first}}
-                {{^first}}
-                    <div class="buttonb">{{{buttonbbottom}}}</div>
-                {{/first}}
-
-            </div>
-
-            <hr class="d-md-none"/>
-
         </div>
     {{/submissions}}
 
 </div>
 
-<div class="row col-md-12 comparisonbuttonrow">
+<div class="row comparisonbuttonrow">
     <div class="col-md-6 buttonfinish">{{{buttonfinish}}}</div>
 </div>
 
