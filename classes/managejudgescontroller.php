@@ -39,9 +39,13 @@ class managejudgescontroller extends basecontroller {
     public function view() {
         $downloadformat = optional_param('download', false, PARAM_ALPHA);
 
+        $form = new managejudgestable_filterform($this->getinternallink('managejudges'));
+        $formdata = $form->get_data();
+        $showinactive = optional_param('showinactive', $formdata->showinactive ?? false, PARAM_BOOL);
+
         $sort = optional_param('tsort', 'lastname, firstname', PARAM_ALPHA);
-        $table = new managejudgestable($this->assignment, $sort);
-        $table->define_baseurl($this->getinternallink('managejudges'));
+        $table = new managejudgestable($this->assignment, $sort, $showinactive);
+        $table->define_baseurl($this->getinternallink('managejudges', ['showinactive' => $showinactive]));
 
         if (!empty($downloadformat)) {
             $table->is_downloading($downloadformat, 'judges');
@@ -50,6 +54,7 @@ class managejudgescontroller extends basecontroller {
         }
 
         $o = $this->getheader(get_string('managejudges', 'assignsubmission_comparativejudgement'));
+        $o .= $form->render();
         ob_start();
         $table->out(25, false);
         $contents = ob_get_contents();

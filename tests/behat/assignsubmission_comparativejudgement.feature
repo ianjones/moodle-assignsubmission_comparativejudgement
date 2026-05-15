@@ -66,6 +66,11 @@ Feature: In an assignment, teacher can use comparative judgement to grade studen
       | Judges                             | Non-editing teacher                     |
     And I press "Save and display"
     And I press "Manage judges"
+    And I should not see "Nonediting 1"
+    And I should not see "Nonediting 2"
+    And I set the following fields to these values:
+      | Show inactive judges | 1 |
+    And I press "Update"
     And I should see "Nonediting 1" in the "#managejudges_table_r0" "css_element"
     And I should see "Nonediting 2" in the "#managejudges_table_r1" "css_element"
     And I am on the "Test assignment name" Activity page

@@ -35,7 +35,7 @@ require_once($CFG->dirroot . '/lib/tablelib.php');
 require_once($CFG->dirroot . '/user/profile/lib.php');
 
 class managejudgestable extends table_sql {
-    public function __construct(assign $assignment, $sortcolumn) {
+    public function __construct(assign $assignment, $sortcolumn, $showinactive) {
         global $DB, $PAGE, $USER;
 
         $PAGE->requires->js_call_amd(
@@ -94,6 +94,12 @@ class managejudgestable extends table_sql {
         $left = comparison::POSITION_LEFT;
         $right = comparison::POSITION_RIGHT;
 
+        if (!$showinactive) {
+            $having = " HAVING COUNT(comp.id) > 0";
+        } else {
+            $having = '';
+        }
+
         $this->set_count_sql("select count(id) from {user} u where u.id $insql", $inparams);
         $this->set_sql(
             "u.id,
@@ -117,7 +123,7 @@ class managejudgestable extends table_sql {
                             ON exclusion.entityid = u.id
                             AND exclusion.type = :entitytype
                             AND exclusion.assignmentid = :assignmentid2",
-            "u.id $insql GROUP BY u.id, exclusion.id $namefields",
+            "u.id $insql GROUP BY u.id, exclusion.id $namefields $having",
             $inparams
         );
     }

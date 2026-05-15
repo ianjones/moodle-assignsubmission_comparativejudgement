@@ -140,6 +140,7 @@ $string['right'] = 'Right';
 $string['savechangesandaddanother'] = 'Save changes and add another';
 $string['score'] = 'Score';
 $string['sendjudgerequestemails'] = 'Send comparison request emails';
+$string['showinactive'] = 'Show inactive judges';
 $string['sidespicked'] = 'Ratio of sides chosen';
 $string['stopjudging'] = 'Finish judging';
 $string['subject'] = 'Subject';
