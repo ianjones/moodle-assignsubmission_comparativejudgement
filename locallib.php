@@ -131,19 +131,18 @@ class assign_submission_comparativejudgement extends assign_submission_plugin {
         $mform->setType('comparativejudgement_minjudgementspersubmission', PARAM_INT);
         $mform->hideIf('comparativejudgement_minjudgementspersubmission', 'assignsubmission_comparativejudgement_enabled');
 
-        $commenthandler = new assign_feedback_comments($this->assignment, 'comments');
-        if ($commenthandler->is_enabled()) {
-            $mform->addElement(
-                'advcheckbox',
-                'comparativejudgement_enablecomments',
-                '',
-                get_string('comparativejudgement_enablecomments', 'assignsubmission_comparativejudgement')
-            );
-            $mform->setDefault(
-                'comparativejudgement_enablecomments',
-                $this->get_config_or_default('enablecomments')
-            );
-        }
+
+        $mform->addElement(
+            'advcheckbox',
+            'comparativejudgement_enablecomments',
+            '',
+            get_string('comparativejudgement_enablecomments', 'assignsubmission_comparativejudgement')
+        );
+        $mform->setDefault(
+            'comparativejudgement_enablecomments',
+            $this->get_config_or_default('enablecomments')
+        );
+        $mform->hideIf('comparativejudgement_enablecomments', 'assignfeedback_comments_enabled');
 
         $mform->addElement(
             'date_time_selector',

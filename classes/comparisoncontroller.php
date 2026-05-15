@@ -177,7 +177,7 @@ class comparisoncontroller extends basecontroller {
 
         $comparisonmanager = new comparisonmanager($USER->id, $this->assignment);
         $commenthandler = new assign_feedback_comments($this->assignment, 'comments');
-        $showcomments = $commenthandler->is_enabled() || empty($this->assignmentsettings->enablecomments);
+        $showcomments = $commenthandler->is_enabled() && !empty($this->assignmentsettings->enablecomments);
 
         $leftform = new comparisonform($this->getinternallink('comparison'), [
                 'position'     => comparison::POSITION_LEFT,
