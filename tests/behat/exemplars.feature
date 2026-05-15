@@ -64,10 +64,10 @@ Feature: In an assignment with comparative judgement enabled a teacher can suppl
     And I press "Do comparison"
     And I should see "An examplar submissions"
     And I should see "A second examplar submissions"
-    And I press "Choose Left"
+    And I press "Choose A"
     And I should see "The submitted text for student1"
     And I should see "A second examplar submissions"
-    And I press "Choose Left"
+    And I press "Choose A"
     And I press "Finish judging"
 
     And I am on the "Test assignment name" Activity page logged in as teacher1

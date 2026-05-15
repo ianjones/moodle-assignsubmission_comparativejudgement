@@ -21,9 +21,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+$string['a'] = 'A';
 $string['addexemplar'] = 'Add exemplar';
 $string['alwayssameside'] = 'Judge always picked the same side';
 $string['avgtimetakencomparing'] = 'Median time spent';
+$string['b'] = 'B';
 $string['body'] = 'Body';
 $string['body_help'] = 'Body of message to send to judges, available placeholders are:
        [firstname]
@@ -36,8 +38,8 @@ $string['bodydefault'] = '[fullname],
 As part of the grading of assignment [assignname] you are required to compare other submissions, you can do this by going to [judgeurl].';
 $string['calculategrades'] = 'Calculate scores';
 $string['calculategradesfirst'] = 'Please calculate scores before copying grades to the gradebook.';
-$string['chooseleft'] = 'Choose Left';
-$string['chooseright'] = 'Choose Right';
+$string['choosea'] = 'Choose A';
+$string['chooseb'] = 'Choose B';
 $string['comment'] = 'Comment';
 $string['commentpublished'] = 'Published';
 $string['comments'] = 'Comments';
@@ -90,7 +92,6 @@ $string['judges'] = 'Judges';
 $string['lastcalculation'] = 'Last calculation of grades at: {$a}';
 $string['lastcomparison'] = 'Last comparison';
 $string['lastreliability'] = 'Last reliability: {$a}';
-$string['left'] = 'Left';
 $string['losingsubmission'] = 'Losing submission';
 $string['losingsubmissionid'] = 'Losing submission';
 $string['losses'] = 'Losses';
@@ -136,7 +137,6 @@ $string['privacy:metadata:assignsubmission_comparativejudgement:winningsubmissio
 $string['privacy:metadata:submissionpurpose'] = 'The submission ID that links to submissions for the user.';
 $string['privacy:ranking'] = 'Ranking';
 $string['remainingjudgements'] = 'Minimum comparisons remaining:';
-$string['right'] = 'Right';
 $string['savechangesandaddanother'] = 'Save changes and add another';
 $string['score'] = 'Score';
 $string['sendjudgerequestemails'] = 'Send comparison request emails';

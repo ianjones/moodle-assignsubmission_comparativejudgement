@@ -3,16 +3,16 @@
 <div class="row col-md-12">
     {{#submissions}}
         <div class="col-md-6 submissioncontents pos_{{position}}">
-            
+
             <div class="row">
                 {{#first}}
-                    <div class="buttonleft">{{{buttonleft}}}</div>
+                    <div class="buttona">{{{buttona}}}</div>
                 {{/first}}
                 {{^first}}
-                    <div class="buttonright">{{{buttonright}}}</div>
+                    <div class="buttonb">{{{buttonb}}}</div>
                 {{/first}}
             </div>
-        
+
             {{#contents}}
                 {{#multiplepluginsused}}
                     <div class="row col-md-12"><h4>{{{type}}}</h4></div>
@@ -29,16 +29,16 @@
 
             <div class="row">
                 {{#first}}
-                    <div class="buttonleft">{{{buttonleftbottom}}}</div>
+                    <div class="buttona">{{{buttonabottom}}}</div>
                 {{/first}}
                 {{^first}}
-                    <div class="buttonright">{{{buttonrightbottom}}}</div>
+                    <div class="buttonb">{{{buttonbbottom}}}</div>
                 {{/first}}
-                
+
             </div>
 
             <hr class="d-md-none"/>
-            
+
         </div>
     {{/submissions}}
 

@@ -56,9 +56,9 @@ class comparisonform extends moodleform {
         );
 
         if ($this->_customdata['position'] == comparison::POSITION_LEFT) {
-            $mform->addElement('submit', 'buttonleft', get_string('chooseleft', 'assignsubmission_comparativejudgement'));
+            $mform->addElement('submit', 'buttona', get_string('choosea', 'assignsubmission_comparativejudgement'));
         } else if ($this->_customdata['position'] == comparison::POSITION_RIGHT) {
-            $mform->addElement('submit', 'buttonright', get_string('chooseright', 'assignsubmission_comparativejudgement'));
+            $mform->addElement('submit', 'buttonb', get_string('chooseb', 'assignsubmission_comparativejudgement'));
         }
     }
 }

@@ -151,9 +151,9 @@ class managecomparisonstable extends table_sql {
 
     public function col_winningsubmissionposition($row) {
         if ($row->winningsubmissionposition == 1) {
-            return get_string('left', 'assignsubmission_comparativejudgement');
+            return get_string('a', 'assignsubmission_comparativejudgement');
         } else if ($row->winningsubmissionposition == 2) {
-            return get_string('right', 'assignsubmission_comparativejudgement');
+            return get_string('b', 'assignsubmission_comparativejudgement');
         } else {
             return null;
         }

@@ -190,12 +190,12 @@ class comparisonmanager {
                 subone.totaljudgements_1 ASC,
                 $rand";
 
-        # Sorted on:
-        # number of times the user has seen this exact pair
-        # number of times anyone has seen this exact pair
-        # number of times the user has seen either and then each of the submissions
-        # number of times anyone has seen either and then each of the submissions
-        # random factor applied (unless phpunit in which case submission userids to make it testable)
+        // Sorted on:
+        // number of times the user has seen this exact pair
+        // number of times anyone has seen this exact pair
+        // number of times the user has seen either and then each of the submissions
+        // number of times anyone has seen either and then each of the submissions
+        // random factor applied (unless phpunit in which case submission userids to make it testable)
 
         $submissions = $DB->get_records_sql($sql, null, 0, 1);
 

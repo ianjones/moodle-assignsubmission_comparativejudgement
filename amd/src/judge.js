@@ -16,12 +16,12 @@ define(['jquery'],
                     $('textarea[name=comments_loser_1\\[text\\]]').val($('textarea[name=comments_winner_2\\[text\\]]').val());
                 });
 
-                $('div#page-content').on('click', 'button.comparisonbuttonleft', function () {
-                    $('#id_buttonleft').trigger('click');
+                $('div#page-content').on('click', 'button.comparisonbuttona', function () {
+                    $('#id_buttona').trigger('click');
                 });
 
-                $('div#page-content').on('click', 'button.comparisonbuttonright', function () {
-                    $('#id_buttonright').trigger('click');
+                $('div#page-content').on('click', 'button.comparisonbuttonb', function () {
+                    $('#id_buttonb').trigger('click');
                 });
             }
         };

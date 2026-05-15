@@ -335,19 +335,19 @@ class comparisoncontroller extends basecontroller {
 
         $PAGE->requires->js_call_amd('assignsubmission_comparativejudgement/judge', 'init');
 
-        $renderable['buttonleft'] = html_writer::tag(
+        $renderable['buttona'] = html_writer::tag(
             'button',
-            get_string('chooseleft', 'assignsubmission_comparativejudgement'),
-            ['class' => 'btn btn-primary comparisonbuttonleft']
+            get_string('choosea', 'assignsubmission_comparativejudgement'),
+            ['class' => 'btn btn-primary comparisonbuttona']
         );
-        $renderable['buttonleftbottom'] = $leftform->render();
+        $renderable['buttonabottom'] = $leftform->render();
 
-        $renderable['buttonright'] = html_writer::tag(
+        $renderable['buttonb'] = html_writer::tag(
             'button',
-            get_string('chooseright', 'assignsubmission_comparativejudgement'),
-            ['class' => 'btn btn-primary comparisonbuttonright']
+            get_string('chooseb', 'assignsubmission_comparativejudgement'),
+            ['class' => 'btn btn-primary comparisonbuttonb']
         );
-        $renderable['buttonrightbottom'] = $rightform->render();
+        $renderable['buttonbbottom'] = $rightform->render();
 
         if (!$comparisonmanager->redirectusertojudge()) {
             $finish = $this->getinternallink('comparison');

@@ -85,13 +85,13 @@ Feature: In an assignment, teacher can use comparative judgement to grade studen
     And I follow "Continue"
     And I should see "The submitted text for student1"
     And I should see "The submitted text for student2"
-    And I press "Choose Left"
+    And I press "Choose A"
     And I should see "The submitted text for student1"
     And I should see "The submitted text for student3"
-    And I press "Choose Right"
+    And I press "Choose B"
     And I should see "The submitted text for student2"
     And I should see "The submitted text for student3"
-    And I press "Choose Right"
+    And I press "Choose B"
     And I press "Finish judging"
 
     And I am on the "Test assignment name" Activity page logged in as nonediting2
@@ -100,13 +100,13 @@ Feature: In an assignment, teacher can use comparative judgement to grade studen
     And I follow "Continue"
     And I should see "The submitted text for student1"
     And I should see "The submitted text for student2"
-    And I press "Choose Left"
+    And I press "Choose A"
     And I should see "The submitted text for student1"
     And I should see "The submitted text for student3"
-    And I press "Choose Left"
+    And I press "Choose A"
     And I should see "The submitted text for student2"
     And I should see "The submitted text for student3"
-    And I press "Choose Left"
+    And I press "Choose A"
     And I press "Finish judging"
 
     And I am on the "Test assignment name" Activity page logged in as nonediting3
@@ -115,7 +115,7 @@ Feature: In an assignment, teacher can use comparative judgement to grade studen
     And I follow "Continue"
     And I should see "The submitted text for student1"
     And I should see "The submitted text for student2"
-    And I press "Choose Left"
+    And I press "Choose A"
 
     And I am on the "Test assignment name" Activity page logged in as teacher1
     And I press "Manage judges"
