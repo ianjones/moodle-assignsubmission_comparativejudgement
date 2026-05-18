@@ -32,7 +32,7 @@ function xmldb_assignsubmission_comparativejudgement_upgrade($oldversion) {
 
     $dbman = $DB->get_manager();
 
-    if ($oldversion < 2026051800) {
+    if ($oldversion < 2026052101) {
         // Define field hidegrader to be added to assign.
         $table = new xmldb_table('assignsubmission_compsubs');
         foreach (
@@ -48,7 +48,7 @@ function xmldb_assignsubmission_comparativejudgement_upgrade($oldversion) {
         }
 
         $table = new xmldb_table('assignsubmission_exclusion');
-        $field = new xmldb_field('assignmentid', XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, null, '0', 'id');
+        $field = new xmldb_field('assignmentid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL);
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }
@@ -69,14 +69,19 @@ function xmldb_assignsubmission_comparativejudgement_upgrade($oldversion) {
         $table = new xmldb_table('assignsubmission_exclusion');
         foreach (
             [
-                     new xmldb_field('entityid', XMLDB_TYPE_INTEGER, '10', null, null, null, '0', 'type'),
-                     new xmldb_field('assignmentid', XMLDB_TYPE_INTEGER, '10', null, null, null, '0', 'type'),
+                     new xmldb_field('entityid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL),
+                     new xmldb_field('assignmentid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL),
                  ] as $field
         ) {
             $dbman->change_field_type($table, $field);
         }
 
-        upgrade_plugin_savepoint(true, 2026051800, 'assignsubmission', 'comparativejudgement');
+        $index = new xmldb_index('assiexcl', XMLDB_INDEX_NOTUNIQUE, ['assignmentid']);
+        if (!$dbman->index_exists($table, $index)) {
+            $dbman->add_index($table, $index);
+        }
+
+        upgrade_plugin_savepoint(true, 2026052101, 'assignsubmission', 'comparativejudgement');
     }
     return true;
 }
