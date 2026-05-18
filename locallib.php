@@ -131,7 +131,6 @@ class assign_submission_comparativejudgement extends assign_submission_plugin {
         $mform->setType('comparativejudgement_minjudgementspersubmission', PARAM_INT);
         $mform->hideIf('comparativejudgement_minjudgementspersubmission', 'assignsubmission_comparativejudgement_enabled');
 
-
         $mform->addElement(
             'advcheckbox',
             'comparativejudgement_enablecomments',

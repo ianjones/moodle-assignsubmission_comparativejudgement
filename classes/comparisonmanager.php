@@ -158,7 +158,7 @@ class comparisonmanager {
         }
 
         $sql = "
-            SELECT 
+            SELECT
                 subone.*,
                 subzero.*
             FROM ($sql[0]) AS subzero
@@ -174,7 +174,7 @@ class comparisonmanager {
                     compsub.judgementid = comp.id AND compsub.submissionid <> comp.winningsubmission
                 WHERE comp.usermodified = $this->userid
                 GROUP BY comp.winningsubmission, compsub.submissionid
-            )  AS subs ON 
+            )  AS subs ON
                 (subzero.id_0 = subs.winning AND subone.id_1 = subs.losing)
                     OR
                 (subone.id_1 = subs.winning AND subzero.id_0 = subs.losing)
@@ -195,7 +195,7 @@ class comparisonmanager {
         // number of times anyone has seen this exact pair
         // number of times the user has seen either and then each of the submissions
         // number of times anyone has seen either and then each of the submissions
-        // random factor applied (unless phpunit in which case submission userids to make it testable)
+        // random factor applied (unless phpunit in which case submission userids to make it testable).
 
         $submissions = $DB->get_records_sql($sql, null, 0, 1);
 
