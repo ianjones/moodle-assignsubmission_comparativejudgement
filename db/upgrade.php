@@ -32,75 +32,51 @@ function xmldb_assignsubmission_comparativejudgement_upgrade($oldversion) {
 
     $dbman = $DB->get_manager();
 
-    if ($oldversion < 2019111811) {
+    if ($oldversion < 2026051800) {
         // Define field hidegrader to be added to assign.
         $table = new xmldb_table('assignsubmission_compsubs');
-
-        $field = new xmldb_field('comments', XMLDB_TYPE_TEXT, null, null, null, null, null, 'submissionid');
-
-        if (!$dbman->field_exists($table, $field)) {
-            $dbman->add_field($table, $field);
+        foreach (
+            [
+                     new xmldb_field('comments', XMLDB_TYPE_TEXT, null, null, null, null, null, 'submissionid'),
+                     new xmldb_field('commentsformat', XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, null, '0', 'comments'),
+                     new xmldb_field('commentpublished', XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, null, '0', 'comments'),
+                 ] as $field
+        ) {
+            if (!$dbman->field_exists($table, $field)) {
+                $dbman->add_field($table, $field);
+            }
         }
 
-        $field = new xmldb_field('commentsformat', XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, null, '0', 'comments');
-
-        // Conditionally launch add field commentsformat.
+        $table = new xmldb_table('assignsubmission_exclusion');
+        $field = new xmldb_field('assignmentid', XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, null, '0', 'id');
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }
 
         $table = new xmldb_table('assignsubmission_comp');
-        $field = new xmldb_field('comments');
-
-        // Conditionally launch drop field quizid.
-        if ($dbman->field_exists($table, $field)) {
-            $dbman->drop_field($table, $field);
-        }
-        $field = new xmldb_field('commentsformat');
-
-        // Conditionally launch drop field quizid.
-        if ($dbman->field_exists($table, $field)) {
-            $dbman->drop_field($table, $field);
-        }
-
-        // Assignment savepoint reached.
-        upgrade_plugin_savepoint(true, 2019111811, 'assignsubmission', 'comparativejudgement');
-    }
-
-    if ($oldversion < 2019111812) {
-        // Define field hidegrader to be added to assign.
-        $table = new xmldb_table('assignsubmission_compsubs');
-
-        $field = new xmldb_field('commentpublished', XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, null, '0', 'comments');
-
-        // Conditionally launch add field commentsformat.
-        if (!$dbman->field_exists($table, $field)) {
-            $dbman->add_field($table, $field);
+        foreach (
+            [
+                     new xmldb_field('comments'),
+                     new xmldb_field('commentsformat'),
+                 ] as $field
+        ) {
+            // Conditionally launch drop field quizid.
+            if ($dbman->field_exists($table, $field)) {
+                $dbman->drop_field($table, $field);
+            }
         }
 
-        // Assignment savepoint reached.
-        upgrade_plugin_savepoint(true, 2019111812, 'assignsubmission', 'comparativejudgement');
-    }
-
-    if ($oldversion < 2019111814) {
         $table = new xmldb_table('assignsubmission_exclusion');
-        $field = new xmldb_field('entityid', XMLDB_TYPE_INTEGER, '10', null, null, null, '0', 'type');
-        $dbman->change_field_type($table, $field);
-
-        // Assignment savepoint reached.
-        upgrade_plugin_savepoint(true, 2019111814, 'assignsubmission', 'comparativejudgement');
-    }
-
-    if ($oldversion < 2024121100) {
-        $table = new xmldb_table('assignsubmission_exclusion');
-        $field = new xmldb_field('assignmentid', XMLDB_TYPE_INTEGER, '10', null, null, null, '0', 'type');
-
-        if (!$dbman->field_exists($table, $field)) {
-            $dbman->add_field($table, $field);
+        foreach (
+            [
+                     new xmldb_field('entityid', XMLDB_TYPE_INTEGER, '10', null, null, null, '0', 'type'),
+                     new xmldb_field('assignmentid', XMLDB_TYPE_INTEGER, '10', null, null, null, '0', 'type'),
+                 ] as $field
+        ) {
+            $dbman->change_field_type($table, $field);
         }
 
-        // Assignment savepoint reached.
-        upgrade_plugin_savepoint(true, 2024121100, 'assignsubmission', 'comparativejudgement');
+        upgrade_plugin_savepoint(true, 2026051800, 'assignsubmission', 'comparativejudgement');
     }
     return true;
 }

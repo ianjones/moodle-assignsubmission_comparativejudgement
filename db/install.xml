@@ -1,8 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/assign/submission/comparativejudgement/db" VERSION="20120423" COMMENT="XMLDB file for Moodle mod/assign/submission/comparativejudgement"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="../../../../../lib/xmldb/xmldb.xsd"
->
+<XMLDB xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" PATH="mod/assign/submission/comparativejudgement/db" VERSION="2026052000" COMMENT="XMLDB file for Moodle mod/assign/submission/comparativejudgement" xsi:noNamespaceSchemaLocation="../../../../../lib/xmldb/xmldb.xsd">
     <TABLES>
         <TABLE NAME="assignsubmission_comp" COMMENT="Info about comparativejudgement submission">
             <FIELDS>
@@ -17,12 +13,9 @@
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="The unique id for this comparativejudgement submission."/>
-                <KEY NAME="usermodified" TYPE="foreign" FIELDS="usermodified" REFTABLE="user" REFFIELDS="id"
-                     COMMENT="The assignment instance this online text submission relates to."/>
-                <KEY NAME="assignmentid" TYPE="foreign" FIELDS="assignmentid" REFTABLE="assign" REFFIELDS="id"
-                     COMMENT="The assignment instance this online text submission relates to."/>
-                <KEY NAME="winningsubmission" TYPE="foreign" FIELDS="winningsubmission" REFTABLE="assign_submission" REFFIELDS="id"
-                     COMMENT="The submission this online text submission relates to."/>
+                <KEY NAME="usermodified" TYPE="foreign" FIELDS="usermodified" REFTABLE="user" REFFIELDS="id" COMMENT="The assignment instance this online text submission relates to."/>
+                <KEY NAME="assignmentid" TYPE="foreign" FIELDS="assignmentid" REFTABLE="assign" REFFIELDS="id" COMMENT="The assignment instance this online text submission relates to."/>
+                <KEY NAME="winningsubmission" TYPE="foreign" FIELDS="winningsubmission" REFTABLE="assign_submission" REFFIELDS="id" COMMENT="The submission this online text submission relates to."/>
             </KEYS>
         </TABLE>
         <TABLE NAME="assignsubmission_compsubs" COMMENT="Info about comparativejudgement submission">
@@ -36,10 +29,8 @@
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="The unique id for this comparativejudgement submission."/>
-                <KEY NAME="judgementid" TYPE="foreign" FIELDS="judgementid" REFTABLE="assignsubmission_comp" REFFIELDS="id"
-                     COMMENT="The assignment instance this online text submission relates to."/>
-                <KEY NAME="submissionid" TYPE="foreign" FIELDS="submissionid" REFTABLE="assign_submission" REFFIELDS="id"
-                     COMMENT="The submission this online text submission relates to."/>
+                <KEY NAME="judgementid" TYPE="foreign" FIELDS="judgementid" REFTABLE="assignsubmission_comp" REFFIELDS="id" COMMENT="The assignment instance this online text submission relates to."/>
+                <KEY NAME="submissionid" TYPE="foreign" FIELDS="submissionid" REFTABLE="assign_submission" REFFIELDS="id" COMMENT="The submission this online text submission relates to."/>
             </KEYS>
         </TABLE>
         <TABLE NAME="assignsubmission_ranking" COMMENT="Info about comparativejudgement submission">
@@ -53,10 +44,8 @@
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="The unique id for this comparativejudgement submission."/>
-                <KEY NAME="usermodified" TYPE="foreign" FIELDS="usermodified" REFTABLE="user" REFFIELDS="id"
-                     COMMENT="The assignment instance this online text submission relates to."/>
-                <KEY NAME="assignmentid" TYPE="foreign" FIELDS="assignmentid" REFTABLE="assign" REFFIELDS="id"
-                     COMMENT="The assignment instance this online text submission relates to."/>
+                <KEY NAME="usermodified" TYPE="foreign" FIELDS="usermodified" REFTABLE="user" REFFIELDS="id" COMMENT="The assignment instance this online text submission relates to."/>
+                <KEY NAME="assignmentid" TYPE="foreign" FIELDS="assignmentid" REFTABLE="assign" REFFIELDS="id" COMMENT="The assignment instance this online text submission relates to."/>
             </KEYS>
         </TABLE>
         <TABLE NAME="assignsubmission_rankingsub" COMMENT="Info about comparativejudgement submission">
@@ -68,10 +57,8 @@
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="The unique id for this comparativejudgement submission."/>
-                <KEY NAME="rankingid" TYPE="foreign" FIELDS="rankingid" REFTABLE="assignsubmission_ranking" REFFIELDS="id"
-                     COMMENT="The assignment instance this online text submission relates to."/>
-                <KEY NAME="submissionid" TYPE="foreign" FIELDS="submissionid" REFTABLE="assign_submission" REFFIELDS="id"
-                     COMMENT="The submission this online text submission relates to."/>
+                <KEY NAME="rankingid" TYPE="foreign" FIELDS="rankingid" REFTABLE="assignsubmission_ranking" REFFIELDS="id" COMMENT="The assignment instance this online text submission relates to."/>
+                <KEY NAME="submissionid" TYPE="foreign" FIELDS="submissionid" REFTABLE="assign_submission" REFFIELDS="id" COMMENT="The submission this online text submission relates to."/>
             </KEYS>
         </TABLE>
         <TABLE NAME="assignsubmission_exemplars" COMMENT="Info about comparativejudgement submission">
@@ -82,8 +69,7 @@
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="The unique id for this comparativejudgement submission."/>
-                <KEY NAME="submissionid" TYPE="foreign" FIELDS="submissionid" REFTABLE="assign_submission" REFFIELDS="id"
-                     COMMENT="The submission this online text submission relates to."/>
+                <KEY NAME="submissionid" TYPE="foreign" FIELDS="submissionid" REFTABLE="assign_submission" REFFIELDS="id" COMMENT="The submission this online text submission relates to."/>
             </KEYS>
         </TABLE>
         <TABLE NAME="assignsubmission_exclusion" COMMENT="Info about comparativejudgement submission">
@@ -95,8 +81,7 @@
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="The unique id for this comparativejudgement submission."/>
-                <KEY NAME="assignmentid" TYPE="foreign" FIELDS="assignmentid" REFTABLE="assign" REFFIELDS="id"
-                     COMMENT="The assignment instance this online text submission relates to."/>
+                <KEY NAME="assignmentid" TYPE="foreign" FIELDS="assignmentid" REFTABLE="assign" REFFIELDS="id" COMMENT="The assignment instance this online text submission relates to."/>
             </KEYS>
         </TABLE>
         <TABLE NAME="assignsubmission_email" COMMENT="Default comment for the table, please edit me">
@@ -112,8 +97,7 @@
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-                <KEY NAME="assignmentid" TYPE="foreign" FIELDS="assignmentid" REFTABLE="assign" REFFIELDS="id"
-                     COMMENT="The assignment instance this online text submission relates to."/>
+                <KEY NAME="assignmentid" TYPE="foreign" FIELDS="assignmentid" REFTABLE="assign" REFFIELDS="id" COMMENT="The assignment instance this online text submission relates to."/>
             </KEYS>
         </TABLE>
     </TABLES>
