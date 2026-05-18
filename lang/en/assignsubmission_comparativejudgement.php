@@ -56,6 +56,7 @@ $string['comparativejudgement_judgementswhileeditable'] = 'Allow judge to make c
 $string['comparedsubmission'] = 'Compared submission';
 $string['comparisondone'] = 'Comparison done';
 $string['comparisonprogress'] = 'Comparison {$a->number} of {$a->required}';
+$string['completedjudgements'] = 'Comparisons completed: ';
 $string['copytogradebook'] = 'Copy grades to gradebook';
 $string['delay'] = 'Delay';
 $string['delaydetail'] = '{$a->delay} (currently {$a->current})';

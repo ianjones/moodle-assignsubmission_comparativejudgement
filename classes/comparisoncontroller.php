@@ -259,6 +259,11 @@ class comparisoncontroller extends basecontroller {
                 'p',
                 get_string('remainingjudgements', 'assignsubmission_comparativejudgement') . ' ' . $judgementsremaining
             );
+        } else if ($judgementsmade > 0) {
+            $judgeinst .= html_writer::tag(
+                'p',
+                get_string('completedjudgements', 'assignsubmission_comparativejudgement') . ' ' . $judgementsmade
+            );
         }
 
         $renderable = [];
