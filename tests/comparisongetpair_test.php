@@ -369,7 +369,9 @@ final class comparisongetpair_test extends advanced_testcase {
         }
 
         // Check the judgements are STILL roughly equally distributed across the submissions.
-        $counts = $DB->get_records_sql('select submissionid, count(id) as judgements from {assignsubmission_compsubs} group by submissionid');
+        $counts = $DB->get_records_sql('select submissionid, count(id) as judgements
+                                                from {assignsubmission_compsubs}
+                                                group by submissionid');
 
         foreach ($counts as $count) {
             $lastcount = $count->judgements;

@@ -163,15 +163,13 @@ class comparisonmanager {
                 subzero.*
             FROM ($sql[0]) AS subzero
             INNER JOIN ($sql[1]) AS subone ON subzero.id_0 <> subone.id_1
-            LEFT JOIN (                
-                # Flatten permutations to combinations.
+            LEFT JOIN (
                 SELECT
                     SUM(subsinner.timescompared) AS timescompared,
                     SUM(subsinner.timescomparedbyuser) AS timescomparedbyuser,
                     CASE WHEN subsinner.winning < subsinner.losing THEN subsinner.losing ELSE subsinner.winning END as subone,
                     CASE WHEN subsinner.winning > subsinner.losing THEN subsinner.losing ELSE subsinner.winning END as subtwo
                 FROM (
-                    # Get the number of times each permutation has been judged with counts.
                     SELECT
                         count(comp.id) AS timescompared,
                         SUM(CASE WHEN comp.usermodified = $this->userid THEN 1 ELSE 0 END) AS timescomparedbyuser,
