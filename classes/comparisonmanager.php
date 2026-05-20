@@ -163,21 +163,33 @@ class comparisonmanager {
                 subzero.*
             FROM ($sql[0]) AS subzero
             INNER JOIN ($sql[1]) AS subone ON subzero.id_0 <> subone.id_1
-            LEFT JOIN (
+            LEFT JOIN (                
+                # Flatten permutations to combinations.
                 SELECT
-                    count(comp.id) AS timescompared,
-                    SUM(CASE WHEN comp.usermodified = $this->userid THEN 1 ELSE 0 END) AS timescomparedbyuser,
-                    comp.winningsubmission AS winning,
-                    compsub.submissionid AS losing
-                FROM {assignsubmission_comp} comp
-                INNER JOIN {assignsubmission_compsubs} compsub ON
-                    compsub.judgementid = comp.id AND compsub.submissionid <> comp.winningsubmission
-                GROUP BY comp.winningsubmission, compsub.submissionid
+                    SUM(subsinner.timescompared) AS timescompared,
+                    SUM(subsinner.timescomparedbyuser) AS timescomparedbyuser,
+                    CASE WHEN subsinner.winning < subsinner.losing THEN subsinner.losing ELSE subsinner.winning END as subone,
+                    CASE WHEN subsinner.winning > subsinner.losing THEN subsinner.losing ELSE subsinner.winning END as subtwo
+                FROM (
+                    # Get the number of times each permutation has been judged with counts.
+                    SELECT
+                        count(comp.id) AS timescompared,
+                        SUM(CASE WHEN comp.usermodified = $this->userid THEN 1 ELSE 0 END) AS timescomparedbyuser,
+                        comp.winningsubmission AS winning,
+                        compsub.submissionid AS losing
+                    FROM {assignsubmission_comp} comp
+                    INNER JOIN {assignsubmission_compsubs} compsub ON
+                        compsub.judgementid = comp.id AND compsub.submissionid <> comp.winningsubmission
+                    GROUP BY comp.winningsubmission, compsub.submissionid
+                ) AS subsinner
+                GROUP BY
+                CASE WHEN subsinner.winning < subsinner.losing THEN subsinner.losing ELSE subsinner.winning END,
+                CASE WHEN subsinner.winning > subsinner.losing THEN subsinner.losing ELSE subsinner.winning END
             )  AS subs ON
-                (subzero.id_0 = subs.winning AND subone.id_1 = subs.losing)
+                (subzero.id_0 = subs.subone AND subone.id_1 = subs.subtwo)
                     OR
-                (subone.id_1 = subs.winning AND subzero.id_0 = subs.losing)
-            WHERE subzero.id_0 < subone.id_1 AND $preventrepeats AND $preventcompareexemplars
+                (subone.id_1 = subs.subone AND subzero.id_0 = subs.subtwo)
+            WHERE $preventrepeats AND $preventcompareexemplars
             ORDER BY
                 COALESCE(subs.timescomparedbyuser, 0) ASC,
                 COALESCE(subs.timescompared, 0) ASC,
