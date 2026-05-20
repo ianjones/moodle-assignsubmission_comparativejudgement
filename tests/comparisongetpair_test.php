@@ -216,6 +216,7 @@ final class comparisongetpair_test extends advanced_testcase {
                 'submissiondrafts'                              => 1,
                 'assignsubmission_onlinetext_enabled'           => 1,
                 'assignsubmission_comparativejudgement_enabled' => 1,
+                'comparativejudgement_allowrepeatcomparisons'   => 0,
         ]);
         $plugin = \assign_submission_comparativejudgement::getplugin($secondassign);
         $plugin->set_config('judges', \assign_submission_comparativejudgement::FAKEROLE_ASSIGNMENT_SUBMITTED);
@@ -263,6 +264,117 @@ final class comparisongetpair_test extends advanced_testcase {
                     array_slice($compared[$i], 0, 3),
                     array_slice($compared[$i - 1], 0, 3)
                 );
+            }
+        }
+    }
+
+    public function test_canuserjudge_fakerole_assignment_do_loads_of_comparisons_checkrandomnessdistribution(): void {
+        global $DB;
+
+        $this->resetAfterTest();
+
+        $course = $this->getDataGenerator()->create_course();
+
+        // Assignment with submissions.
+        $secondassign = $this->create_instance($course, [
+                'name'                                          => 'Assignment with submissions',
+                'duedate'                                       => time(),
+                'attemptreopenmethod'                           => ASSIGN_ATTEMPT_REOPEN_METHOD_MANUAL,
+                'maxattempts'                                   => 3,
+                'submissiondrafts'                              => 1,
+                'assignsubmission_onlinetext_enabled'           => 1,
+                'assignsubmission_comparativejudgement_enabled' => 1,
+                'comparativejudgement_allowrepeatcomparisons'   => 1,
+        ]);
+        $plugin = \assign_submission_comparativejudgement::getplugin($secondassign);
+        $plugin->set_config('judges', \assign_submission_comparativejudgement::FAKEROLE_ASSIGNMENT_SUBMITTED);
+
+        $teacher = $this->getDataGenerator()->create_and_enrol($course, 'teacher');
+
+        // Add a bunch of learners/submissions.
+        $students = [];
+        for ($i = 0; $i < 10; $i++) {
+            $students[$i] = $this->getDataGenerator()->create_and_enrol($course, 'student');
+            $this->add_submission($students[$i], $secondassign);
+            $this->submit_for_grading($students[$i], $secondassign);
+        }
+
+        // Have each of the first 5 learners do 200 judgements.
+        $compared = [];
+        for ($i = 0; $i < 5; $i++) {
+            $student = $students[$i];
+
+            $compared[$i] = [];
+            $this->setUser($student);
+            $comparisonmanager = new comparisonmanager($student->id, $secondassign);
+
+            for ($i = 0; $i < 200; $i++) {
+                $getpairtojudge = $comparisonmanager->getpairtojudge();
+
+                if ($getpairtojudge) {
+                    comparison::recordcomparison(
+                        $secondassign->get_instance()->id,
+                        50,
+                        current($getpairtojudge)->id,
+                        comparison::POSITION_RIGHT,
+                        next($getpairtojudge)->id
+                    );
+                }
+            }
+        }
+
+        $counts = $DB->get_records_sql('select submissionid, count(id) as judgements from {assignsubmission_compsubs} group by submissionid');
+
+        // Check the judgements are roughly equally distributed across the submissions.
+        foreach ($counts as $count) {
+            $lastcount = $count->judgements;
+
+            if (isset($lastcount)) {
+                $this->assertGreaterThan($lastcount - 5, $count->judgements);
+                $this->assertLessThan($lastcount + 5, $count->judgements);
+            }
+        }
+
+        // Add some more submissions.
+        for ($i = 0; $i < 10; $i++) {
+            $students[$i] = $this->getDataGenerator()->create_and_enrol($course, 'student');
+            $this->add_submission($students[$i], $secondassign);
+            $this->submit_for_grading($students[$i], $secondassign);
+        }
+
+        // Have each of the first 5 learners do 200 judgements again.
+        $compared = [];
+        for ($i = 0; $i < 5; $i++) {
+            $student = $students[$i];
+
+            $compared[$i] = [];
+            $this->setUser($student);
+            $comparisonmanager = new comparisonmanager($student->id, $secondassign);
+
+            for ($i = 0; $i < 200; $i++) {
+                $getpairtojudge = $comparisonmanager->getpairtojudge();
+
+                if ($getpairtojudge) {
+                    comparison::recordcomparison(
+                        $secondassign->get_instance()->id,
+                        50,
+                        current($getpairtojudge)->id,
+                        comparison::POSITION_RIGHT,
+                        next($getpairtojudge)->id
+                    );
+                }
+            }
+        }
+
+        // Check the judgements are STILL roughly equally distributed across the submissions.
+        $counts = $DB->get_records_sql('select submissionid, count(id) as judgements from {assignsubmission_compsubs} group by submissionid');
+
+        foreach ($counts as $count) {
+            $lastcount = $count->judgements;
+
+            if (isset($lastcount)) {
+                $this->assertGreaterThan($lastcount - 5, $count->judgements);
+                $this->assertLessThan($lastcount + 5, $count->judgements);
             }
         }
     }

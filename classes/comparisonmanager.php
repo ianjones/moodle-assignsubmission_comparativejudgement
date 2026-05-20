@@ -123,7 +123,7 @@ class comparisonmanager {
                         sub.groupid AS groupid_$i,
                         sub.attemptnumber AS attemptnumber_$i,
                         sub.latest AS latest_$i,
-                        count(comp.id) AS totaljudgements_$i,
+                        COUNT(comp.id) AS totaljudgements_$i,
                         SUM(CASE WHEN comp.usermodified = $this->userid THEN 1 ELSE 0 END) AS totaluserjudgements_$i,
                         exemp.id AS exemp_$i
                 FROM {assign_submission} sub
@@ -140,7 +140,7 @@ class comparisonmanager {
         }
 
         if (empty($settings->allowrepeatcomparisons)) {
-            $preventrepeats = " subs.losing IS NULL ";
+            $preventrepeats = " COALESCE(subs.timescomparedbyuser, 0) = 0 ";
         } else {
             $preventrepeats = ' 1 = 1 ';
         }
@@ -172,16 +172,15 @@ class comparisonmanager {
                 FROM {assignsubmission_comp} comp
                 INNER JOIN {assignsubmission_compsubs} compsub ON
                     compsub.judgementid = comp.id AND compsub.submissionid <> comp.winningsubmission
-                WHERE comp.usermodified = $this->userid
                 GROUP BY comp.winningsubmission, compsub.submissionid
             )  AS subs ON
                 (subzero.id_0 = subs.winning AND subone.id_1 = subs.losing)
                     OR
                 (subone.id_1 = subs.winning AND subzero.id_0 = subs.losing)
-            WHERE $preventrepeats AND $preventcompareexemplars
+            WHERE subzero.id_0 < subone.id_1 AND $preventrepeats AND $preventcompareexemplars
             ORDER BY
-                subs.timescomparedbyuser ASC,
-                subs.timescompared ASC,
+                COALESCE(subs.timescomparedbyuser, 0) ASC,
+                COALESCE(subs.timescompared, 0) ASC,
                 (subzero.totaluserjudgements_0 + subone.totaluserjudgements_1) ASC,
                 subzero.totaluserjudgements_0 ASC,
                 subone.totaluserjudgements_1 ASC,
