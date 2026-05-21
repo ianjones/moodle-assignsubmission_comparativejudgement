@@ -67,6 +67,11 @@ function xmldb_assignsubmission_comparativejudgement_upgrade($oldversion) {
         }
 
         $table = new xmldb_table('assignsubmission_exclusion');
+        $index = new xmldb_index('assiexcl_ass_ix', XMLDB_INDEX_NOTUNIQUE, ['assignmentid']);
+        if ($dbman->index_exists($table, $index)) {
+            $dbman->drop_index($table, $index);
+        }
+
         foreach (
             [
                      new xmldb_field('entityid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL),
@@ -76,7 +81,6 @@ function xmldb_assignsubmission_comparativejudgement_upgrade($oldversion) {
             $dbman->change_field_type($table, $field);
         }
 
-        $index = new xmldb_index('assiexcl', XMLDB_INDEX_NOTUNIQUE, ['assignmentid']);
         if (!$dbman->index_exists($table, $index)) {
             $dbman->add_index($table, $index);
         }
