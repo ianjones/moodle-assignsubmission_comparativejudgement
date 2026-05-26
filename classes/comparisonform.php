@@ -43,17 +43,13 @@ class comparisonform extends moodleform {
             $mform->addElement(
                 'editor',
                 'comments_winner_' . $this->_customdata['position'],
-                get_string('comments', 'assignsubmission_comparativejudgement'),
-                null,
-                ['autosave' => false]
+                get_string('comments', 'assignsubmission_comparativejudgement')
             );
 
             $mform->addElement(
                 'editor',
                 'comments_loser_' . $this->_customdata['position'],
-                get_string('comments', 'assignsubmission_comparativejudgement'),
-                null,
-                ['autosave' => false]
+                get_string('comments', 'assignsubmission_comparativejudgement')
             );
         }
 
