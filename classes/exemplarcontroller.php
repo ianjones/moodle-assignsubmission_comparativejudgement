@@ -76,9 +76,10 @@ class exemplarcontroller extends basecontroller {
         );
         $o .= $contents;
 
-        $o .= $OUTPUT->single_button(
+        $o .= html_writer::link(
             $this->getinternallink('addexemplar'),
-            get_string('addexemplar', 'assignsubmission_comparativejudgement')
+            get_string('addexemplar', 'assignsubmission_comparativejudgement'),
+            ['class' => 'btn btn-primary m-1']
         );
 
         $o .= $this->getfooter();

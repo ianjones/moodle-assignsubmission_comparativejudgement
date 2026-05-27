@@ -48,20 +48,6 @@ class exemplarform extends moodleform {
             }
         }
 
-        $elems = [
-                'id'            => $assign->get_course_module()->id,
-                'userid'        => $data->userid,
-                'action'        => 'viewpluginpage',
-                'plugin'        => 'comparativejudgement',
-                'pluginsubtype' => 'assignsubmission',
-                'pluginaction'  => 'addexemplar',
-        ];
-
-        foreach ($elems as $key => $val) {
-            $mform->addElement('hidden', $key, $val);
-            $mform->setType($key, PARAM_ALPHA);
-        }
-
         $buttonarray = [];
         $buttonarray[] = &$mform->createElement('submit', 'submitbutton', get_string('savechanges', 'assign'));
         $buttonarray[] = &$mform->createElement(

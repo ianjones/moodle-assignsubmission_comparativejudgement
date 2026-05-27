@@ -31,7 +31,7 @@ Feature: In an assignment with comparative judgement enabled a teacher can suppl
 
     And I am on the "Test assignment name" Activity page logged in as teacher1
     When I follow "Manage exemplars"
-    And I press "Add exemplar"
+    And I follow "Add exemplar"
     And I set the following fields to these values:
       | Title | The first exemplar |
       | Online text | An examplar submissions |
