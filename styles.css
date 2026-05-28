@@ -22,3 +22,7 @@ div.comparisonbuttonrow {
 #fitem_id_comments_loser_2 {
     display: none;
 }
+
+.submissioncontents_embed > :first-child {
+    width: 100%;
+}
