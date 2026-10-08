@@ -42,6 +42,8 @@ class managesubmissionstable extends table_sql {
     /** @var exemplarcontroller */
     private $exemplarcontroller;
 
+    private assign $assignment;
+
     public function __construct(assign $assignment, $sortcolumn) {
         global $PAGE;
         $PAGE->requires->js_call_amd(
@@ -52,6 +54,7 @@ class managesubmissionstable extends table_sql {
 
         parent::__construct('managesubmissions_table');
 
+        $this->assignment = $assignment;
         $this->useridfield = 'userid';
         $context = $assignment->get_context();
         $this->cangrade = has_capability('mod/assign:grade', $context);
@@ -195,7 +198,7 @@ class managesubmissionstable extends table_sql {
         if (!empty($row->exemplartitle)) {
             return $row->exemplartitle;
         } else {
-            return parent::col_fullname($row);
+            return $this->assignment->fullname($row);
         }
     }
 

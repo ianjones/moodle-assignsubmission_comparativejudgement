@@ -47,6 +47,8 @@ class managecomparisonstable extends table_sql {
 
     private bool $teamsubmission;
 
+    private assign $assignment;
+
     public function __construct(assign $assignment, $sortcolumn) {
         global $PAGE;
         $PAGE->requires->js_call_amd(
@@ -57,6 +59,7 @@ class managecomparisonstable extends table_sql {
 
         parent::__construct('managecomparisons_table');
 
+        $this->assignment = $assignment;
         $this->useridfield = 'userid';
         $context = $assignment->get_context();
         $this->cangrade = has_capability('mod/assign:grade', $context);
@@ -208,8 +211,11 @@ class managecomparisonstable extends table_sql {
             } else {
                 $label = $row->groupname;
             }
+        } else if (isset($row->userid)) {
+            $row->id = $row->userid;
+            $label = $this->assignment->fullname($row);
         } else {
-            $label = fullname($row);
+            $label = '';
         }
 
         if ($this->cangrade) {
