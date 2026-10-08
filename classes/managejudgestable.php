@@ -154,7 +154,11 @@ class managejudgestable extends table_sql {
         global $OUTPUT;
         $text = $row->leftchoices . " : " . $row->rightchoices;
 
-        if ($row->leftchoices == $row->comparisons || $row->rightchoices == $row->comparisons) {
+        if (
+            $row->comparisons >= 10
+            &&
+            abs($row->leftchoices - $row->rightchoices) > ($row->comparisons * 0.9)
+        ) {
             if (!optional_param('download', false, PARAM_ALPHA)) {
                 $text .= " " . $OUTPUT->pix_icon(
                     'i/warning',
