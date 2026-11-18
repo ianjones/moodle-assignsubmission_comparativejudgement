@@ -309,7 +309,7 @@ class comparisonmanager {
             return false;
         }
 
-        $stored = $SESSION->assignsubmission_comparativejudgement_pairs[$this->assignmentinstance->id] ?? null;
+        $stored = $SESSION->assignsubmission_comparativejudgement_pairs[$this->pairsessionkey()] ?? null;
         if (
             empty($stored) || $stored['userid'] != $this->userid ||
             $stored['judgementcount'] != $judgementcount
@@ -318,6 +318,13 @@ class comparisonmanager {
         }
 
         return [$stored['left'], $stored['right']];
+    }
+
+    /**
+     * Session key for this user's pair on this assignment.
+     */
+    private function pairsessionkey(): string {
+        return $this->assignmentinstance->id . '_' . $this->userid;
     }
 
     private function storepair(array $pair, int $judgementcount) {
@@ -330,7 +337,7 @@ class comparisonmanager {
         if (!isset($SESSION->assignsubmission_comparativejudgement_pairs)) {
             $SESSION->assignsubmission_comparativejudgement_pairs = [];
         }
-        $SESSION->assignsubmission_comparativejudgement_pairs[$this->assignmentinstance->id] = [
+        $SESSION->assignsubmission_comparativejudgement_pairs[$this->pairsessionkey()] = [
             'userid'         => $this->userid,
             'left'           => $pair[0],
             'right'          => $pair[1],
@@ -342,7 +349,7 @@ class comparisonmanager {
         global $SESSION;
 
         if ($this->canstorepair()) {
-            unset($SESSION->assignsubmission_comparativejudgement_pairs[$this->assignmentinstance->id]);
+            unset($SESSION->assignsubmission_comparativejudgement_pairs[$this->pairsessionkey()]);
         }
     }
 
