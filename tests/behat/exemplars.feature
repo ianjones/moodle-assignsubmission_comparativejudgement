@@ -56,7 +56,6 @@ Feature: In an assignment with comparative judgement enabled a teacher can suppl
     And I set the following fields to these values:
       | Minimum comparisons per judge      | 1                                       |
       | Minimum comparisons per judge      | 1                                       |
-      | Minimum comparisons per submission | 1                                       |
       | Judges                             | Non-editing teacher                     |
     And I press "Save and display"
 

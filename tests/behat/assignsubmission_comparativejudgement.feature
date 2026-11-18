@@ -61,7 +61,6 @@ Feature: In an assignment, teacher can use comparative judgement to grade studen
     And I set the following fields to these values:
       | Minimum comparisons per judge      | 2                                       |
       | Minimum comparisons per judge      | 3                                       |
-      | Minimum comparisons per submission | 2                                       |
       | Introduction for judges            | The introduction to the judging process |
       | Judges                             | Non-editing teacher                     |
     And I press "Save and display"

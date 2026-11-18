@@ -52,7 +52,6 @@ class assign_submission_comparativejudgement extends assign_submission_plugin {
         $defaults = [
                 'minjudgementsperuser'       => 10,
                 'maxjudgementsperuser'       => '',
-                'minjudgementspersubmission' => 5,
                 'judgementswhileeditable'    => true,
                 'enablecomments'             => true,
                 'judges'                     => self::FAKEROLE_ASSIGNMENT_SUBMITTED,
@@ -118,18 +117,6 @@ class assign_submission_comparativejudgement extends assign_submission_plugin {
         $mform->setDefault('comparativejudgement_maxjudgementsperuser', $this->get_config_or_default('maxjudgementsperuser'));
         $mform->setType('comparativejudgement_maxjudgementsperuser', PARAM_INT);
         $mform->hideIf('comparativejudgement_maxjudgementsperuser', 'assignsubmission_comparativejudgement_enabled');
-
-        $mform->addElement(
-            'text',
-            'comparativejudgement_minjudgementspersubmission',
-            get_string('minjudgementspersubmission', 'assignsubmission_comparativejudgement')
-        );
-        $mform->setDefault(
-            'comparativejudgement_minjudgementspersubmission',
-            $this->get_config_or_default('minjudgementspersubmission')
-        );
-        $mform->setType('comparativejudgement_minjudgementspersubmission', PARAM_INT);
-        $mform->hideIf('comparativejudgement_minjudgementspersubmission', 'assignsubmission_comparativejudgement_enabled');
 
         $mform->addElement(
             'advcheckbox',
