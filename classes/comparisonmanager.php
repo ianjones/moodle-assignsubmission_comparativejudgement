@@ -34,6 +34,9 @@ class comparisonmanager {
     private $assignmentinstance;
     private $randomise = true;
 
+    /** Random draws to try before falling back to counting every allowed pair. */
+    const MAX_RANDOM_DRAWS = 100;
+
     /**
      * Function comment.
      */
@@ -67,30 +70,80 @@ class comparisonmanager {
         return assign_submission_comparativejudgement::getpluginsettings($this->assignment);
     }
 
-    // User has not judged this combination ever.
-    // Not both exemplars.
-    // Not their own submission.
-    // Submission is fully submitted.
-    // User has not judged either assignment.
-    // Number of judgements on this assignment.
-    // Variable $urgent means below min or never judged.
-    public function getpairtojudge(bool $urgent = false) {
-        global $DB, $CFG;
-
+    /**
+     * Get a pair of submissions for this user to judge.
+     *
+     * Pairs are drawn uniformly at random from all allowed pairs (with replacement across judges).
+     * Drawing a pair needs only a few small, indexed queries, however many submissions or
+     * comparisons the assignment has, so it doesn't slow down as a session grows. A pair is only offered if:
+     *  - neither submission is the user's own (or their group's),
+     *  - both submissions are the latest attempt and fully submitted,
+     *  - they are not both exemplars (unless allowcompareexemplars is set),
+     *  - this user has not already judged the pair (unless allowrepeatcomparisons is set).
+     *
+     * The drawn pair is kept in the user's session until they record a judgement, so reloading the
+     * page shows the same pair rather than letting the judge pick a different one.
+     *
+     * @return array|false Two submission records keyed by id, left-hand one first, or false if none.
+     */
+    public function getpairtojudge() {
         if (!$this->canuserjudge()) {
             return false;
         }
 
-        $submission = $this->getsubmission();
-
-        if (!empty($submission)) {
-            $submissiontoexclude = $submission->id;
-        } else {
-            $submissiontoexclude = -1;
+        $candidates = $this->getcandidatesubmissions();
+        if (count($candidates) < 2) {
+            return false;
         }
 
-        $fullysubmitted = ASSIGN_SUBMISSION_STATUS_SUBMITTED;
-        $assignmentid = $this->assignmentinstance->id;
+        $settings = $this->getsettings();
+        $allowrepeats = !empty($settings->allowrepeatcomparisons);
+        $allowexemplarpairs = !empty($settings->allowcompareexemplars);
+        $judgedpairs = $this->getjudgedpairs();
+        $judgementcount = static::countjudgementsmade($this->userid, $this->assignmentinstance->id);
+
+        $isvalid = function ($a, $b) use ($candidates, $allowrepeats, $allowexemplarpairs, $judgedpairs): bool {
+            if ($a == $b || !isset($candidates[$a]) || !isset($candidates[$b])) {
+                return false;
+            }
+            if (!$allowexemplarpairs && !empty($candidates[$a]->exemp) && !empty($candidates[$b]->exemp)) {
+                return false;
+            }
+            if (!$allowrepeats && isset($judgedpairs[self::pairkey($a, $b)])) {
+                return false;
+            }
+            return true;
+        };
+
+        $pair = $this->getstoredpair($judgementcount);
+        if (!$pair || !$isvalid($pair[0], $pair[1])) {
+            if ($this->randomise) {
+                $pair = $this->drawrandompair(array_keys($candidates), $isvalid);
+            } else {
+                $pair = $this->drawdeterministicpair(array_keys($candidates), $isvalid, $judgedpairs);
+            }
+        }
+
+        if (!$pair) {
+            $this->clearstoredpair();
+            return false;
+        }
+
+        $this->storepair($pair, $judgementcount);
+
+        [$left, $right] = $pair;
+        return [$left => $candidates[$left], $right => $candidates[$right]];
+    }
+
+    /**
+     * Submissions this user may be shown, keyed by submission id, ordered by userid then id.
+     *
+     * @return stdClass[]
+     */
+    private function getcandidatesubmissions(): array {
+        global $DB;
+
+        $submission = $this->getsubmission();
 
         if ($this->assignmentinstance->teamsubmission) {
             $teamfrag = ' sub.userid <= 0 '; // Don't return individual submissions that make up the group.
@@ -98,134 +151,199 @@ class comparisonmanager {
             $teamfrag = ' sub.userid <> 0 '; // Don't return rogue group submissions.
         }
 
-        $settings = $this->getsettings();
+        $sql = "SELECT sub.*, exemp.id AS exemp
+                  FROM {assign_submission} sub
+             LEFT JOIN {assignsubmission_exemplars} exemp ON exemp.submissionid = sub.id
+                 WHERE sub.assignment = :assignment
+                   AND sub.status = :status
+                   AND sub.latest = 1
+                   AND sub.id <> :excludeid
+                   AND $teamfrag
+              ORDER BY sub.userid, sub.id";
 
-        // Get all submissions that have not been judged against every other submission by this user.
-        for ($i = 0; $i < 2; $i++) {
-            if ($urgent) {
-                if (!empty($settings->minjudgementspersubmission)) {
-                    $threshold = "HAVING SUM(CASE WHEN comp.usermodified = $this->userid THEN 1 ELSE 0 END) < " .
-                        $settings->minjudgementspersubmission;
-                } else {
-                    $threshold = "HAVING SUM(CASE WHEN comp.usermodified = $this->userid THEN 1 ELSE 0 END) < 1";
-                }
-            } else {
-                $threshold = '';
+        return $DB->get_records_sql($sql, [
+            'assignment' => $this->assignmentinstance->id,
+            'status'     => ASSIGN_SUBMISSION_STATUS_SUBMITTED,
+            'excludeid'  => !empty($submission) ? $submission->id : -1,
+        ]);
+    }
+
+    /**
+     * Pairs this user has already judged on this assignment.
+     *
+     * @return int[] Number of times judged, keyed by pairkey().
+     */
+    private function getjudgedpairs(): array {
+        global $DB;
+
+        $sql = "SELECT compsub.id, compsub.judgementid, compsub.submissionid
+                  FROM {assignsubmission_comp} comp
+                  JOIN {assignsubmission_compsubs} compsub ON compsub.judgementid = comp.id
+                 WHERE comp.assignmentid = :assignmentid
+                   AND comp.usermodified = :userid";
+
+        $byjudgement = [];
+        $rs = $DB->get_recordset_sql($sql, ['assignmentid' => $this->assignmentinstance->id, 'userid' => $this->userid]);
+        foreach ($rs as $row) {
+            $byjudgement[$row->judgementid][] = (int) $row->submissionid;
+        }
+        $rs->close();
+
+        $pairs = [];
+        foreach ($byjudgement as $submissionids) {
+            if (count($submissionids) != 2) {
+                continue;
             }
-
-            $sql[$i] = "SELECT
-                        sub.id AS id_$i,
-                        sub.assignment AS assignment_$i,
-                        sub.userid AS userid_$i,
-                        sub.timecreated as timecreated_$i,
-                        sub.timemodified AS timemodified_$i,
-                        sub.status AS status_$i,
-                        sub.groupid AS groupid_$i,
-                        sub.attemptnumber AS attemptnumber_$i,
-                        sub.latest AS latest_$i,
-                        COUNT(comp.id) AS totaljudgements_$i,
-                        SUM(CASE WHEN comp.usermodified = $this->userid THEN 1 ELSE 0 END) AS totaluserjudgements_$i,
-                        exemp.id AS exemp_$i
-                FROM {assign_submission} sub
-                         LEFT JOIN {assignsubmission_compsubs} compsub ON compsub.submissionid = sub.id
-                         LEFT JOIN {assignsubmission_comp} comp ON compsub.judgementid = comp.id
-                         LEFT JOIN {assignsubmission_exemplars} exemp ON exemp.submissionid = sub.id
-                WHERE sub.id <> $submissiontoexclude
-                  AND sub.status = '$fullysubmitted'
-                  AND sub.latest = 1
-                  AND sub.assignment = $assignmentid
-                  AND $teamfrag
-                GROUP BY sub.id, sub.assignment, sub.userid, sub.timecreated, sub.timemodified,
-                      sub.status, sub.groupid, sub.attemptnumber, sub.latest, exemp.id $threshold";
+            $key = self::pairkey($submissionids[0], $submissionids[1]);
+            $pairs[$key] = ($pairs[$key] ?? 0) + 1;
         }
 
-        if (empty($settings->allowrepeatcomparisons)) {
-            $preventrepeats = " COALESCE(subs.timescomparedbyuser, 0) = 0 ";
-        } else {
-            $preventrepeats = ' 1 = 1 ';
+        return $pairs;
+    }
+
+    /**
+     * Order-independent key for a pair of submission ids.
+     */
+    private static function pairkey($a, $b): string {
+        return min((int) $a, (int) $b) . '|' . max((int) $a, (int) $b);
+    }
+
+    /**
+     * Draw a pair uniformly at random: the left-hand submission from all candidates, the right-hand
+     * one from all candidates except the left-hand one, redrawing if the pair isn't allowed.
+     *
+     * If repeated draws keep failing (only likely when the pool is small or nearly exhausted for this
+     * judge) count the allowed pairs and pick one of those uniformly instead.
+     *
+     * @param int[] $ids Candidate submission ids.
+     * @param callable $isvalid
+     * @return int[]|false [leftid, rightid]
+     */
+    private function drawrandompair(array $ids, callable $isvalid) {
+        $n = count($ids);
+
+        for ($draw = 0; $draw < self::MAX_RANDOM_DRAWS; $draw++) {
+            $l = random_int(0, $n - 1);
+            $r = random_int(0, $n - 2);
+            if ($r >= $l) {
+                $r++;
+            }
+            if ($isvalid($ids[$l], $ids[$r])) {
+                return [$ids[$l], $ids[$r]];
+            }
         }
 
-        if (!empty($settings->allowcompareexemplars)) {
-            $preventcompareexemplars = ' 1 = 1 ';
-        } else {
-            $preventcompareexemplars = " (subone.exemp_1 IS NULL OR subzero.exemp_0 IS NULL) ";
+        // Fallback: count the allowed pairs, then walk to a randomly chosen one (avoids holding them all in memory).
+        $validcount = 0;
+        for ($a = 0; $a < $n; $a++) {
+            for ($b = $a + 1; $b < $n; $b++) {
+                if ($isvalid($ids[$a], $ids[$b])) {
+                    $validcount++;
+                }
+            }
         }
 
-        if ($this->randomise) {
-            $rand = ($CFG->dbtype == 'pgsql') ? "RANDOM() " : "RAND()";
-        } else {
-            $rand = 'subone.userid_1, subzero.userid_0';
-        }
-
-        $sql = "
-            SELECT
-                subone.*,
-                subzero.*
-            FROM ($sql[0]) AS subzero
-            INNER JOIN ($sql[1]) AS subone ON subzero.id_0 <> subone.id_1
-            LEFT JOIN (
-                SELECT
-                    SUM(subsinner.timescompared) AS timescompared,
-                    SUM(subsinner.timescomparedbyuser) AS timescomparedbyuser,
-                    CASE WHEN subsinner.winning < subsinner.losing THEN subsinner.losing ELSE subsinner.winning END as subone,
-                    CASE WHEN subsinner.winning > subsinner.losing THEN subsinner.losing ELSE subsinner.winning END as subtwo
-                FROM (
-                    SELECT
-                        count(comp.id) AS timescompared,
-                        SUM(CASE WHEN comp.usermodified = $this->userid THEN 1 ELSE 0 END) AS timescomparedbyuser,
-                        comp.winningsubmission AS winning,
-                        compsub.submissionid AS losing
-                    FROM {assignsubmission_comp} comp
-                    INNER JOIN {assignsubmission_compsubs} compsub ON
-                        compsub.judgementid = comp.id AND compsub.submissionid <> comp.winningsubmission
-                    GROUP BY comp.winningsubmission, compsub.submissionid
-                ) AS subsinner
-                GROUP BY
-                CASE WHEN subsinner.winning < subsinner.losing THEN subsinner.losing ELSE subsinner.winning END,
-                CASE WHEN subsinner.winning > subsinner.losing THEN subsinner.losing ELSE subsinner.winning END
-            )  AS subs ON
-                (subzero.id_0 = subs.subone AND subone.id_1 = subs.subtwo)
-                    OR
-                (subone.id_1 = subs.subone AND subzero.id_0 = subs.subtwo)
-            WHERE $preventrepeats AND $preventcompareexemplars
-            ORDER BY
-                COALESCE(subs.timescomparedbyuser, 0) ASC,
-                COALESCE(subs.timescompared, 0) ASC,
-                (subzero.totaluserjudgements_0 + subone.totaluserjudgements_1) ASC,
-                subzero.totaluserjudgements_0 ASC,
-                subone.totaluserjudgements_1 ASC,
-                (subzero.totaljudgements_0 + subone.totaljudgements_1) ASC,
-                subzero.totaljudgements_0 ASC,
-                subone.totaljudgements_1 ASC,
-                $rand";
-
-        // Sorted on:
-        // number of times the user has seen this exact pair
-        // number of times anyone has seen this exact pair
-        // number of times the user has seen either and then each of the submissions
-        // number of times anyone has seen either and then each of the submissions
-        // random factor applied (unless phpunit in which case submission userids to make it testable).
-
-        $submissions = $DB->get_records_sql($sql, null, 0, 1);
-
-        if (count($submissions) < 1) {
+        if ($validcount == 0) {
             return false;
         }
 
-        $submissionpair = reset($submissions);
-        $subone = new stdClass();
-        $subtwo = new stdClass();
-
-        foreach ((array)$submissionpair as $key => $value) {
-            [$key, $index] = explode('_', $key);
-            if ($index == 0) {
-                $subone->{$key} = $value;
-            } else if ($index == 1) {
-                $subtwo->{$key} = $value;
+        $target = random_int(0, $validcount - 1);
+        for ($a = 0; $a < $n; $a++) {
+            for ($b = $a + 1; $b < $n; $b++) {
+                if ($isvalid($ids[$a], $ids[$b]) && $target-- == 0) {
+                    return random_int(0, 1) ? [$ids[$a], $ids[$b]] : [$ids[$b], $ids[$a]];
+                }
             }
         }
 
-        return [$subone->id => $subone, $subtwo->id => $subtwo];
+        return false;
+    }
+
+    /**
+     * Deterministic pair choice for Behat and unit tests only: the first allowed pair (in userid order)
+     * that this user has judged the fewest times, with the higher userid on the left.
+     *
+     * @param int[] $ids Candidate submission ids, ordered by userid.
+     * @param callable $isvalid
+     * @param int[] $judgedpairs
+     * @return int[]|false [leftid, rightid]
+     */
+    private function drawdeterministicpair(array $ids, callable $isvalid, array $judgedpairs) {
+        $best = false;
+        $bestcount = PHP_INT_MAX;
+        $n = count($ids);
+
+        for ($a = 0; $a < $n; $a++) {
+            for ($b = $a + 1; $b < $n; $b++) {
+                if (!$isvalid($ids[$a], $ids[$b])) {
+                    continue;
+                }
+                $count = $judgedpairs[self::pairkey($ids[$a], $ids[$b])] ?? 0;
+                if ($count < $bestcount) {
+                    $best = [$ids[$b], $ids[$a]];
+                    $bestcount = $count;
+                }
+            }
+        }
+
+        return $best;
+    }
+
+    /**
+     * The session only holds a pair for the logged-in user (not, e.g., for judges a scheduled task checks).
+     */
+    private function canstorepair(): bool {
+        global $USER;
+        return !empty($USER->id) && $USER->id == $this->userid;
+    }
+
+    /**
+     * The pair this user was last shown, if they haven't recorded a judgement since.
+     *
+     * @return int[]|false [leftid, rightid]
+     */
+    private function getstoredpair(int $judgementcount) {
+        global $SESSION;
+
+        if (!$this->canstorepair()) {
+            return false;
+        }
+
+        $stored = $SESSION->assignsubmission_comparativejudgement_pairs[$this->assignmentinstance->id] ?? null;
+        if (
+            empty($stored) || $stored['userid'] != $this->userid ||
+            $stored['judgementcount'] != $judgementcount
+        ) {
+            return false;
+        }
+
+        return [$stored['left'], $stored['right']];
+    }
+
+    private function storepair(array $pair, int $judgementcount) {
+        global $SESSION;
+
+        if (!$this->canstorepair()) {
+            return;
+        }
+
+        if (!isset($SESSION->assignsubmission_comparativejudgement_pairs)) {
+            $SESSION->assignsubmission_comparativejudgement_pairs = [];
+        }
+        $SESSION->assignsubmission_comparativejudgement_pairs[$this->assignmentinstance->id] = [
+            'userid'         => $this->userid,
+            'left'           => $pair[0],
+            'right'          => $pair[1],
+            'judgementcount' => $judgementcount,
+        ];
+    }
+
+    private function clearstoredpair() {
+        global $SESSION;
+
+        if ($this->canstorepair()) {
+            unset($SESSION->assignsubmission_comparativejudgement_pairs[$this->assignmentinstance->id]);
+        }
     }
 
     public function getalljudges() {
@@ -285,11 +403,7 @@ class comparisonmanager {
             return false;
         }
 
-        if ($this->alldatespastorempty()) {
-            return !empty($this->getpairtojudge());
-        } else {
-            return !empty($this->getpairtojudge(true));
-        }
+        return !empty($this->getpairtojudge());
     }
 
     public static function countjudgementsmade($userid, $assignmentid) {

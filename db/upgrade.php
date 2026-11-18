@@ -87,5 +87,16 @@ function xmldb_assignsubmission_comparativejudgement_upgrade($oldversion) {
 
         upgrade_plugin_savepoint(true, 2026052101, 'assignsubmission', 'comparativejudgement');
     }
+
+    if ($oldversion < 2026111800) {
+        // Pairs are now drawn at random, so the minimum comparisons per submission setting no longer exists.
+        $DB->delete_records('assign_plugin_config', [
+            'plugin'  => 'comparativejudgement',
+            'subtype' => 'assignsubmission',
+            'name'    => 'minjudgementspersubmission',
+        ]);
+
+        upgrade_plugin_savepoint(true, 2026111800, 'assignsubmission', 'comparativejudgement');
+    }
     return true;
 }

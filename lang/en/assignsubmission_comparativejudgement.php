@@ -110,7 +110,6 @@ $string['managesubmissions'] = 'Manage submissions';
 $string['managesubmissionswithcount'] = 'Manage submissions ({$a})';
 $string['maxjudgementsperuser'] = 'Maximum comparisons per judge';
 $string['maxtimetakencomparing'] = 'Max. time spent';
-$string['minjudgementspersubmission'] = 'Minimum comparisons per submission';
 $string['minjudgementsperuser'] = 'Minimum comparisons per judge';
 $string['mintimetakencomparing'] = 'Min. time spent';
 $string['never'] = 'Never';
