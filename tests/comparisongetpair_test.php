@@ -363,14 +363,14 @@ final class comparisongetpair_test extends advanced_testcase {
         $comparisonmanager = new comparisonmanager($students[0]->id, $secondassign);
         $this->assertSame($first, array_keys($comparisonmanager->getpairtojudge()));
 
-        // Another user does not see this user's stored pair, and does not disturb it.
-        $this->setUser($students[1]);
+        // Checking a pair for another judge in this session (as the judge-request email task does) gives them
+        // a valid pair without disturbing this user's stored pair.
+        // Note: this can't be tested by switching users, because setUser() wipes the session in unit tests.
         $othermanager = new comparisonmanager($students[1]->id, $secondassign);
         $otherpair = $othermanager->getpairtojudge();
         $this->assertCount(2, $otherpair);
         $this->assertArrayNotHasKey($secondassign->get_user_submission($students[1]->id, false)->id, $otherpair);
 
-        $this->setUser($students[0]);
         $this->assertSame($first, array_keys($comparisonmanager->getpairtojudge()));
 
         // Once the pair is judged, a different (unjudged) pair is offered.
